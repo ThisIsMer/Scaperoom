@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 2.3 - Calendario de Exámenes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .game-container {
+            max-width: 1000px;
+            width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .content {
+            padding: 2rem;
+            color: #333;
+        }
+
+        .dialogue {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-left: 5px solid #8e44ad;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .email-notification {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-left: 4px solid #ffc107;
+            margin: 2rem 0;
+            color: #856404;
+        }
+
+        .calendar-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .calendar-box {
+            background: #fff;
+            border: 2px solid #8e44ad;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .calendar-title {
+            font-weight: bold;
+            color: #8e44ad;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+            border-bottom: 2px solid #8e44ad;
+            padding-bottom: 0.5rem;
+        }
+
+        .event-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .event-item {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            border-left: 4px solid #e74c3c;
+            font-size: 0.9rem;
+        }
+
+        .event-date {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-right: 0.5rem;
+        }
+
+        .available-dates {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .date-option {
+            padding: 1rem;
+            background: #e3f2fd;
+            border: 3px solid #2196f3;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .date-option:hover {
+            background: #2196f3;
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(33, 150, 243, 0.3);
+        }
+
+        .date-option.selected {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: #fff;
+        }
+
+        .constraints {
+            background: #ffebee;
+            padding: 1.5rem;
+            border-left: 4px solid #e74c3c;
+            margin: 2rem 0;
+        }
+
+        .constraints h3 {
+            color: #c62828;
+            margin-bottom: 1rem;
+        }
+
+        .constraints ul {
+            margin-left: 1.5rem;
+        }
+
+        .constraints li {
+            margin-bottom: 0.5rem;
+            color: #d32f2f;
+        }
+
+        .exam-preview {
+            background: #e8f5e9;
+            padding: 2rem;
+            border: 3px dashed #4caf50;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .exam-preview h3 {
+            color: #2e7d32;
+            margin-bottom: 1rem;
+        }
+
+        .exam-image-container {
+            background: #fff;
+            padding: 2rem;
+            border: 2px solid #999;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+        }
+
+        .exam-image {
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .exam-question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: #f5f5f5;
+            border-left: 4px solid #ff9800;
+            text-align: left;
+        }
+
+        .exam-question h4 {
+            color: #e65100;
+            margin-bottom: 1rem;
+        }
+
+        .exam-input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border: 2px solid #999;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #8e44ad;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #9b59b6;
+        }
+
+        .submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .joke-text {
+            color: #666;
+            font-style: italic;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .response-count {
+            text-align: center;
+            color: #999;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
+
+    <div class="game-container">
+        <div class="header">
+            <h1>📅 CALENDARIO DE EXÁMENES</h1>
+            <p>¡Hora de hacer malabares con las fechas!</p>
+        </div>
+
+        <div class="content" id="mainContent">
+            <div class="dialogue">
+                Estás en clase, dejando a la gente trabajar cuando alguien te levanta la mano...<br><br>
+                
+                "Profe, tenemos demasiados trabajos y exámenes este mes. ¿Podríamos cambiar la fecha del examen? Se pisa con el trabajo de K-pop, el examen de Xue Hua Piao Piao y el evento de la Luna III Gordibolitas pam-pam."<br><br>
+                
+                Como todos los demás profesores ya se saben los trucos y han pillado las mejores fechas con margen, <strong>te toca a ti hacer los malabares</strong> para encajar cuándo poner el examen.
+            </div>
+
+            <div class="email-notification">
+                📧 <strong>Correo de coordinación:</strong> "Recuerda revisar el calendario compartido antes de confirmar tu fecha de examen. Hay que evitar solapamientos."
+            </div>
+
+            <div class="calendar-section">
+                <div class="calendar-box">
+                    <div class="calendar-title">📋 EVENTOS BLOQUEADOS</div>
+                    <ul class="event-list">
+                        <li class="event-item">
+                            <span class="event-date">15 Enero</span>
+                            Trabajo K-pop Analysis
+                        </li>
+                        <li class="event-item">
+                            <span class="event-date">17 Enero</span>
+                            Examen Xue Hua Piao Piao
+                        </li>
+                        <li class="event-item">
+                            <span class="event-date">20 Enero</span>
+                            Luna III Gordibolitas (Evento)
+                        </li>
+                        <li class="event-item">
+                            <span class="event-date">22 Enero</span>
+                            Examen Matemáticas Aplicadas
+                        </li>
+                        <li class="event-item">
+                            <span class="event-date">24 Enero</span>
+                            Presentación TFG Turno A
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="calendar-box">
+                    <div class="calendar-title">📝 TUS RESTRICCIONES</div>
+                    <ul class="event-list">
+                        <li class="event-item">
+                            <span class="event-date">⚠️</span>
+                            Debe ser entre el 15-27 de Enero
+                        </li>
+                        <li class="event-item">
+                            <span class="event-date">⚠️</span>
+                            No puede ser fin de semana
+                        </li>
+                        <li class="event-item">
+                            <span class="event-date">⚠️</span>
+                            Mínimo 2 días después del último tema
+                        </li>
+                        <li class="event-item">
+                            <span class="event-date">⚠️</span>
+                            El último tema se da el 16 de Enero
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="constraints">
+                <h3>🧮 CALCULA LA FECHA PERFECTA:</h3>
+                <ul>
+                    <li>❌ No puede ser: 15, 17, 20, 22, 24 (fechas bloqueadas)</li>
+                    <li>❌ No puede ser: 18, 19, 25, 26 (fines de semana)</li>
+                    <li>✅ Debe ser al menos el 18 de Enero (2 días después del 16)</li>
+                    <li>✅ Debe ser antes del 27 de Enero</li>
+                </ul>
+            </div>
+
+            <h3 style="text-align: center; color: #8e44ad; margin: 2rem 0;">
+                ¿QUÉ FECHA ELIGES PARA EL EXAMEN?
+            </h3>
+
+            <div class="available-dates" id="dateOptions">
+                <div class="date-option" onclick="selectDate('16-Ene')">16 Enero (Lunes)</div>
+                <div class="date-option" onclick="selectDate('18-Ene')">18 Enero (Miércoles)</div>
+                <div class="date-option" onclick="selectDate('21-Ene')">21 Enero (Sábado)</div>
+                <div class="date-option" onclick="selectDate('23-Ene')">23 Enero (Lunes)</div>
+                <div class="date-option" onclick="selectDate('24-Ene')">24 Enero (Martes)</div>
+                <div class="date-option" onclick="selectDate('27-Ene')">27 Enero (Viernes)</div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="checkDate()" disabled>CONFIRMAR FECHA</button>
+            <div id="message" class="message hidden"></div>
+        </div>
+
+        <div class="content hidden" id="examPreview">
+            <div class="exam-preview">
+                <h3>Perfecto, ahora que tienes la fecha, deberías comprobar el examen...</h3>
+                
+                <div class="exam-image-container">
+                    <img src="PruebaCalendarioDeExamenes.jpg" alt="Examen imposible" class="exam-image">
+                </div>
+
+                <div class="exam-question">
+                    <h4>Pregunta 1:</h4>
+                    <p style="margin-bottom: 1rem;">"Demuestra la conjetura de Riemann usando únicamente palillos de dientes y buena voluntad."</p>
+                    <input type="text" class="exam-input" id="q1" placeholder="Escribe lo que quieras aquí...">
+                </div>
+
+                <p class="joke-text">¡Vamos allá, seguro que no es muy complicado! (Escribe lo que sea...)</p>
+
+                <button class="submit-btn" onclick="tryExam1()">Responder Pregunta 1</button>
+            </div>
+
+            <div id="exam2" class="exam-preview hidden">
+                <div class="exam-image-container">
+                    <img src="PruebaCalendarioDeExamenes.jpg" alt="Examen imposible" class="exam-image">
+                </div>
+
+                <div class="exam-question">
+                    <h4>Pregunta 2:</h4>
+                    <p style="margin-bottom: 1rem;">"Explica por qué los números primos se sienten solos. Incluye referencias emocionales."</p>
+                    <input type="text" class="exam-input" id="q2" placeholder="Tu respuesta profunda aquí...">
+                </div>
+
+                <p class="joke-text">¿Eh, cómo que ese no? Bueno, da igual, seguro que el segundo sí que es fácil.</p>
+
+                <button class="submit-btn" onclick="tryExam2()">Responder Pregunta 2</button>
+            </div>
+
+            <div id="exam3" class="exam-preview hidden">
+                <div class="exam-image-container">
+                    <img src="PruebaCalendarioDeExamenes.jpg" alt="Examen imposible" class="exam-image">
+                </div>
+
+                <div class="exam-question">
+                    <h4>Pregunta 3:</h4>
+                    <p style="margin-bottom: 1rem;">"Programa un algoritmo que prediga el futuro usando variables del pasado."</p>
+                    <input type="text" class="exam-input" id="q3" placeholder="Código del futuro...">
+                </div>
+
+                <p class="joke-text">Pues parece que sí que les piden nivel en esta uni, madre...</p>
+
+                <button class="submit-btn" onclick="finishExam()">Responder Pregunta 3</button>
+            </div>
+
+            <div id="finalMessage" class="hidden" style="text-align: center; padding: 2rem;">
+                <h3 style="color: #4caf50; margin-bottom: 1rem;">
+                    Bah, da igual. Seguro que los chicos lo pueden resolver, que son muy listos. 🤷
+                </h3>
+                <p class="response-count">Has "respondido" a todas las preguntas. Bueno, has puesto algo en los recuadros, al menos.</p>
+                <button class="complete-btn" onclick="completeAndGoBack()">✓ Completado - Volver a Clase</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDate = null;
+        const correctDate = '23-Ene';
+
+        function selectDate(date) {
+            selectedDate = date;
+            
+            // Limpiar selecciones anteriores
+            document.querySelectorAll('.date-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Seleccionar esta
+            event.target.classList.add('selected');
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        function checkDate() {
+            const message = document.getElementById('message');
+
+            if (selectedDate === correctDate) {
+                message.className = 'message success';
+                message.textContent = '✓ ¡Perfecto! El 23 de Enero es la única fecha que cumple todos los requisitos.';
+                message.classList.remove('hidden');
+
+                setTimeout(() => {
+                    document.getElementById('mainContent').classList.add('hidden');
+                    document.getElementById('examPreview').classList.remove('hidden');
+                }, 20);
+            } else {
+                message.className = 'message error';
+                
+                if (selectedDate === '16-Ene') {
+                    message.textContent = '❌ No puedes poner el examen el mismo día que terminas el temario. Los alumnos necesitan tiempo para estudiar.';
+                } else if (selectedDate === '18-Ene') {
+                    message.textContent = '❌ Esa fecha cumple las restricciones, pero revisa bien el calendario...';
+                } else if (selectedDate === '21-Ene') {
+                    message.textContent = '❌ ¡Es fin de semana! Ni tú ni los alumnos quieren estar aquí un sábado.';
+                } else if (selectedDate === '24-Ene') {
+                    message.textContent = '❌ Hay presentaciones de TFG ese día. El aula estará ocupada.';
+                } else if (selectedDate === '27-Ene') {
+                    message.textContent = '❌ Es muy tarde, necesitas tiempo para corregir antes del cierre de actas.';
+                }
+                
+                message.classList.remove('hidden');
+            }
+        }
+
+        function tryExam1() {
+            // No importa lo que escriban, siempre avanza
+            document.getElementById('examPreview').classList.add('hidden');
+            document.getElementById('exam2').classList.remove('hidden');
+        }
+
+        function tryExam2() {
+            // No importa lo que escriban, siempre avanza
+            document.getElementById('exam2').classList.add('hidden');
+            document.getElementById('exam3').classList.remove('hidden');
+        }
+
+        function finishExam() {
+            // No importa lo que escriban, siempre avanza
+            document.getElementById('exam3').classList.add('hidden');
+            document.getElementById('finalMessage').classList.remove('hidden');
+            localStorage.setItem('prueba2_3_completed', 'true');
+        }
+
+        function goBack() {
+            window.location.href = 'clase.html';
+        }
+
+        function completeAndGoBack() {
+            localStorage.setItem('prueba2_3_completed', 'true');
+            window.location.href = 'clase.html';
+        }
+    </script>
+</body>
+</html>

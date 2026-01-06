@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 3.1-2-3 - Buscar la Cafetería</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .game-container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #795548, #5d4037);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .content {
+            padding: 2rem;
+            color: #333;
+        }
+
+        .dialogue {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-left: 5px solid #ffc107;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            color: #856404;
+        }
+
+        .instruction {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-left: 4px solid #2196f3;
+            margin: 2rem 0;
+            color: #1565c0;
+        }
+
+        .progress {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #795548;
+            margin: 1.5rem 0;
+        }
+
+        .choices-container {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .choice-text {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .instruments {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .instrument-btn {
+            padding: 2rem;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            border: 3px solid #795548;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .instrument-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-color: #5d4037;
+        }
+
+        .instrument-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .instrument-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef5350;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #66bb6a;
+        }
+
+        .hint-box {
+            background: #fff8e1;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid #ffc107;
+            color: #f57f17;
+        }
+
+        .hint-box.shown {
+            animation: highlight 1s;
+        }
+
+        @keyframes highlight {
+            0%, 100% { background: #fff8e1; }
+            50% { background: #fff176; }
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Volver al Pasillo</button>
+
+    <div class="game-container">
+        <div class="header">
+            <h1>☕ BUSCANDO LA CAFETERÍA</h1>
+            <p>La Orquesta sin Obertura ni Intermedio</p>
+        </div>
+
+        <div class="content">
+            <div class="dialogue">
+                Pulsas la máquina expendedora esperando un café... pero solo es atrezo. No da nada.<br><br>
+                
+                Empiezas a buscar la cafetería por los pasillos. Llegas a una puerta con un cartel extraño:<br><br>
+                
+                <strong>"ORQUESTA SIN OBERTURA NI INTERMEDIO"</strong><br><br>
+                
+                Debajo del cartel hay dos caminos, cada uno con el nombre de un instrumento. ¿Cuál eliges?
+            </div>
+
+            <div class="instruction">
+                <strong>🎵 OBJETIVO:</strong> Debes elegir el instrumento que "pueda entrar en la orquesta" 5 veces consecutivas.<br>
+                Si te equivocas, el contador se reinicia.
+            </div>
+
+            <div class="progress" id="progress">
+                Instrumentos correctos: <span id="score">0</span> / 5
+            </div>
+
+            <div class="choices-container">
+                <div class="choice-text" id="choiceText">
+                    ¿Qué instrumento puede entrar en la orquesta?
+                </div>
+                
+                <div class="instruments" id="instruments">
+                    <!-- Se generarán dinámicamente -->
+                </div>
+            </div>
+
+            <div id="message" class="message hidden"></div>
+
+            <div class="hint-box hidden" id="hintBox">
+                💡 <strong>PISTA:</strong> Fíjate bien en el nombre de la orquesta: "SIN Obertura NI Intermedio"...<br>
+                Piensa en las letras que faltan: Sin <strong>I</strong> ni <strong>O</strong>
+            </div>
+
+            <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">✓ ¡Has encontrado la cafetería! - Volver al Pasillo</button>
+        </div>
+    </div>
+
+    <script>
+        const instrumentPairs = [
+            { valid: 'FLAUTA', invalid: 'VIOLÍN', validIcon: '🎵', invalidIcon: '🎻' },
+            { valid: 'TUBA', invalid: 'OBOE', validIcon: '📯', invalidIcon: '🎺' },
+            { valid: 'ARPA', invalid: 'TROMBÓN', validIcon: '🪕', invalidIcon: '🎺' },
+            { valid: 'FAGAT', invalid: 'PIANO', validIcon: '🎷', invalidIcon: '🎹' },
+            { valid: 'CLAVE', invalid: 'VIOLONCHELO', validIcon: '🎹', invalidIcon: '🎻' },
+            { valid: 'TAMBUR', invalid: 'GUITARRA', validIcon: '🥁', invalidIcon: '🎸' },
+            { valid: 'LAÚD', invalid: 'SAXOFÓN', validIcon: '🎸', invalidIcon: '🎷' }
+        ];
+
+        let score = 0;
+        let usedPairs = [];
+        let mistakes = 0;
+
+        function hasInvalidLetters(word) {
+            const upper = word.toUpperCase();
+            return upper.includes('I') || upper.includes('O');
+        }
+
+        function generateChoice() {
+            // Filtrar pares no usados
+            const availablePairs = instrumentPairs.filter((p, i) => !usedPairs.includes(i));
+            
+            if (availablePairs.length === 0) {
+                // Si se acabaron, permitir reusar pero aleatorio
+                usedPairs = [];
+            }
+
+            // Elegir par aleatorio
+            const pair = availablePairs[Math.floor(Math.random() * availablePairs.length)];
+            const pairIndex = instrumentPairs.indexOf(pair);
+            usedPairs.push(pairIndex);
+
+            // Aleatorizar orden
+            const instruments = Math.random() > 0.5 
+                ? [
+                    { name: pair.valid, icon: pair.validIcon, valid: true },
+                    { name: pair.invalid, icon: pair.invalidIcon, valid: false }
+                  ]
+                : [
+                    { name: pair.invalid, icon: pair.invalidIcon, valid: false },
+                    { name: pair.valid, icon: pair.validIcon, valid: true }
+                  ];
+
+            displayInstruments(instruments);
+        }
+
+        function displayInstruments(instruments) {
+            const container = document.getElementById('instruments');
+            container.innerHTML = '';
+
+            instruments.forEach(inst => {
+                const btn = document.createElement('div');
+                btn.className = 'instrument-btn';
+                btn.onclick = () => selectInstrument(inst.valid);
+                btn.innerHTML = `
+                    <div class="instrument-icon">${inst.icon}</div>
+                    <div class="instrument-name">${inst.name}</div>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectInstrument(isValid) {
+            const msg = document.getElementById('message');
+
+            if (isValid) {
+                score++;
+                document.getElementById('score').textContent = score;
+                showMessage('✓ ¡Correcto! Este instrumento puede entrar.', 'success');
+
+                if (score >= 5) {
+                    setTimeout(() => {
+                        showMessage('🎉 ¡Has descubierto el patrón! Has encontrado la cafetería.', 'success');
+                        document.getElementById('completeBtn').classList.remove('hidden');
+                        document.getElementById('instruments').style.display = 'none';
+                        document.getElementById('choiceText').style.display = 'none';
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        msg.classList.add('hidden');
+                        generateChoice();
+                    }, 1500);
+                }
+            } else {
+                score = 0;
+                mistakes++;
+                document.getElementById('score').textContent = score;
+                showMessage('✗ Ese instrumento NO puede entrar. Contador reiniciado.', 'error');
+
+                // Mostrar pista después de 3 errores
+                if (mistakes >= 3) {
+                    document.getElementById('hintBox').classList.remove('hidden');
+                    document.getElementById('hintBox').classList.add('shown');
+                }
+
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                    usedPairs = []; // Reiniciar pares usados al fallar
+                    generateChoice();
+                }, 2000);
+            }
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+        }
+
+        function goBack() {
+            window.location.href = 'pasillo.html';
+        }
+
+        function completeAndGoBack() {
+            localStorage.setItem('prueba3_1_2_3_completed', 'true');
+            window.location.href = 'pasillo.html';
+        }
+
+        // Iniciar juego
+        generateChoice();
+    </script>
+</body>
+</html>

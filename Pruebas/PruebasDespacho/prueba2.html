@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 2 - Portal del Curso</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('../Assets/Despacho.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .game-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .hint-section {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .hint-btn {
+            padding: 0.5rem 1rem;
+            background: #ffc107;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 0 0.25rem;
+        }
+
+        .hint-btn:hover {
+            background: #ffb300;
+        }
+
+        .hint-btn:disabled {
+            background: #e0e0e0;
+            cursor: not-allowed;
+        }
+
+        .hint-text {
+            margin-top: 0.5rem;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .board {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            gap: 3px;
+            margin: 1rem auto;
+            max-width: 350px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 3px;
+        }
+
+        .tile {
+            width: 62px;
+            height: 62px;
+            border: 2px solid #d3d6da;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: #fff;
+            color: #000;
+        }
+
+        .tile.filled {
+            border-color: #878a8c;
+        }
+
+        .tile.correct {
+            background: #6aaa64;
+            border-color: #6aaa64;
+            color: #fff;
+        }
+
+        .tile.present {
+            background: #c9b458;
+            border-color: #c9b458;
+            color: #fff;
+        }
+
+        .tile.absent {
+            background: #787c7e;
+            border-color: #787c7e;
+            color: #fff;
+        }
+
+        .keyboard {
+            margin-top: 2rem;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .key {
+            padding: 1rem 0.5rem;
+            min-width: 43px;
+            background: #d3d6da;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .key:hover {
+            background: #bbb;
+        }
+
+        .key.correct {
+            background: #6aaa64;
+            color: #fff;
+        }
+
+        .key.present {
+            background: #c9b458;
+            color: #fff;
+        }
+
+        .key.absent {
+            background: #787c7e;
+            color: #fff;
+        }
+
+        .key.wide {
+            min-width: 65px;
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">Volver al Despacho</button>
+    
+    <div class="overlay"></div>
+    
+    <div class="game-container">
+        <h1>ACCESO AL PORTAL</h1>
+        <p class="subtitle">Adivina la palabra clave de 5 letras</p>
+
+        <div class="hint-section">
+            <button class="hint-btn" id="hintBtn1" onclick="showHint(1)">Pista: Vocal</button>
+            <button class="hint-btn" id="hintBtn2" onclick="showHint(2)">Pista: Consonante</button>
+            <div class="hint-text hidden" id="hintText"></div>
+        </div>
+
+        <div class="board" id="board"></div>
+
+        <div class="keyboard">
+            <div class="keyboard-row">
+                <button class="key" onclick="pressKey('Q')">Q</button>
+                <button class="key" onclick="pressKey('W')">W</button>
+                <button class="key" onclick="pressKey('E')">E</button>
+                <button class="key" onclick="pressKey('R')">R</button>
+                <button class="key" onclick="pressKey('T')">T</button>
+                <button class="key" onclick="pressKey('Y')">Y</button>
+                <button class="key" onclick="pressKey('U')">U</button>
+                <button class="key" onclick="pressKey('I')">I</button>
+                <button class="key" onclick="pressKey('O')">O</button>
+                <button class="key" onclick="pressKey('P')">P</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key" onclick="pressKey('A')">A</button>
+                <button class="key" onclick="pressKey('S')">S</button>
+                <button class="key" onclick="pressKey('D')">D</button>
+                <button class="key" onclick="pressKey('F')">F</button>
+                <button class="key" onclick="pressKey('G')">G</button>
+                <button class="key" onclick="pressKey('H')">H</button>
+                <button class="key" onclick="pressKey('J')">J</button>
+                <button class="key" onclick="pressKey('K')">K</button>
+                <button class="key" onclick="pressKey('L')">L</button>
+                <button class="key" onclick="pressKey('Ñ')">Ñ</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key wide" onclick="submitWord()">ENTER</button>
+                <button class="key" onclick="pressKey('Z')">Z</button>
+                <button class="key" onclick="pressKey('X')">X</button>
+                <button class="key" onclick="pressKey('C')">C</button>
+                <button class="key" onclick="pressKey('V')">V</button>
+                <button class="key" onclick="pressKey('B')">B</button>
+                <button class="key" onclick="pressKey('N')">N</button>
+                <button class="key" onclick="pressKey('M')">M</button>
+                <button class="key wide" onclick="deleteLetter()">BORRAR</button>
+            </div>
+        </div>
+
+        <div id="message" class="message hidden"></div>
+        <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver al Despacho</button>
+    </div>
+
+    <script>
+        const WORD = "RITMO";
+        const WORD_LENGTH = 5;
+        const MAX_GUESSES = 6;
+
+        // Lista de palabras válidas en español (simplificada)
+        const VALID_WORDS = [
+            'RITMO', 'PIANO', 'CANTO', 'METRO', 'TEMPO', 'ACORDE', 'OPERA', 
+            'SALSA', 'TANGO', 'VALSE', 'RONDA', 'CORAL', 'BANDA', 'GRITO',
+            'CLAVE', 'NOTAS', 'TONAL', 'MODAL', 'FRASE', 'CANON', 'GRAVE',
+            'AGUDO', 'MEDIO', 'CALMA', 'BRAVO', 'LENTO', 'RAPIDO'
+        ];
+
+        let currentGuess = "";
+        let currentRow = 0;
+        let gameOver = false;
+        let hintsUsed = 0;
+
+        function showHint(hintNum) {
+            if (gameOver) return;
+            
+            const hintText = document.getElementById('hintText');
+            
+            if (hintNum === 1 && hintsUsed < 1) {
+                // Mostrar UNA vocal aleatoria
+                const vowels = ['I', 'O'];
+                const randomVowel = vowels[Math.floor(Math.random() * vowels.length)];
+                hintText.textContent = `Pista: La palabra contiene la vocal: ${randomVowel}`;
+                hintText.classList.remove('hidden');
+                document.getElementById('hintBtn1').disabled = true;
+                hintsUsed = 1;
+            } else if (hintNum === 2 && hintsUsed < 2) {
+                // Mostrar UNA consonante aleatoria
+                const consonants = ['R', 'T', 'M'];
+                const randomConsonant = consonants[Math.floor(Math.random() * consonants.length)];
+                hintText.textContent = `Pista: La palabra contiene la consonante: ${randomConsonant}`;
+                hintText.classList.remove('hidden');
+                document.getElementById('hintBtn2').disabled = true;
+                hintsUsed = 2;
+            }
+        }
+
+        function initBoard() {
+            const board = document.getElementById('board');
+            for (let i = 0; i < MAX_GUESSES; i++) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                for (let j = 0; j < WORD_LENGTH; j++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'tile';
+                    tile.id = `tile-${i}-${j}`;
+                    row.appendChild(tile);
+                }
+                board.appendChild(row);
+            }
+        }
+
+        function pressKey(letter) {
+            if (gameOver || currentGuess.length >= WORD_LENGTH) return;
+            
+            currentGuess += letter;
+            updateBoard();
+        }
+
+        function deleteLetter() {
+            if (gameOver || currentGuess.length === 0) return;
+            
+            currentGuess = currentGuess.slice(0, -1);
+            updateBoard();
+        }
+
+        function updateBoard() {
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                if (i < currentGuess.length) {
+                    tile.textContent = currentGuess[i];
+                    tile.classList.add('filled');
+                } else {
+                    tile.textContent = '';
+                    tile.classList.remove('filled');
+                }
+            }
+        }
+
+        function submitWord() {
+            if (gameOver || currentGuess.length !== WORD_LENGTH) {
+                showMessage('La palabra debe tener 5 letras', 'error');
+                return;
+            }
+
+            // Verificar si la palabra existe (simulación de RAE)
+            if (!VALID_WORDS.includes(currentGuess.toUpperCase())) {
+                showMessage('Palabra no válida', 'error');
+                return;
+            }
+
+            checkGuess();
+        }
+
+        function checkGuess() {
+            const guess = currentGuess.toUpperCase();
+            const letterCount = {};
+            
+            for (let letter of WORD) {
+                letterCount[letter] = (letterCount[letter] || 0) + 1;
+            }
+
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                const letter = guess[i];
+                
+                if (letter === WORD[i]) {
+                    tile.classList.add('correct');
+                    updateKeyboard(letter, 'correct');
+                    letterCount[letter]--;
+                }
+            }
+
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                const letter = guess[i];
+                
+                if (letter === WORD[i]) continue;
+                
+                if (WORD.includes(letter) && letterCount[letter] > 0) {
+                    tile.classList.add('present');
+                    updateKeyboard(letter, 'present');
+                    letterCount[letter]--;
+                } else {
+                    tile.classList.add('absent');
+                    updateKeyboard(letter, 'absent');
+                }
+            }
+
+            if (guess === WORD) {
+                gameOver = true;
+                showMessage('Acceso concedido. Has desbloqueado el portal.', 'success');
+                document.getElementById('completeBtn').classList.remove('hidden');
+                document.querySelectorAll('.key').forEach(key => key.disabled = true);
+            } else if (currentRow === MAX_GUESSES - 1) {
+                gameOver = true;
+                showMessage(`Acceso denegado. La palabra era: ${WORD}`, 'error');
+                setTimeout(() => location.reload(), 3000);
+            } else {
+                currentRow++;
+                currentGuess = "";
+            }
+        }
+
+        function updateKeyboard(letter, state) {
+            const keys = document.querySelectorAll('.key');
+            keys.forEach(key => {
+                if (key.textContent === letter) {
+                    if (state === 'correct') {
+                        key.className = 'key correct';
+                    } else if (state === 'present' && !key.classList.contains('correct')) {
+                        key.className = 'key present';
+                    } else if (state === 'absent' && !key.classList.contains('correct') && !key.classList.contains('present')) {
+                        key.className = 'key absent';
+                    }
+                }
+            });
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (gameOver) return;
+            
+            const key = e.key.toUpperCase();
+            if (/^[A-ZÑ]$/.test(key)) {
+                pressKey(key);
+            } else if (key === 'ENTER') {
+                submitWord();
+            } else if (key === 'BACKSPACE') {
+                deleteLetter();
+            }
+        });
+
+        function goBack() {
+            window.location.href = '../Escenarios/despacho.html';
+        }
+
+        function completeAndGoBack() {
+            localStorage.setItem('prueba2_completed', 'true');
+            window.location.href = '../Escenarios/despacho.html';
+        }
+
+        initBoard();
+    </script>
+</body>
+</html>

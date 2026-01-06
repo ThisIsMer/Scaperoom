@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despacho - La Sustitución</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .room {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('../Assets/Despacho.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .interactive-item {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            padding: 1rem 1.5rem;
+            background: rgba(139, 0, 0, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+            display: none;
+        }
+
+        .interactive-item.visible {
+            display: block;
+        }
+
+        .interactive-item:hover:not(.locked) {
+            background: rgba(255, 255, 255, 0.9);
+            color: #8b0000;
+            border-color: #8b0000;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+        }
+
+        .interactive-item.locked {
+            background: rgba(80, 80, 80, 0.8);
+            border-color: rgba(150, 150, 150, 0.5);
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .interactive-item.completed {
+            background: rgba(0, 139, 0, 0.8);
+            border-color: rgba(144, 238, 144, 0.7);
+        }
+
+        #item1 {
+            top: 40%;
+            left: 20%;
+        }
+
+        #item2 {
+            top: 35%;
+            right: 25%;
+        }
+
+        #item3 {
+            bottom: 30%;
+            left: 35%;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            border: 2px solid #8b0000;
+            z-index: 10;
+        }
+
+        .title h2 {
+            color: #8b0000;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .next-scene-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: rgba(0, 139, 0, 0.9);
+            border: 2px solid #90ee90;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        .next-scene-btn:hover {
+            background: rgba(144, 238, 144, 0.9);
+            color: #000;
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="room">
+        <div class="overlay"></div>
+        
+        <div class="title">
+            <h2>ESCENARIO 1: EL DESPACHO</h2>
+        </div>
+
+        <div class="interactive-item pulse visible" id="item1" onclick="goToPrueba('../Pruebas/PruebasDespacho/prueba1.html')">
+            Hora de corregir
+        </div>
+
+        <div class="interactive-item pulse visible" id="item2" onclick="goToPrueba('../Pruebas/PruebasDespacho/prueba2.html')">
+            Acceder al moodle
+        </div>
+
+        <div class="interactive-item pulse visible" id="item3" onclick="goToPrueba('../Pruebas/PruebasDespacho/prueba3.html')">
+            ¿Cuál era mi horario?
+        </div>
+
+        <button class="next-scene-btn hidden" id="nextSceneBtn" onclick="goToClase()">
+            Hora de ir a clase
+        </button>
+    </div>
+
+    <script>
+        function getProgress() {
+            return {
+                prueba1: localStorage.getItem('prueba1_completed') === 'true',
+                prueba2: localStorage.getItem('prueba2_completed') === 'true',
+                prueba3: localStorage.getItem('prueba3_completed') === 'true'
+            };
+        }
+
+        function updateUI() {
+            const progress = getProgress();
+            
+            // Actualizar estado visual de las pruebas
+            if (progress.prueba1) {
+                document.getElementById('item1').classList.add('completed');
+                document.getElementById('item1').classList.remove('pulse');
+            }
+            
+            if (progress.prueba2) {
+                document.getElementById('item2').classList.add('completed');
+                document.getElementById('item2').classList.remove('pulse');
+            }
+            
+            if (progress.prueba3) {
+                document.getElementById('item3').classList.add('completed');
+                document.getElementById('item3').classList.remove('pulse');
+            }
+
+            // Mostrar botón para ir a clase si se han completado prueba 2 y 3
+            if (progress.prueba2 && progress.prueba3) {
+                document.getElementById('nextSceneBtn').classList.remove('hidden');
+            }
+        }
+
+        function goToPrueba(url) {
+            window.location.href = url;
+        }
+
+        function goToClase() {
+            window.location.href = '../Escenario/clase.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 2.4 - Te han robado el aula</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .game-container {
+            max-width: 1100px;
+            width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .content {
+            padding: 2rem;
+            color: #333;
+        }
+
+        .dialogue {
+            background: #ffebee;
+            padding: 1.5rem;
+            border-left: 5px solid #e74c3c;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .dialogue strong {
+            color: #c0392b;
+        }
+
+        .situation {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-left: 4px solid #ffc107;
+            margin: 2rem 0;
+            color: #856404;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .document {
+            background: #fff;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .document:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: #3498db;
+        }
+
+        .document.selected {
+            border-color: #27ae60;
+            background: #e8f5e9;
+            box-shadow: 0 0 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .document-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .doc-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .doc-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .badge-official {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .badge-suspicious {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .doc-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .doc-detail {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-left: 3px solid #3498db;
+        }
+
+        .doc-detail.error {
+            background: #ffebee;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .doc-detail.good {
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+        }
+
+        .clue {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .clue.warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .instruction {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-left: 4px solid #2196f3;
+            margin: 2rem 0;
+            color: #1565c0;
+        }
+
+        .instruction h3 {
+            margin-bottom: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #c0392b;
+        }
+
+        .submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .hint {
+            background: #fff8e1;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid #ffc107;
+            color: #f57f17;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
+
+    <div class="game-container">
+        <div class="header">
+            <h1>🚨 TE HAN ROBADO EL AULA</h1>
+            <p>¡Aserta dominancia! ¡ROAR! 🦁</p>
+        </div>
+
+        <div class="content">
+            <div class="dialogue">
+                En lo que tú estás tranquilamente dejando trabajar a tus alumnos en sus prácticas, llega otro profesor.<br><br>
+                
+                "Disculpa... esta es mi aula. Tengo clase ahora."<br><br>
+                
+                <strong>¿Compañía? No te suena que fuera asignatura de dos profesores a la vez.</strong><br><br>
+                
+                Y efectivamente, no lo es. <strong>Estás en su aula</strong>. Le toca a su clase ahí. <strong>Has robado un aula.</strong><br><br>
+                
+                ¿Cómo que has robado el aula? ¡Si es la que ponía en el horario que tanto te tocó descifrar! Nonononono, no puedes permitir que te la roben. ¡Vamos! ¡Haz algo!
+            </div>
+
+            <div class="situation">
+                💼 <strong>Situación:</strong> Tienes que demostrar que TÚ tienes derecho a estar en esta aula. Hay varios documentos sobre la mesa, pero solo UNO es el verdadero documento oficial que prueba tu asignación.
+            </div>
+
+            <div class="instruction">
+                <h3>🔍 OBJETIVO: Identifica el documento VERDADERO</h3>
+                <p>Aparecen múltiples versiones de documentos oficiales (horario, asignación de aula) pero están contradictorias. Debes identificar cuál es el VERDADERO usando pensamiento crítico y lógica deductiva.</p>
+                <p><strong>Hay pistas falsas:</strong> sellos falsos, fechas inconsistentes, errores tipográficos deliberados.</p>
+                <p><strong>Think outside the box:</strong> La verdad está en los detalles, no en lo que parece oficial.</p>
+            </div>
+
+            <div class="documents-grid" id="documentsGrid">
+                <!-- Documento 1: Muchos sellos pero errores graves -->
+                <div class="document" onclick="selectDocument(1)">
+                    <div class="document-header">
+                        <span class="doc-title">Documento A</span>
+                        <span class="doc-badge badge-official">5 SELLOS</span>
+                    </div>
+                    <div class="doc-content">
+                        <div class="doc-detail good">
+                            ✓ Aula: 217<br>
+                            ✓ Profesor: Sustituto
+                        </div>
+                        <div class="doc-detail error">
+                            ⚠ Fecha: 30 Febrero 2025
+                        </div>
+                        <div class="doc-detail error">
+                            ⚠ Firma: Prof. "Martínz" (error ortográfico)
+                        </div>
+                        <div class="clue warning">
+                            🤔 ¿Febrero tiene 30 días?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documento 2: Bonito pero vacío -->
+                <div class="document" onclick="selectDocument(2)">
+                    <div class="document-header">
+                        <span class="doc-title">Documento B</span>
+                        <span class="doc-badge badge-official">LAMINADO</span>
+                    </div>
+                    <div class="doc-content">
+                        <div class="doc-detail good">
+                            ✓ Diseño profesional
+                        </div>
+                        <div class="doc-detail good">
+                            ✓ Logo de la universidad
+                        </div>
+                        <div class="doc-detail error">
+                            ⚠ No especifica aula
+                        </div>
+                        <div class="doc-detail error">
+                            ⚠ No tiene fecha
+                        </div>
+                        <div class="clue">
+                            🤔 Parece oficial pero... ¿dónde está la info?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documento 3: EL VERDADERO -->
+                <div class="document" onclick="selectDocument(3)">
+                    <div class="document-header">
+                        <span class="doc-title">Documento C</span>
+                        <span class="doc-badge badge-suspicious">ARRUGADO</span>
+                    </div>
+                    <div class="doc-content">
+                        <div class="doc-detail good">
+                            ✓ Aula: 217<br>
+                            ✓ Fecha: 15 Enero 2025 (válida)
+                        </div>
+                        <div class="doc-detail good">
+                            ✓ Firma: Prof. Martínez<br>
+                            ✓ Coordinador: Dra. López
+                        </div>
+                        <div class="doc-detail good">
+                            ✓ Código verificación: UNI-217-25
+                        </div>
+                        <div class="clue">
+                            🤔 Está arrugado pero todos los datos cuadran...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="checkDocument()" disabled>PRESENTAR DOCUMENTO</button>
+            <div id="message" class="message hidden"></div>
+            <div id="hint" class="hint hidden"></div>
+
+            <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">✓ Completado - Volver a Clase</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedDoc = null;
+        let attempts = 0;
+
+        function selectDocument(docNum) {
+            selectedDoc = docNum;
+            
+            // Limpiar selecciones
+            document.querySelectorAll('.document').forEach(doc => {
+                doc.classList.remove('selected');
+            });
+
+            // Seleccionar este
+            event.currentTarget.classList.add('selected');
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        function checkDocument() {
+            const message = document.getElementById('message');
+            const hint = document.getElementById('hint');
+            attempts++;
+
+            if (selectedDoc === 3) {
+                message.className = 'message success';
+                message.textContent = '✓ ¡CORRECTO! El Documento C es el verdadero. A pesar de estar arrugado (probablemente del bolsillo del Prof. Martínez), es el único con toda la información correcta y verificable. ¡Has defendido tu aula!';
+                message.classList.remove('hidden');
+                hint.classList.add('hidden');
+
+                document.getElementById('submitBtn').classList.add('hidden');
+                document.querySelectorAll('.document').forEach(doc => {
+                    doc.style.pointerEvents = 'none';
+                });
+                document.getElementById('completeBtn').classList.remove('hidden');
+                
+                localStorage.setItem('prueba2_4_completed', 'true');
+            } else {
+                message.className = 'message error';
+                
+                if (selectedDoc === 1) {
+                    message.textContent = '❌ El Documento A tiene muchos sellos bonitos, pero... ¿30 de Febrero? Ese mes solo tiene 28-29 días. Además, "Martínz" está mal escrito.';
+                } else if (selectedDoc === 2) {
+                    message.textContent = '❌ El Documento B está muy bien laminado y parece profesional, pero no tiene información específica. ¿De qué sirve un documento que no dice aula ni fecha?';
+                }
+                
+                message.classList.remove('hidden');
+
+                if (attempts === 1) {
+                    hint.textContent = '💡 Pista: No te dejes llevar por las apariencias. Un documento arrugado puede ser más auténtico que uno laminado. Busca errores en fechas y nombres.';
+                    hint.classList.remove('hidden');
+                } else if (attempts >= 2) {
+                    hint.textContent = '💡 Pista fuerte: El Documento A tiene una fecha imposible (30 de Febrero). El Documento B no tiene información útil. ¿Qué queda?';
+                    hint.classList.remove('hidden');
+                }
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'clase.html';
+        }
+
+        function completeAndGoBack() {
+            localStorage.setItem('prueba2_4_completed', 'true');
+            window.location.href = 'clase.html';
+        }
+    </script>
+</body>
+</html>

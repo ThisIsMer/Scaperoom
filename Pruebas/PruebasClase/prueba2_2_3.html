@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 2.2-3 - Se te acabó el guión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('../Assets/GarabatosProfesor.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 62, 80, 0.85);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .game-container {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .dialogue {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-left: 5px solid #e74c3c;
+            margin-bottom: 2rem;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .instruction {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-left: 4px solid #ffc107;
+            margin: 2rem 0;
+            color: #856404;
+        }
+
+        .honeycomb {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            position: relative;
+            height: 300px;
+        }
+
+        .hex-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+        }
+
+        .hex {
+            position: absolute;
+            width: 70px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 2rem;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .hex.center {
+            background: #f9a825;
+            color: #000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hex.outer {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .hex:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .hex-0 { left: 50%; top: 0; transform: translate(-50%, 0); }
+        .hex-1 { right: 0; top: 25%; transform: translate(0, 0); }
+        .hex-2 { right: 0; bottom: 25%; transform: translate(0, 0); }
+        .hex-3 { left: 50%; bottom: 0; transform: translate(-50%, 0); }
+        .hex-4 { left: 0; bottom: 25%; transform: translate(0, 0); }
+        .hex-5 { left: 0; top: 25%; transform: translate(0, 0); }
+
+        .input-area {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .word-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 3px solid #2196f3;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .hint-section {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .hint-btn-bee {
+            padding: 0.6rem 1.2rem;
+            background: #ffc107;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hint-btn-bee:hover {
+            background: #ffb300;
+        }
+
+        .hint-btn-bee:disabled {
+            background: #e0e0e0;
+            cursor: not-allowed;
+        }
+
+        .hint-text-bee {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            border: 2px solid #333;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: #fff;
+            border-color: #e74c3c;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .shuffle-btn {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+
+        .shuffle-btn:hover {
+            background: #2980b9;
+        }
+
+        .submit-btn {
+            background: #27ae60;
+            color: #fff;
+            border-color: #27ae60;
+        }
+
+        .submit-btn:hover {
+            background: #229954;
+        }
+
+        .found-words {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .found-words h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .word-tag {
+            padding: 0.5rem 1rem;
+            background: #4caf50;
+            color: #fff;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .word-tag.key-word {
+            background: #f9a825;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .message.info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <button class="back-btn" onclick="goBack()">Volver a Clase</button>
+
+    <div class="game-container">
+        <div class="header">
+            <h1>SE TE ACABÓ EL GUIÓN DE LA CLASE</h1>
+            <p>Descifra las palabras musicales</p>
+        </div>
+
+        <div class="content">
+            <div class="dialogue">
+                Los alumnos ya terminaron la práctica antes de tiempo...<br><br>
+                
+                Los apuntes del profesor anterior solo tienen garabatos. Tocará improvisar.<br><br>
+                
+                Encuentra palabras relacionadas con música. Necesitas encontrar: <strong>TEMPO</strong>, <strong>OPERA</strong> y <strong>TROMPETA</strong>
+            </div>
+
+            <div class="instruction">
+                <strong>REGLAS:</strong><br>
+                • La letra del centro (amarilla) debe estar en todas las palabras<br>
+                • Las palabras deben tener mínimo 4 letras<br>
+                • Usa las letras cuantas veces quieras
+            </div>
+
+            <div class="honeycomb">
+                <div class="hex-container">
+                    <div class="hex center" onclick="addLetter('O')">O</div>
+                    <div class="hex outer hex-0" onclick="addLetter('R')">R</div>
+                    <div class="hex outer hex-1" onclick="addLetter('T')">T</div>
+                    <div class="hex outer hex-2" onclick="addLetter('A')">A</div>
+                    <div class="hex outer hex-3" onclick="addLetter('M')">M</div>
+                    <div class="hex outer hex-4" onclick="addLetter('E')">E</div>
+                    <div class="hex outer hex-5" onclick="addLetter('P')">P</div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="wordInput" class="word-input" readonly placeholder="Haz clic en las letras...">
+                
+                <div class="controls">
+                    <button class="btn delete-btn" onclick="deleteLetter()">Borrar</button>
+                    <button class="btn shuffle-btn" onclick="shuffleLetters()">Mezclar</button>
+                    <button class="btn submit-btn" onclick="submitWord()">Enviar</button>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-btn-bee" id="hintBtn" onclick="showHintBee()">Ver Pista</button>
+                    <div class="hint-text-bee hidden" id="hintText"></div>
+                </div>
+            </div>
+
+            <div id="message" class="message hidden"></div>
+
+            <div class="found-words">
+                <h3>Palabras encontradas: <span id="wordCount">0</span></h3>
+                <div class="word-list" id="wordList"></div>
+            </div>
+
+            <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
+        </div>
+    </div>
+
+    <script>
+        const LETTERS = ['R', 'T', 'A', 'M', 'E', 'P'];
+        const CENTER = 'O';
+        const KEY_WORDS = ['TEMPO', 'OPERA', 'TROMPETA'];
+        
+        const VALID_WORDS = [
+            'TEMPO', 'OPERA', 'TROMPETA', 'TROMPA', 'TRAMPA', 'AMOR', 'METRO',
+            'POETA', 'AROMA', 'TOMA', 'ROMA', 'PORO', 'MORO', 'TORO', 'PATO',
+            'ROPA', 'PORTA', 'TROPA', 'ARPO', 'MORA', 'TORRE', 'PORRA', 'POMO',
+            'RETO', 'ATEO', 'MOTE', 'TOPE', 'PERO', 'REPO', 'ROPE', 'APERO',
+            'PORTE', 'MOTOR', 'PROA', 'PROM', 'TOPE', 'RETO', 'ORATE'
+        ];
+
+        let currentWord = '';
+        let foundWords = [];
+        let foundKeyWords = [];
+
+        function showHintBee() {
+            const remainingWords = VALID_WORDS.filter(w => !foundWords.includes(w));
+            
+            if (remainingWords.length > 0) {
+                const hintWord = remainingWords[0];
+                const hintText = document.getElementById('hintText');
+                hintText.textContent = `Pista: Una palabra empieza por "${hintWord.substring(0, 2)}"`;
+                hintText.classList.remove('hidden');
+                document.getElementById('hintBtn').disabled = true;
+                
+                setTimeout(() => {
+                    document.getElementById('hintBtn').disabled = false;
+                }, 10000);
+            }
+        }
+
+        function addLetter(letter) {
+            currentWord += letter;
+            document.getElementById('wordInput').value = currentWord;
+        }
+
+        function deleteLetter() {
+            currentWord = currentWord.slice(0, -1);
+            document.getElementById('wordInput').value = currentWord;
+        }
+
+        function shuffleLetters() {
+            const hexes = document.querySelectorAll('.hex.outer');
+            const letters = Array.from(hexes).map(h => h.textContent);
+            
+            for (let i = letters.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [letters[i], letters[j]] = [letters[j], letters[i]];
+            }
+
+            hexes.forEach((hex, i) => {
+                hex.textContent = letters[i];
+                hex.onclick = () => addLetter(letters[i]);
+            });
+        }
+
+        function submitWord() {
+            const word = currentWord.toUpperCase();
+            const msg = document.getElementById('message');
+
+            if (word.length < 4) {
+                showMessage('La palabra debe tener al menos 4 letras', 'error');
+                return;
+            }
+
+            if (!word.includes(CENTER)) {
+                showMessage(`La palabra debe contener la letra ${CENTER}`, 'error');
+                return;
+            }
+
+            if (foundWords.includes(word)) {
+                showMessage('Ya has encontrado esta palabra', 'error');
+                return;
+            }
+
+            if (VALID_WORDS.includes(word)) {
+                foundWords.push(word);
+                addWordToList(word);
+                showMessage('Palabra correcta', 'success');
+                currentWord = '';
+                document.getElementById('wordInput').value = '';
+
+                if (KEY_WORDS.includes(word) && !foundKeyWords.includes(word)) {
+                    foundKeyWords.push(word);
+                    
+                    if (foundKeyWords.length === KEY_WORDS.length) {
+                        setTimeout(() => {
+                            showMessage('Has encontrado todas las palabras clave. Ya puedes dar la clase.', 'success');
+                            document.getElementById('completeBtn').classList.remove('hidden');
+                        }, 500);
+                    }
+                }
+
+                document.getElementById('wordCount').textContent = foundWords.length;
+            } else {
+                showMessage('Es un buen tema, pero no tiene que ver con la clase', 'info');
+                currentWord = '';
+                document.getElementById('wordInput').value = '';
+            }
+        }
+
+        function addWordToList(word) {
+            const wordList = document.getElementById('wordList');
+            const tag = document.createElement('div');
+            tag.className = KEY_WORDS.includes(word) ? 'word-tag key-word' : 'word-tag';
+            tag.textContent = word;
+            wordList.appendChild(tag);
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+            
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 3000);
+        }
+
+        function goBack() {
+            window.location.href = '../Escenarios/clase.html';
+        }
+
+        function completeAndGoBack() {
+            localStorage.setItem('prueba2_2_3_completed', 'true');
+            window.location.href = '../Escenarios/clase.html';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toUpperCase();
+            const allLetters = LETTERS.concat(CENTER);
+            
+            if (allLetters.includes(key)) {
+                addLetter(key);
+            } else if (key === 'BACKSPACE') {
+                deleteLetter();
+            } else if (key === 'ENTER') {
+                submitWord();
+            }
+        });
+    </script>
+</body>
+</html>

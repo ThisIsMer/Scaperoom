@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 4 - La Queja</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #c0392b 0%, #8e44ad 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .content {
+            padding: 2rem;
+            color: #333;
+        }
+
+        .complaint {
+            background: #ffebee;
+            padding: 2rem;
+            border: 3px solid #e74c3c;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .complaint-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #c0392b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .instruction {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-left: 4px solid #2196f3;
+            margin: 2rem 0;
+            color: #1565c0;
+        }
+
+        .theme-hint {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #8e44ad;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f3e5f5;
+            border-radius: 10px;
+        }
+
+        .grid-container {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .letter-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .letter-cell {
+            aspect-ratio: 1;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .letter-cell:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .letter-cell.selected {
+            background: #2196f3;
+            color: #fff;
+            border-color: #1976d2;
+        }
+
+        .letter-cell.found {
+            background: #4caf50;
+            color: #fff;
+            border-color: #388e3c;
+            cursor: default;
+        }
+
+        .found-words {
+            margin-top: 2rem;
+        }
+
+        .found-words h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .word-tag {
+            padding: 0.5rem 1rem;
+            background: #4caf50;
+            color: #fff;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .clear-btn {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .clear-btn:hover {
+            background: #c0392b;
+        }
+
+        .submit-btn {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Volver al Pasillo</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>🚨 LA QUEJA 🚨</h1>
+            <h2>Defiende tu honor</h2>
+        </div>
+
+        <div class="content">
+            <div class="complaint">
+                <div class="complaint-title">📧 QUEJA ESTUDIANTIL OFICIAL</div>
+                <p style="text-align: center; margin-bottom: 1rem;">Los alumnos han presentado una queja formal sobre tu enseñanza.</p>
+                <p style="text-align: center;">Para defenderte, debes demostrar tu conocimiento de teoría musical encontrando 5 palabras clave en la sopa de letras.</p>
+            </div>
+
+            <div class="theme-hint">
+                🎵 TEMÁTICA: TEORÍA MUSICAL 🎵
+            </div>
+
+            <div class="instruction">
+                <strong>📋 INSTRUCCIONES:</strong><br>
+                • Encuentra las 5 palabras relacionadas con teoría musical<br>
+                • Las palabras pueden estar en cualquier dirección (horizontal, vertical, diagonal)<br>
+                • Haz clic y arrastra para seleccionar letras<br>
+                • Palabras a encontrar: <strong>RITMO, TEMPO, ESCALA, MELODIA, ACORDE</strong>
+            </div>
+
+            <div class="grid-container">
+                <div class="letter-grid" id="letterGrid"></div>
+                
+                <div class="controls">
+                    <button class="btn clear-btn" onclick="clearSelection()">✖ Limpiar</button>
+                    <button class="btn submit-btn" onclick="submitWord()">✓ Enviar Palabra</button>
+                </div>
+
+                <div id="message" class="message hidden"></div>
+            </div>
+
+            <div class="found-words">
+                <h3>Palabras encontradas: <span id="wordCount">0</span> / 5</h3>
+                <div class="word-list" id="wordList"></div>
+            </div>
+
+            <button class="complete-btn hidden" id="completeBtn" onclick="goToDesenlace()">🎭 CONTINUAR AL DESENLACE →</button>
+        </div>
+    </div>
+
+    <script>
+        // Rejilla 8x8 con las palabras escondidas
+        const grid = [
+            ['R', 'I', 'T', 'M', 'O', 'A', 'C', 'E'],
+            ['E', 'S', 'C', 'A', 'L', 'A', 'O', 'S'],
+            ['M', 'E', 'T', 'R', 'A', 'L', 'R', 'C'],
+            ['A', 'L', 'O', 'D', 'E', 'M', 'D', 'A'],
+            ['T', 'E', 'M', 'P', 'O', 'I', 'E', 'L'],
+            ['O', 'D', 'I', 'A', 'C', 'A', 'R', 'A'],
+            ['S', 'O', 'N', 'I', 'D', 'O', 'T', 'M'],
+            ['C', 'L', 'A', 'V', 'E', 'T', 'O', 'N']
+        ];
+
+        const targetWords = [
+            { word: 'RITMO', found: false, positions: [[0,0], [0,1], [0,2], [0,3], [0,4]] },
+            { word: 'TEMPO', found: false, positions: [[4,0], [4,1], [4,2], [4,3], [4,4]] },
+            { word: 'ESCALA', found: false, positions: [[1,0], [1,1], [1,2], [1,3], [1,4], [1,5]] },
+            { word: 'MELODIA', found: false, positions: [[3,3], [3,4], [4,4], [5,4], [6,4], [7,4], [6,3]] },
+            { word: 'ACORDE', found: false, positions: [[0,5], [1,5], [2,5], [3,5], [4,5], [5,5]] }
+        ];
+
+        let selectedCells = [];
+        let foundWords = 0;
+        let isMouseDown = false;
+
+        function initGrid() {
+            const gridEl = document.getElementById('letterGrid');
+            
+            grid.forEach((row, i) => {
+                row.forEach((letter, j) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'letter-cell';
+                    cell.textContent = letter;
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    
+                    cell.addEventListener('mousedown', () => startSelection(i, j));
+                    cell.addEventListener('mouseenter', () => addToSelection(i, j));
+                    cell.addEventListener('mouseup', () => endSelection());
+                    
+                    gridEl.appendChild(cell);
+                });
+            });
+
+            document.addEventListener('mouseup', () => {
+                isMouseDown = false;
+            });
+        }
+
+        function startSelection(row, col) {
+            isMouseDown = true;
+            clearSelection();
+            addToSelection(row, col);
+        }
+
+        function addToSelection(row, col) {
+            if (!isMouseDown) return;
+            
+            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+            if (!cell || cell.classList.contains('found')) return;
+            
+            if (!selectedCells.some(c => c.row === row && c.col === col)) {
+                selectedCells.push({ row, col, letter: grid[row][col] });
+                cell.classList.add('selected');
+            }
+        }
+
+        function endSelection() {
+            isMouseDown = false;
+        }
+
+        function clearSelection() {
+            selectedCells = [];
+            document.querySelectorAll('.letter-cell.selected').forEach(cell => {
+                if (!cell.classList.contains('found')) {
+                    cell.classList.remove('selected');
+                }
+            });
+        }
+
+        function submitWord() {
+            const selectedWord = selectedCells.map(c => c.letter).join('');
+            const msg = document.getElementById('message');
+
+            // Buscar si la palabra seleccionada coincide con alguna objetivo
+            const matchedWord = targetWords.find(tw => 
+                !tw.found && (tw.word === selectedWord || tw.word === selectedWord.split('').reverse().join(''))
+            );
+
+            if (matchedWord) {
+                matchedWord.found = true;
+                foundWords++;
+                
+                // Marcar celdas como encontradas
+                selectedCells.forEach(sc => {
+                    const cell = document.querySelector(`[data-row="${sc.row}"][data-col="${sc.col}"]`);
+                    cell.classList.remove('selected');
+                    cell.classList.add('found');
+                });
+
+                // Agregar palabra a la lista
+                const wordList = document.getElementById('wordList');
+                const tag = document.createElement('div');
+                tag.className = 'word-tag';
+                tag.textContent = matchedWord.word;
+                wordList.appendChild(tag);
+
+                document.getElementById('wordCount').textContent = foundWords;
+                showMessage(`¡Correcto! Has encontrado: ${matchedWord.word}`, 'success');
+
+                if (foundWords === 5) {
+                    setTimeout(() => {
+                        showMessage('🎉 ¡Has demostrado tu conocimiento! Queja rechazada.', 'success');
+                        document.getElementById('completeBtn').classList.remove('hidden');
+                    }, 1000);
+                }
+
+                selectedCells = [];
+            } else {
+                showMessage('Esa no es una palabra válida. Inténtalo de nuevo.', 'error');
+                clearSelection();
+            }
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+            
+            if (type === 'error') {
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'pasillo.html';
+        }
+
+        function goToDesenlace() {
+            localStorage.setItem('prueba4_completed', 'true');
+            window.location.href = 'desenlace.html';
+        }
+
+        initGrid();
+    </script>
+</body>
+</html>

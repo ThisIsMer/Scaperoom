@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 3 - Horarios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-image: url('Despacho.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .game-container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .dialogue {
+            background: #f0f0f0;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid #8b0000;
+            color: #333;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .documents-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .document {
+            background: #fff;
+            padding: 1.5rem;
+            border: 2px solid #333;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .document h3 {
+            color: #8b0000;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #8b0000;
+            padding-bottom: 0.5rem;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            border: 1px solid #999;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .schedule-table th {
+            background: #333;
+            color: #fff;
+        }
+
+        .code-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .code-list li {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: #f9f9f9;
+            border-left: 4px solid #8b0000;
+            font-family: 'Courier New', monospace;
+        }
+
+        .code-number {
+            font-weight: bold;
+            color: #8b0000;
+            margin-right: 1rem;
+        }
+
+        .answer-section {
+            background: #f0f0f0;
+            padding: 2rem;
+            border: 3px solid #8b0000;
+            border-radius: 5px;
+        }
+
+        .answer-section h3 {
+            color: #8b0000;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .question {
+            margin-bottom: 1.5rem;
+        }
+
+        .question label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .question input {
+            width: 100%;
+            padding: 0.8rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            border: 2px solid #999;
+            background: #fff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #8b0000;
+            color: #fff;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #660000;
+            transform: scale(1.02);
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .hint {
+            background: #fff3cd;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+            font-size: 0.9rem;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Volver al Despacho</button>
+    
+    <div class="overlay"></div>
+    
+    <div class="game-container">
+        <h1>📅 ¿CUÁL ES MI HORARIO?</h1>
+        
+        <div class="dialogue">
+            Tocará aprenderse cuándo tienes las clases... o por lo menos saber a qué hora terminar tu meditación andaluza (siesta) para llegar a la hora. 20 minutitos arriba o abajo no le importan a nadie...<br><br>
+            
+            Empiezas a mirar el documento y por algún motivo los horarios vienen clasificados con <strong>números</strong> por nombre de asignatura. Genial... Ahora, ¿dónde tenías la chuleta de las asignaturas? Seguro que era algo tal que así...
+        </div>
+
+        <div class="documents-container">
+            <div class="document">
+                <h3>📋 HORARIO SEMANAL</h3>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Día</th>
+                            <th>Hora</th>
+                            <th>Código</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lunes</td>
+                            <td>09:00</td>
+                            <td><strong>42</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Lunes</td>
+                            <td>11:00</td>
+                            <td><strong>73</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Miércoles</td>
+                            <td>10:00</td>
+                            <td><strong>19</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Miércoles</td>
+                            <td>15:00</td>
+                            <td><strong>88</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Viernes</td>
+                            <td>09:00</td>
+                            <td><strong>42</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Viernes</td>
+                            <td>12:00</td>
+                            <td><strong>56</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="document">
+                <h3>🔢 CÓDIGOS DE ASIGNATURAS</h3>
+                <ul class="code-list">
+                    <li><span class="code-number">19</span> Algoritmos y Estructuras</li>
+                    <li><span class="code-number">42</span> Bases de Datos</li>
+                    <li><span class="code-number">56</span> Redes de Computadores</li>
+                    <li><span class="code-number">73</span> Programación Web</li>
+                    <li><span class="code-number">88</span> Inteligencia Artificial</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="answer-section" id="answerSection">
+            <h3>🤔 RESPONDE LAS SIGUIENTES PREGUNTAS:</h3>
+            
+            <div class="question">
+                <label>1. ¿Qué asignatura tienes los lunes a las 09:00?</label>
+                <input type="text" id="answer1" placeholder="Nombre de la asignatura...">
+            </div>
+
+            <div class="question">
+                <label>2. ¿A qué hora tienes Inteligencia Artificial?</label>
+                <input type="text" id="answer2" placeholder="Formato: HH:MM">
+            </div>
+
+            <div class="question">
+                <label>3. ¿Cuántas clases de Bases de Datos tienes a la semana?</label>
+                <input type="number" id="answer3" placeholder="Número...">
+            </div>
+
+            <button class="submit-btn" onclick="checkAnswers()">VERIFICAR RESPUESTAS</button>
+            
+            <div id="message" class="message hidden"></div>
+            <div id="hint" class="hint hidden"></div>
+        </div>
+
+        <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">✓ Completado - Volver al Despacho</button>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            answer1: ["bases de datos", "base de datos", "basesdedatos"],
+            answer2: ["15:00", "15", "3:00 pm", "3pm"],
+            answer3: "2"
+        };
+
+        let attempts = 0;
+
+        function normalizeText(text) {
+            return text.toLowerCase().trim().replace(/\s+/g, ' ');
+        }
+
+        function checkAnswers() {
+            const ans1 = normalizeText(document.getElementById('answer1').value);
+            const ans2 = normalizeText(document.getElementById('answer2').value);
+            const ans3 = document.getElementById('answer3').value.trim();
+
+            const message = document.getElementById('message');
+            const hint = document.getElementById('hint');
+
+            const isAns1Correct = correctAnswers.answer1.some(a => ans1.includes(a));
+            const isAns2Correct = correctAnswers.answer2.includes(ans2);
+            const isAns3Correct = ans3 === correctAnswers.answer3;
+
+            if (isAns1Correct && isAns2Correct && isAns3Correct) {
+                message.className = 'message success';
+                message.textContent = '¡PERFECTO! Ya sabes cuándo llegar a clase (y cuándo despertarte de la siesta)';
+                message.classList.remove('hidden');
+                hint.classList.add('hidden');
+                
+                document.getElementById('answerSection').classList.add('hidden');
+                document.getElementById('completeBtn').classList.remove('hidden');
+                
+                localStorage.setItem('prueba3_completed', 'true');
+            } else {
+                attempts++;
+                message.className = 'message error';
+                message.textContent = '❌ Algunas respuestas son incorrectas. Revisa el horario y los códigos.';
+                message.classList.remove('hidden');
+
+                if (attempts === 1) {
+                    hint.textContent = '💡 Pista: Busca el código en la tabla de horarios, luego encuentra su nombre en la lista de códigos.';
+                    hint.classList.remove('hidden');
+                } else if (attempts === 2) {
+                    hint.textContent = '💡 Pista adicional: Para la pregunta 2, busca el código 88 en el horario. Para la 3, cuenta cuántas veces aparece el código 42.';
+                    hint.classList.remove('hidden');
+                }
+            }
+        }
+
+        // Permitir Enter en los inputs
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAnswers();
+                }
+            });
+        });
+
+        function goBack() {
+            window.location.href = 'despacho.html';
+        }
+
+        function completeAndGoBack() {
+            localStorage.setItem('prueba3_completed', 'true');
+            window.location.href = 'despacho.html';
+        }
+    </script>
+</body>
+</html>

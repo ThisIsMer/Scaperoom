@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase - La Sustitución</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .room {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #2a2a2a;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .intro-dialogue {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 800px;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #666;
+            z-index: 100;
+            animation: fadeIn 1s;
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .close-btn {
+            padding: 0.5rem 1.5rem;
+            background: #666;
+            border: 1px solid #999;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            float: right;
+        }
+
+        .close-btn:hover {
+            background: #888;
+        }
+
+        .interactive-item {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            padding: 1rem 1.5rem;
+            background: rgba(139, 0, 0, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+        }
+
+        .interactive-item:hover:not(.locked) {
+            background: rgba(255, 255, 255, 0.9);
+            color: #8b0000;
+            border-color: #8b0000;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+        }
+
+        .interactive-item.locked {
+            background: rgba(80, 80, 80, 0.8);
+            border-color: rgba(150, 150, 150, 0.5);
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .interactive-item.completed {
+            background: rgba(0, 139, 0, 0.8);
+            border-color: rgba(144, 238, 144, 0.7);
+        }
+
+        /* Posiciones de los elementos en el aula */
+        #calendario {
+            top: 25%;
+            left: 15%;
+        }
+
+        #guion {
+            top: 25%;
+            right: 15%;
+        }
+
+        #robo-aula {
+            bottom: 25%;
+            left: 15%;
+        }
+
+        #practicas-pendientes {
+            bottom: 25%;
+            right: 15%;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            border: 2px solid #8b0000;
+            z-index: 10;
+        }
+
+        .title h2 {
+            color: #8b0000;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .classroom-visual {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .blackboard {
+            width: 60%;
+            height: 40%;
+            background: #1a3a1a;
+            border: 10px solid #8b4513;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="room">
+        <div class="overlay"></div>
+        
+        <button class="back-btn" onclick="goBack()">← Volver al Despacho</button>
+        
+        <div class="title">
+            <h2>ESCENARIO 2: EL AULA</h2>
+        </div>
+
+        <div class="classroom-visual">
+            <div class="blackboard">
+                🎓 CLASE EN SESIÓN 🎓
+            </div>
+        </div>
+
+        <div class="intro-dialogue" id="introDialogue">
+            <div class="intro-text">
+                ¡Perfecto! Ya has superado las pruebas del despacho. Ahora toca lo más importante: dar clase.<br><br>
+                Entras al aula. Los alumnos te miran expectantes. Algunos con sus portátiles abiertos, otros claramente jugando al Brawl Stars...<br><br>
+                Es hora de demostrar que puedes con esto. ¿Qué harás primero?
+            </div>
+            <button class="close-btn" onclick="closeIntro()">Entendido</button>
+        </div>
+
+        <!-- Prueba 2.1-2: Solo si completaste prueba 1 Y prueba 2 -->
+        <div class="interactive-item pulse locked" id="practicas-pendientes" onclick="goToPrueba('../Pruebas/PruebasClase/prueba2_1_2.html')">
+            ¿Y tú quien <br>eres?<br><span style="font-size: 0.8rem;">(Necesitas: Prácticas + Portal)</span>
+        </div>
+
+        <!-- Prueba 2.2-3: Solo si completaste prueba 2 -->
+        <div class="interactive-item pulse locked" id="guion" onclick="goToPrueba('../Pruebas/PruebasClase/prueba2_2_3.html')">
+            APUNTES DEL<br>PROFESOR<br><span style="font-size: 0.8rem;">(Necesitas: Portal)</span>
+        </div>
+
+        <!-- Prueba 2.3: Solo si completaste prueba 3 -->
+        <div class="interactive-item pulse locked" id="calendario" onclick="goToPrueba('../Pruebas/PruebasClase/prueba2_3.html')">
+            CALENDARIO<br>DE EXÁMENES<br><span style="font-size: 0.8rem;">(Necesitas: Horarios)</span>
+        </div>
+
+        <!-- Prueba 2.4: Te han robado el aula - Solo si completaste prueba 3 -->
+        <div class="interactive-item pulse locked" id="robo-aula" onclick="goToPrueba('../Pruebas/PruebasClase/prueba2_4.html')">
+            ¡Cuidado!<br>Te roban el aula<br><span style="font-size: 0.8rem;">(Necesitas: Horarios)</span>
+        </div>
+        <button class="next-scene-btn hidden" id="nextSceneBtn" onclick="goToPasillo()">
+            Hora del descanso →
+        </button>
+    </div>
+
+    <script>
+        function getProgress() {
+            return {
+                prueba1: localStorage.getItem('prueba1_completed') === 'true',
+                prueba2: localStorage.getItem('prueba2_completed') === 'true',
+                prueba3: localStorage.getItem('prueba3_completed') === 'true',
+                prueba2_1_2: localStorage.getItem('prueba2_1_2_completed') === 'true',
+                prueba2_2_3: localStorage.getItem('prueba2_2_3_completed') === 'true',
+                prueba2_3: localStorage.getItem('prueba2_3_completed') === 'true',
+                prueba2_4: localStorage.getItem('prueba2_4_completed') === 'true'
+            };
+        }
+
+        function updateUI() {
+            const progress = getProgress();
+            
+            // Prueba 2.1-2: Necesita prueba 1 Y prueba 2
+            const practicas = document.getElementById('practicas-pendientes');
+            if (progress.prueba1 && progress.prueba2) {
+                practicas.classList.remove('locked');
+                if (progress.prueba2_1_2) {
+                    practicas.classList.add('completed');
+                    practicas.classList.remove('pulse');
+                }
+            }
+
+            // Prueba 2.2-3: Necesita prueba 2
+            const guion = document.getElementById('guion');
+            if (progress.prueba2) {
+                guion.classList.remove('locked');
+                if (progress.prueba2_2_3) {
+                    guion.classList.add('completed');
+                    guion.classList.remove('pulse');
+                }
+            }
+
+            // Prueba 2.3: Necesita prueba 3
+            const calendario = document.getElementById('calendario');
+            if (progress.prueba3) {
+                calendario.classList.remove('locked');
+                if (progress.prueba2_3) {
+                    calendario.classList.add('completed');
+                    calendario.classList.remove('pulse');
+                }
+            }
+
+            // Prueba 2.4: Necesita prueba 3
+            const roboAula = document.getElementById('robo-aula');
+            if (progress.prueba3) {
+                roboAula.classList.remove('locked');
+                if (progress.prueba2_4) {
+                    roboAula.classList.add('completed');
+                    roboAula.classList.remove('pulse');
+                }
+            }
+
+            // Mostrar botón al pasillo si completaste las 3 pruebas que NO son robo de aula
+            const threeCompleted = progress.prueba2_1_2 && progress.prueba2_2_3 && progress.prueba2_3;
+            if (threeCompleted) {
+                document.getElementById('nextSceneBtn').classList.remove('hidden');
+            }
+        }
+
+        function goToPrueba(url) {
+            const element = event.target;
+            if (!element.classList.contains('locked')) {
+                window.location.href = url;
+            }
+        }
+
+        function closeIntro() {
+            document.getElementById('introDialogue').style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                document.getElementById('introDialogue').classList.add('hidden');
+            }, 500);
+        }
+
+        function goBack() {
+            window.location.href = '../Escenarios/despacho.html';
+        }
+
+        function goToPasillo() {
+            window.location.href = '../Escenarios/pasillo.html';
+        }
+
+        // Estilo para el fadeOut
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Inicializar UI
+        updateUI();
+    </script>
+</body>
+</html>

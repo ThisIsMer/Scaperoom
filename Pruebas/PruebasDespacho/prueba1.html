@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba 1 - Prácticas por Corregir</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-image: url('../Assets/EscritorioPruebaConnections.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .game-container {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #ff9800;
+            color: #fff;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .hint-section {
+            background: #fff3cd;
+            padding: 1rem;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+        }
+
+        .hint-btn {
+            padding: 0.5rem 1rem;
+            background: #ffc107;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .hint-btn:hover {
+            background: #ffb300;
+        }
+
+        .hint-btn:disabled {
+            background: #e0e0e0;
+            cursor: not-allowed;
+        }
+
+        .hint-text {
+            margin-top: 0.5rem;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .word-card {
+            padding: 1rem;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .word-card:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .word-card.selected {
+            background: #8b0000;
+            color: #fff;
+            border-color: #8b0000;
+        }
+
+        .word-card.correct {
+            background: #4caf50;
+            color: #fff;
+            border-color: #4caf50;
+            cursor: default;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            border: 2px solid #333;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .message {
+            text-align: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .attempts {
+            text-align: center;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .solved-groups {
+            margin-bottom: 1.5rem;
+        }
+
+        .group {
+            padding: 1rem;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .group h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .group.yellow {
+            background: #f9a825;
+            color: #000;
+        }
+
+        .group.green {
+            background: #43a047;
+            color: #fff;
+        }
+
+        .group.blue {
+            background: #1e88e5;
+            color: #fff;
+        }
+
+        .group.purple {
+            background: #8e24aa;
+            color: #fff;
+        }
+
+        .complete-btn {
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+            background: #8b0000;
+            color: #fff;
+            border-color: #8b0000;
+        }
+
+        .complete-btn:hover {
+            background: #660000;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Volver al Despacho</button>
+    
+    <div class="overlay"></div>
+    <div class="game-container">
+        <div class="header">
+            <h1>PRÁCTICAS POR CORREGIR</h1>
+            <div class="instructions">
+                Los alumnos han entregado un ejercicio de teoría musical... Agrupa las 16 palabras en 4 categorías de 4 palabras cada una.
+            </div>
+        </div>
+
+        <div class="hint-section">
+            <button class="hint-btn" id="hintBtn" onclick="showHint()">Ver Pista</button>
+            <div class="hint-text hidden" id="hintText"></div>
+        </div>
+
+        <div id="message" class="message hidden"></div>
+        
+        <div class="attempts">
+            Intentos restantes: <strong id="attemptsCount">4</strong>
+        </div>
+
+        <div class="solved-groups" id="solvedGroups"></div>
+
+        <div class="words-grid" id="wordsGrid"></div>
+
+        <div class="controls">
+            <button onclick="shuffleWords()">Mezclar</button>
+            <button onclick="deselectAll()">Deseleccionar</button>
+            <button onclick="checkSelection()" id="submitBtn" disabled>Enviar</button>
+        </div>
+
+        <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver al Despacho</button>
+    </div>
+
+    <script>
+        const groups = [
+            {
+                category: "INSTRUMENTOS MUSICALES",
+                words: ["BAJO", "PIANO", "TROMPA", "CLAVE"],
+                color: "yellow"
+            },
+            {
+                category: "TEORÍA MUSICAL",
+                words: ["TONO", "ESCALA", "DODECAFONISMO", "QUINTA"],
+                color: "green"
+            },
+            {
+                category: "TEMPO Y RITMO",
+                words: ["TEMPO", "COMPÁS", "PRESTO", "CANON"],
+                color: "blue"
+            },
+            {
+                category: "CARACTERÍSTICAS DEL SONIDO",
+                words: ["TIMBRE", "NOTA", "VOLUMEN", "INTENSIDAD"],
+                color: "purple"
+            }
+        ];
+
+        let allWords = [];
+        let selectedWords = [];
+        let attempts = 4;
+        let solvedGroupsArr = [];
+        let hintUsed = false;
+        let attemptedCombinations = new Set();
+
+        function initGame() {
+            allWords = groups.flatMap(g => g.words.map(w => ({ word: w, group: g.category, color: g.color })));
+            shuffleArray(allWords);
+            renderWords();
+        }
+
+        function showHint() {
+            if (hintUsed) return;
+            
+            hintUsed = true;
+            const remainingGroups = groups.filter(g => !solvedGroupsArr.some(sg => sg.category === g.category));
+            
+            if (remainingGroups.length > 0) {
+                const hintGroup = remainingGroups[0];
+                const hintText = document.getElementById('hintText');
+                hintText.textContent = `💡 Pista: Una categoría es "${hintGroup.category}"`;
+                hintText.classList.remove('hidden');
+                document.getElementById('hintBtn').disabled = true;
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function renderWords() {
+            const grid = document.getElementById('wordsGrid');
+            grid.innerHTML = '';
+            
+            allWords.forEach((item, i) => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.textContent = item.word;
+                card.onclick = () => toggleSelection(i);
+                card.id = `word-${i}`;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleSelection(i) {
+            const card = document.getElementById(`word-${i}`);
+            if (card.classList.contains('correct')) return;
+
+            const wordObj = allWords[i];
+            const idx = selectedWords.findIndex(w => w.index === i);
+
+            if (idx > -1) {
+                selectedWords.splice(idx, 1);
+                card.classList.remove('selected');
+            } else if (selectedWords.length < 4) {
+                selectedWords.push({ ...wordObj, index: i });
+                card.classList.add('selected');
+            }
+
+            document.getElementById('submitBtn').disabled = selectedWords.length !== 4;
+        }
+
+        function deselectAll() {
+            selectedWords = [];
+            document.querySelectorAll('.word-card').forEach(card => {
+                if (!card.classList.contains('correct')) {
+                    card.classList.remove('selected');
+                }
+            });
+            document.getElementById('submitBtn').disabled = true;
+        }
+
+        function shuffleWords() {
+            shuffleArray(allWords);
+            renderWords();
+            
+            selectedWords.forEach(sw => {
+                const newIdx = allWords.findIndex(w => w.word === sw.word);
+                const card = document.getElementById(`word-${newIdx}`);
+                if (card) card.classList.add('selected');
+            });
+
+            allWords.forEach((w, i) => {
+                if (solvedGroupsArr.some(g => g.words.includes(w.word))) {
+                    document.getElementById(`word-${i}`).classList.add('correct');
+                }
+            });
+        }
+
+        function checkSelection() {
+            if (selectedWords.length !== 4) return;
+
+            const selectedCategories = [...new Set(selectedWords.map(w => w.group))];
+
+            if (selectedCategories.length === 1) {
+                showMessage('¡Correcto! Has encontrado un grupo.', 'success');
+                const group = groups.find(g => g.category === selectedCategories[0]);
+                solvedGroupsArr.push(group);
+                
+                selectedWords.forEach(sw => {
+                    document.getElementById(`word-${sw.index}`).classList.add('correct');
+                });
+
+                const groupDiv = document.createElement('div');
+                groupDiv.className = `group ${group.color}`;
+                groupDiv.innerHTML = `<h3>${group.category}</h3><div>${group.words.join(' • ')}</div>`;
+                document.getElementById('solvedGroups').appendChild(groupDiv);
+
+                allWords = allWords.filter(w => !group.words.includes(w.word));
+                selectedWords = [];
+                
+                if (solvedGroupsArr.length === 4) {
+                    showMessage('¡FELICIDADES! Has completado todas las prácticas.', 'success');
+                    document.getElementById('completeBtn').classList.remove('hidden');
+                    document.getElementById('wordsGrid').style.display = 'none';
+                    document.querySelector('.controls').style.display = 'none';
+                } else {
+                    // Permitir nueva pista después de resolver un grupo
+                    hintUsed = false;
+                    document.getElementById('hintBtn').disabled = false;
+                    document.getElementById('hintText').classList.add('hidden');
+                }
+
+                renderWords();
+            } else {
+                attempts--;
+                document.getElementById('attemptsCount').textContent = attempts;
+                
+                if (attempts === 0) {
+                    showMessage('Se acabaron los intentos. Inténtalo de nuevo.', 'error');
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    showMessage('Incorrecto. Estas palabras no forman un grupo.', 'error');
+                }
+                
+                deselectAll();
+            }
+
+            document.getElementById('submitBtn').disabled = true;
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+            
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 3000);
+        }
+
+        function goBack() {
+            window.location.href = '../Escenarios/despacho.html';
+        }
+
+        function completeAndGoBack() {
+            localStorage.setItem('prueba1_completed', 'true');
+            window.location.href = '../Escenarios/despacho.html';
+        }
+
+        initGame();
+    </script>
+</body>
+</html>

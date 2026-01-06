@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción - La Sustitución</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .scene {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            transition: background-image 1s ease-in-out;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .dialogue-box {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #666;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .dialogue-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #ddd;
+        }
+
+        .continue-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            background: transparent;
+            color: #fff;
+            border: 2px solid #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            float: right;
+        }
+
+        .continue-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .glitch {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene" id="scene">
+        <div class="overlay"></div>
+        
+        <div class="dialogue-box" id="dialogue1">
+            <div class="dialogue-text">
+                Es tarde. Demasiado tarde.<br><br>
+                La llamada llegó hace apenas una hora. Una sustitución de última hora. No podías negarte... necesitas el dinero. Las Magic no se pagan solas.
+            </div>
+            <button class="continue-btn" onclick="nextDialogue(2)">Continuar ▶</button>
+        </div>
+
+        <div class="dialogue-box hidden" id="dialogue2">
+            <div class="dialogue-text">
+                El edificio está vacío. Los pasillos, oscuros.<br><br>
+                Solo escuchas el eco de tus propios pasos resonando en la penumbra. Las luces fluorescentes parpadean irregularmente, lanzando sombras que no deberían existir.
+            </div>
+            <button class="continue-btn" onclick="nextDialogue(3)">Continuar ▶</button>
+        </div>
+
+        <div class="dialogue-box hidden" id="dialogue3">
+            <div class="dialogue-text">
+                Caminas por el pasillo infinito. Cada puerta parece idéntica a la anterior.<br><br>
+                ¿Cuál era el número del despacho? 217... o era 271... El papel con las indicaciones está borroso. Demasiado borroso.
+            </div>
+            <button class="continue-btn" onclick="nextDialogue(4)">Continuar ▶</button>
+        </div>
+
+        <div class="dialogue-box hidden" id="dialogue4">
+            <div class="dialogue-text">
+                Algo cruje detrás de ti. Te giras. Nada.<br><br>
+                Solo el pasillo vacío y esas luces que no dejan de parpadear. ¿Siempre han parpadeado así? ¿O es tu imaginación?
+            </div>
+            <button class="continue-btn" onclick="nextDialogue(5)">Continuar ▶</button>
+        </div>
+
+        <div class="dialogue-box hidden" id="dialogue5">
+            <div class="dialogue-text">
+                Finalmente encuentras una puerta con una placa: "Despacho 217 - Prof. Martínez".<br><br>
+                La puerta está entreabierta. Una luz tenue se filtra desde dentro. Te acercas con cautela...
+            </div>
+            <button class="continue-btn" onclick="nextDialogue(6)">Continuar ▶</button>
+        </div>
+
+        <div class="dialogue-box hidden" id="dialogue6">
+            <div class="dialogue-text">
+                Empujas la puerta. Chirría. El despacho está... sorprendentemente normal.<br><br>
+                Papeles por todas partes, tazas de café sin lavar, un calendario de 2019 aún colgado en la pared. El caos académico habitual.
+            </div>
+            <button class="continue-btn" onclick="nextDialogue(7)">Continuar ▶</button>
+        </div>
+
+        <div class="dialogue-box hidden" id="dialogue7">
+            <div class="dialogue-text">
+                Suspiras aliviado. Solo es un despacho desordenado.<br><br>
+                Nada terrorífico. Nada sobrenatural. Solo... trabajo pendiente. <span class="glitch">Mucho</span> trabajo pendiente.<br><br>
+                Ah sí, el profesor anterior... se rompió el meñique en una clase de conga escandinava. Estas cosas pasan.
+            </div>
+            <button class="continue-btn" onclick="goToDespacho()">Explorar el despacho ▶</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScene = 1;
+        const scene = document.getElementById('scene');
+
+        // Cambiar el fondo a pasillo en el diálogo 3
+        function nextDialogue(num) {
+            document.getElementById('dialogue' + currentScene).classList.add('hidden');
+            document.getElementById('dialogue' + num).classList.remove('hidden');
+            document.getElementById('dialogue' + num).style.animation = 'fadeIn 1s forwards';
+            
+            if (num === 2) {
+                scene.style.backgroundImage = "url('../Assets/FachadaUni.jpg')";
+            }
+            if (num === 3) {
+                scene.style.backgroundImage = "url('../Assets/Pasillo.jpg')";
+            }
+            
+            if (num === 6) {
+                scene.style.backgroundImage = "url('../Assets/Despacho.jpg')";
+            }
+            
+            currentScene = num;
+        }
+
+        function goToDespacho() {
+            window.location.href = '../Escenarios/despacho.html';
+        }
+    </script>
+</body>
+</html>
