@@ -13,8 +13,8 @@
 
         body {
             font-family: 'Courier New', monospace;
-            background: #1a1a1a;
-            color: #fff;
+            background: #0a0a0a;
+            color: #e8e8e8;
             overflow: hidden;
         }
 
@@ -43,9 +43,9 @@
             top: 20px;
             left: 20px;
             padding: 0.8rem 1.5rem;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            border: 2px solid #666;
+            background: rgba(20, 20, 20, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(100, 100, 100, 0.6);
             z-index: 1000;
             font-family: 'Courier New', monospace;
             cursor: pointer;
@@ -53,8 +53,8 @@
         }
 
         .back-btn:hover {
-            background: #666;
-            border-color: #fff;
+            background: rgba(80, 80, 80, 0.9);
+            border-color: rgba(150, 150, 150, 0.8);
         }
 
         .intro-dialogue {
@@ -64,8 +64,8 @@
             transform: translateX(-50%);
             max-width: 800px;
             padding: 1.5rem;
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #666;
+            background: rgba(20, 20, 20, 0.85);
+            border: 2px solid rgba(100, 100, 100, 0.6);
             z-index: 100;
             animation: fadeIn 1s;
         }
@@ -74,20 +74,22 @@
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 1rem;
+            color: #d0d0d0;
         }
 
         .close-btn {
             padding: 0.5rem 1.5rem;
-            background: #666;
-            border: 1px solid #999;
-            color: #fff;
+            background: rgba(80, 80, 80, 0.8);
+            border: 1px solid rgba(120, 120, 120, 0.6);
+            color: #e8e8e8;
             cursor: pointer;
             font-family: 'Courier New', monospace;
             float: right;
+            transition: all 0.3s;
         }
 
         .close-btn:hover {
-            background: #888;
+            background: rgba(100, 100, 100, 0.9);
         }
 
         .interactive-item {
@@ -96,35 +98,27 @@
             transition: all 0.3s;
             z-index: 10;
             padding: 1rem 1.5rem;
-            background: rgba(139, 0, 0, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            color: #fff;
+            background: rgba(100, 40, 40, 0.8);
+            border: 2px solid rgba(180, 120, 120, 0.7);
+            color: #e8e8e8;
             font-family: 'Courier New', monospace;
             font-size: 1rem;
             font-weight: bold;
             text-align: center;
-            box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+            box-shadow: 0 0 20px rgba(100, 40, 40, 0.5);
         }
 
-        .interactive-item:hover:not(.locked) {
-            background: rgba(255, 255, 255, 0.9);
-            color: #8b0000;
-            border-color: #8b0000;
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-        }
-
-        .interactive-item.locked {
-            background: rgba(80, 80, 80, 0.8);
-            border-color: rgba(150, 150, 150, 0.5);
-            color: #999;
-            cursor: not-allowed;
-            opacity: 0.5;
+        .interactive-item:hover {
+            background: rgba(180, 120, 120, 0.9);
+            color: #f0f0f0;
+            border-color: rgba(200, 150, 150, 0.9);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(180, 120, 120, 0.7);
         }
 
         .interactive-item.completed {
-            background: rgba(0, 139, 0, 0.8);
-            border-color: rgba(144, 238, 144, 0.7);
+            background: rgba(40, 100, 40, 0.8);
+            border-color: rgba(120, 180, 120, 0.7);
         }
 
         #maquina-cafe {
@@ -143,10 +137,10 @@
 
         @keyframes pulse {
             0%, 100% { 
-                box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+                box-shadow: 0 0 20px rgba(100, 40, 40, 0.5);
             }
             50% { 
-                box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+                box-shadow: 0 0 40px rgba(180, 120, 120, 0.8);
             }
         }
 
@@ -155,19 +149,24 @@
             to { opacity: 1; }
         }
 
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
         .title {
             position: absolute;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(20, 20, 20, 0.85);
             padding: 1rem 2rem;
-            border: 2px solid #8b0000;
+            border: 2px solid rgba(100, 40, 40, 0.7);
             z-index: 10;
         }
 
         .title h2 {
-            color: #8b0000;
+            color: #d08080;
             font-size: 1.5rem;
             letter-spacing: 2px;
         }
@@ -178,9 +177,9 @@
             left: 50%;
             transform: translateX(-50%);
             padding: 1rem 2rem;
-            background: rgba(0, 139, 0, 0.9);
-            border: 2px solid #90ee90;
-            color: #fff;
+            background: rgba(40, 100, 40, 0.85);
+            border: 2px solid rgba(120, 180, 120, 0.7);
+            color: #e8e8e8;
             font-family: 'Courier New', monospace;
             font-size: 1.2rem;
             cursor: pointer;
@@ -190,8 +189,8 @@
         }
 
         .next-scene-btn:hover {
-            background: rgba(144, 238, 144, 0.9);
-            color: #000;
+            background: rgba(120, 180, 120, 0.9);
+            color: #f0f0f0;
             transform: translateX(-50%) scale(1.05);
         }
 
@@ -204,31 +203,31 @@
     <div class="room">
         <div class="overlay"></div>
         
-        <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
+        <button class="back-btn" onclick="goBack()">Volver a Clase</button>
         
         <div class="title">
             <h2>ESCENARIO 3: EL DESCANSO</h2>
         </div>
 
-        <div class="intro-dialogue" id="introDialogue">
+        <div class="intro-dialogue hidden" id="introDialogue">
             <div class="intro-text">
-                ¡Por fin! El bendito y tan esperado descanso.<br><br>
-                Después de tantas horas de arduo trabajo te apetece un café bien calentito y de calidad...<br><br>
-                Pero espera, ¿dónde está la cafetería? Esta universidad es un laberinto...
+                Por fin. El bendito y tan esperado descanso.<br><br>
+                Despues de tantas horas de arduo trabajo te apetece un cafe bien calentito y de calidad...<br><br>
+                Pero espera, donde esta la cafeteria? Esta universidad es un laberinto...
             </div>
             <button class="close-btn" onclick="closeIntro()">Entendido</button>
         </div>
 
         <div class="interactive-item pulse" id="maquina-cafe" onclick="goToPrueba('prueba3_1_2_3.html')">
-            ☕ MÁQUINA<br>EXPENDEDORA<br>(Buscar cafetería)
+            MAQUINA EXPENDEDORA<br>Buscar cafeteria
         </div>
 
-        <div class="interactive-item pulse locked" id="formacion" onclick="goToPrueba('prueba3_3.html')">
-            📧 CORREO<br>URGENTE<br><span style="font-size: 0.8rem;">(Necesitas: Robo de Aula)</span>
+        <div class="interactive-item pulse hidden" id="formacion" onclick="goToPrueba('prueba3_3.html')">
+            CORREO URGENTE
         </div>
 
         <button class="next-scene-btn hidden" id="nextSceneBtn" onclick="goToFinal()">
-            🎭 IR A LA CONFRONTACIÓN FINAL →
+            IR A LA CONFRONTACION FINAL
         </button>
     </div>
 
@@ -237,39 +236,38 @@
             return {
                 prueba2_4: localStorage.getItem('prueba2_4_completed') === 'true',
                 prueba3_1_2_3: localStorage.getItem('prueba3_1_2_3_completed') === 'true',
-                prueba3_3: localStorage.getItem('prueba3_3_completed') === 'true'
+                prueba3_3: localStorage.getItem('prueba3_3_completed') === 'true',
+                pasilloVisited: localStorage.getItem('pasillo_visited') === 'true'
             };
+        }
+
+        function showIntroIfNeeded() {
+            const progress = getProgress();
+            if (!progress.pasilloVisited) {
+                document.getElementById('introDialogue').classList.remove('hidden');
+                localStorage.setItem('pasillo_visited', 'true');
+            }
         }
 
         function updateUI() {
             const progress = getProgress();
             
-            // Prueba 3.3: Solo disponible si completaste prueba 2.4 (robo de aula)
             const formacion = document.getElementById('formacion');
             if (progress.prueba2_4) {
-                formacion.classList.remove('locked');
+                formacion.classList.remove('hidden');
                 if (progress.prueba3_3) {
                     formacion.classList.add('completed');
                     formacion.classList.remove('pulse');
                 }
             }
 
-            // Máquina café
             if (progress.prueba3_1_2_3) {
                 document.getElementById('maquina-cafe').classList.add('completed');
                 document.getElementById('maquina-cafe').classList.remove('pulse');
             }
 
-            // Mostrar botón final si completaste el café
             if (progress.prueba3_1_2_3) {
                 document.getElementById('nextSceneBtn').classList.remove('hidden');
-            }
-        }
-
-        function goToPrueba(url) {
-            const element = event.target;
-            if (!element.classList.contains('locked')) {
-                window.location.href = url;
             }
         }
 
@@ -280,6 +278,10 @@
             }, 500);
         }
 
+        function goToPrueba(url) {
+            window.location.href = url;
+        }
+
         function goBack() {
             window.location.href = 'clase.html';
         }
@@ -288,15 +290,7 @@
             window.location.href = 'prueba4.html';
         }
 
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeOut {
-                from { opacity: 1; }
-                to { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-
+        showIntroIfNeeded();
         updateUI();
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba 1 - Prácticas por Corregir</title>
+    <title>Prueba 1 - Practicas por Corregir</title>
     <style>
         * {
             margin: 0;
@@ -37,9 +37,9 @@
             top: 20px;
             left: 20px;
             padding: 0.8rem 1.5rem;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            border: 2px solid #666;
+            background: rgba(20, 20, 20, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(100, 100, 100, 0.6);
             z-index: 1000;
             font-family: 'Courier New', monospace;
             cursor: pointer;
@@ -47,8 +47,8 @@
         }
 
         .back-btn:hover {
-            background: #666;
-            border-color: #fff;
+            background: rgba(80, 80, 80, 0.9);
+            border-color: rgba(150, 150, 150, 0.8);
         }
 
         .game-container {
@@ -56,7 +56,7 @@
             z-index: 10;
             max-width: 600px;
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(240, 240, 240, 0.8);
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
@@ -67,47 +67,30 @@
         }
 
         h1 {
-            color: #333;
+            color: #2a2a2a;
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
 
-        .difficulty {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            background: #ff9800;
-            color: #fff;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .theme {
-            color: #666;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
         .instructions {
-            color: #666;
+            color: #4a4a4a;
             font-size: 0.9rem;
             line-height: 1.5;
             margin-bottom: 1.5rem;
         }
 
         .hint-section {
-            background: #fff3cd;
+            background: rgba(255, 243, 205, 0.9);
             padding: 1rem;
-            border-left: 4px solid #ffc107;
+            border-left: 4px solid #d4a017;
             margin-bottom: 1rem;
             border-radius: 5px;
         }
 
         .hint-btn {
             padding: 0.5rem 1rem;
-            background: #ffc107;
-            color: #000;
+            background: #d4a017;
+            color: #1a1a1a;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -116,18 +99,18 @@
         }
 
         .hint-btn:hover {
-            background: #ffb300;
+            background: #e5b028;
         }
 
         .hint-btn:disabled {
-            background: #e0e0e0;
+            background: rgba(180, 180, 180, 0.8);
             cursor: not-allowed;
         }
 
         .hint-text {
             margin-top: 0.5rem;
             font-weight: bold;
-            color: #856404;
+            color: #6a4f0f;
         }
 
         .words-grid {
@@ -139,31 +122,31 @@
 
         .word-card {
             padding: 1rem;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
+            background: rgba(220, 220, 220, 0.9);
+            border: 2px solid rgba(150, 150, 150, 0.7);
             border-radius: 5px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
             font-weight: bold;
-            color: #333;
+            color: #2a2a2a;
         }
 
         .word-card:hover {
-            background: #e0e0e0;
+            background: rgba(200, 200, 200, 0.95);
             transform: translateY(-2px);
         }
 
         .word-card.selected {
-            background: #8b0000;
-            color: #fff;
-            border-color: #8b0000;
+            background: rgba(100, 40, 40, 0.9);
+            color: #f0f0f0;
+            border-color: rgba(100, 40, 40, 0.9);
         }
 
         .word-card.correct {
-            background: #4caf50;
-            color: #fff;
-            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.9);
+            color: #f0f0f0;
+            border-color: rgba(76, 175, 80, 0.9);
             cursor: default;
         }
 
@@ -178,15 +161,15 @@
             padding: 0.8rem 1.5rem;
             font-family: 'Courier New', monospace;
             font-size: 1rem;
-            border: 2px solid #333;
-            background: #fff;
+            border: 2px solid #4a4a4a;
+            background: rgba(255, 255, 255, 0.9);
             cursor: pointer;
             transition: all 0.2s;
         }
 
         button:hover {
-            background: #333;
-            color: #fff;
+            background: rgba(74, 74, 74, 0.9);
+            color: #f0f0f0;
         }
 
         button:disabled {
@@ -203,18 +186,23 @@
         }
 
         .message.error {
-            background: #ffebee;
-            color: #c62828;
+            background: rgba(255, 235, 238, 0.95);
+            color: #b71c1c;
         }
 
         .message.success {
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: rgba(232, 245, 233, 0.95);
+            color: #1b5e20;
+        }
+
+        .message.warning {
+            background: rgba(255, 243, 224, 0.95);
+            color: #e65100;
         }
 
         .attempts {
             text-align: center;
-            color: #666;
+            color: #4a4a4a;
             margin-bottom: 1rem;
         }
 
@@ -235,36 +223,36 @@
         }
 
         .group.yellow {
-            background: #f9a825;
-            color: #000;
+            background: rgba(249, 168, 37, 0.85);
+            color: #1a1a1a;
         }
 
         .group.green {
-            background: #43a047;
-            color: #fff;
+            background: rgba(67, 160, 71, 0.85);
+            color: #f0f0f0;
         }
 
         .group.blue {
-            background: #1e88e5;
-            color: #fff;
+            background: rgba(30, 136, 229, 0.85);
+            color: #f0f0f0;
         }
 
         .group.purple {
-            background: #8e24aa;
-            color: #fff;
+            background: rgba(142, 36, 170, 0.85);
+            color: #f0f0f0;
         }
 
         .complete-btn {
             display: block;
             width: 100%;
             margin-top: 1rem;
-            background: #8b0000;
-            color: #fff;
-            border-color: #8b0000;
+            background: rgba(76, 175, 80, 0.9);
+            color: #f0f0f0;
+            border-color: rgba(76, 175, 80, 0.9);
         }
 
         .complete-btn:hover {
-            background: #660000;
+            background: rgba(56, 142, 60, 0.95);
         }
 
         .hidden {
@@ -273,14 +261,14 @@
     </style>
 </head>
 <body>
-    <button class="back-btn" onclick="goBack()">← Volver al Despacho</button>
+    <button class="back-btn" onclick="goBack()">Volver al Despacho</button>
     
     <div class="overlay"></div>
     <div class="game-container">
         <div class="header">
-            <h1>PRÁCTICAS POR CORREGIR</h1>
+            <h1>PRACTICAS POR CORREGIR</h1>
             <div class="instructions">
-                Los alumnos han entregado un ejercicio de teoría musical... Agrupa las 16 palabras en 4 categorías de 4 palabras cada una.
+                Los alumnos han entregado un ejercicio de teoria musical... Agrupa las 16 palabras en 4 categorias de 4 palabras cada una.
             </div>
         </div>
 
@@ -316,17 +304,17 @@
                 color: "yellow"
             },
             {
-                category: "TEORÍA MUSICAL",
+                category: "TEORIA MUSICAL",
                 words: ["TONO", "ESCALA", "DODECAFONISMO", "QUINTA"],
                 color: "green"
             },
             {
                 category: "TEMPO Y RITMO",
-                words: ["TEMPO", "COMPÁS", "PRESTO", "CANON"],
+                words: ["TEMPO", "COMPAS", "PRESTO", "CANON"],
                 color: "blue"
             },
             {
-                category: "CARACTERÍSTICAS DEL SONIDO",
+                category: "CARACTERISTICAS DEL SONIDO",
                 words: ["TIMBRE", "NOTA", "VOLUMEN", "INTENSIDAD"],
                 color: "purple"
             }
@@ -354,7 +342,7 @@
             if (remainingGroups.length > 0) {
                 const hintGroup = remainingGroups[0];
                 const hintText = document.getElementById('hintText');
-                hintText.textContent = `💡 Pista: Una categoría es "${hintGroup.category}"`;
+                hintText.textContent = `Pista: Una categoria es "${hintGroup.category}"`;
                 hintText.classList.remove('hidden');
                 document.getElementById('hintBtn').disabled = true;
             }
@@ -429,10 +417,20 @@
         function checkSelection() {
             if (selectedWords.length !== 4) return;
 
+            const selectedWordsStr = selectedWords.map(w => w.word).sort().join(',');
+            
+            if (attemptedCombinations.has(selectedWordsStr)) {
+                showMessage('Ya has intentado esta combinacion anteriormente.', 'warning');
+                deselectAll();
+                return;
+            }
+
+            attemptedCombinations.add(selectedWordsStr);
+
             const selectedCategories = [...new Set(selectedWords.map(w => w.group))];
 
             if (selectedCategories.length === 1) {
-                showMessage('¡Correcto! Has encontrado un grupo.', 'success');
+                showMessage('Correcto. Has encontrado un grupo.', 'success');
                 const group = groups.find(g => g.category === selectedCategories[0]);
                 solvedGroupsArr.push(group);
                 
@@ -449,24 +447,44 @@
                 selectedWords = [];
                 
                 if (solvedGroupsArr.length === 4) {
-                    showMessage('¡FELICIDADES! Has completado todas las prácticas.', 'success');
+                    showMessage('FELICIDADES. Has completado todas las practicas.', 'success');
                     document.getElementById('completeBtn').classList.remove('hidden');
                     document.getElementById('wordsGrid').style.display = 'none';
                     document.querySelector('.controls').style.display = 'none';
                 } else {
-                    // Permitir nueva pista después de resolver un grupo
                     hintUsed = false;
                     document.getElementById('hintBtn').disabled = false;
                     document.getElementById('hintText').classList.add('hidden');
                 }
 
                 renderWords();
+            } else if (selectedCategories.length === 2) {
+                const correctCount = Math.max(
+                    selectedWords.filter(w => w.group === selectedCategories[0]).length,
+                    selectedWords.filter(w => w.group === selectedCategories[1]).length
+                );
+                
+                if (correctCount === 3) {
+                    showMessage(`Te falta una palabra de este conjunto. Tienes ${correctCount} palabras correctas de un grupo.`, 'warning');
+                } else {
+                    attempts--;
+                    document.getElementById('attemptsCount').textContent = attempts;
+                    
+                    if (attempts === 0) {
+                        showMessage('Se acabaron los intentos. Intentalo de nuevo.', 'error');
+                        setTimeout(() => location.reload(), 2000);
+                    } else {
+                        showMessage('Incorrecto. Estas palabras no forman un grupo.', 'error');
+                    }
+                }
+                
+                deselectAll();
             } else {
                 attempts--;
                 document.getElementById('attemptsCount').textContent = attempts;
                 
                 if (attempts === 0) {
-                    showMessage('Se acabaron los intentos. Inténtalo de nuevo.', 'error');
+                    showMessage('Se acabaron los intentos. Intentalo de nuevo.', 'error');
                     setTimeout(() => location.reload(), 2000);
                 } else {
                     showMessage('Incorrecto. Estas palabras no forman un grupo.', 'error');
@@ -485,7 +503,9 @@
             msg.classList.remove('hidden');
             
             setTimeout(() => {
-                msg.classList.add('hidden');
+                if (type === 'error' || type === 'warning') {
+                    msg.classList.add('hidden');
+                }
             }, 3000);
         }
 

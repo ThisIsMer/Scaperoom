@@ -37,9 +37,9 @@
             top: 20px;
             left: 20px;
             padding: 0.8rem 1.5rem;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            border: 2px solid #666;
+            background: rgba(20, 20, 20, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(100, 100, 100, 0.6);
             z-index: 1000;
             font-family: 'Courier New', monospace;
             cursor: pointer;
@@ -47,8 +47,8 @@
         }
 
         .back-btn:hover {
-            background: #666;
-            border-color: #fff;
+            background: rgba(80, 80, 80, 0.9);
+            border-color: rgba(150, 150, 150, 0.8);
         }
 
         .game-container {
@@ -57,25 +57,25 @@
             width: 100%;
             max-width: 500px;
             padding: 2rem;
-            background: #fff;
+            background: rgba(240, 240, 240, 0.8);
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
 
         h1 {
-            color: #333;
+            color: #2a2a2a;
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
 
         .subtitle {
-            color: #666;
+            color: #4a4a4a;
             margin-bottom: 1.5rem;
         }
 
         .hint-section {
-            background: #fff3cd;
+            background: rgba(255, 243, 205, 0.9);
             padding: 1rem;
             border-radius: 5px;
             margin-bottom: 1rem;
@@ -84,8 +84,8 @@
 
         .hint-btn {
             padding: 0.5rem 1rem;
-            background: #ffc107;
-            color: #000;
+            background: #d4a017;
+            color: #1a1a1a;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -94,18 +94,18 @@
         }
 
         .hint-btn:hover {
-            background: #ffb300;
+            background: #e5b028;
         }
 
         .hint-btn:disabled {
-            background: #e0e0e0;
+            background: rgba(180, 180, 180, 0.8);
             cursor: not-allowed;
         }
 
         .hint-text {
             margin-top: 0.5rem;
             font-weight: bold;
-            color: #856404;
+            color: #6a4f0f;
         }
 
         .board {
@@ -125,37 +125,37 @@
         .tile {
             width: 62px;
             height: 62px;
-            border: 2px solid #d3d6da;
+            border: 2px solid rgba(150, 150, 150, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 2rem;
             font-weight: bold;
             text-transform: uppercase;
-            background: #fff;
-            color: #000;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a1a1a;
         }
 
         .tile.filled {
-            border-color: #878a8c;
+            border-color: rgba(100, 100, 100, 0.8);
         }
 
         .tile.correct {
-            background: #6aaa64;
-            border-color: #6aaa64;
-            color: #fff;
+            background: rgba(106, 170, 100, 0.9);
+            border-color: rgba(106, 170, 100, 0.9);
+            color: #f0f0f0;
         }
 
         .tile.present {
-            background: #c9b458;
-            border-color: #c9b458;
-            color: #fff;
+            background: rgba(201, 180, 88, 0.9);
+            border-color: rgba(201, 180, 88, 0.9);
+            color: #f0f0f0;
         }
 
         .tile.absent {
-            background: #787c7e;
-            border-color: #787c7e;
-            color: #fff;
+            background: rgba(120, 124, 126, 0.9);
+            border-color: rgba(120, 124, 126, 0.9);
+            color: #f0f0f0;
         }
 
         .keyboard {
@@ -172,7 +172,7 @@
         .key {
             padding: 1rem 0.5rem;
             min-width: 43px;
-            background: #d3d6da;
+            background: rgba(211, 214, 218, 0.9);
             border: none;
             border-radius: 4px;
             font-size: 0.9rem;
@@ -183,22 +183,22 @@
         }
 
         .key:hover {
-            background: #bbb;
+            background: rgba(150, 150, 150, 0.95);
         }
 
         .key.correct {
-            background: #6aaa64;
-            color: #fff;
+            background: rgba(106, 170, 100, 0.9);
+            color: #f0f0f0;
         }
 
         .key.present {
-            background: #c9b458;
-            color: #fff;
+            background: rgba(201, 180, 88, 0.9);
+            color: #f0f0f0;
         }
 
         .key.absent {
-            background: #787c7e;
-            color: #fff;
+            background: rgba(120, 124, 126, 0.9);
+            color: #f0f0f0;
         }
 
         .key.wide {
@@ -213,20 +213,20 @@
         }
 
         .message.error {
-            background: #ffebee;
-            color: #c62828;
+            background: rgba(255, 235, 238, 0.95);
+            color: #b71c1c;
         }
 
         .message.success {
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: rgba(232, 245, 233, 0.95);
+            color: #1b5e20;
         }
 
         .complete-btn {
             width: 100%;
             padding: 1rem;
-            background: #4caf50;
-            color: #fff;
+            background: rgba(76, 175, 80, 0.9);
+            color: #f0f0f0;
             border: none;
             border-radius: 5px;
             font-size: 1.1rem;
@@ -236,7 +236,7 @@
         }
 
         .complete-btn:hover {
-            background: #45a049;
+            background: rgba(56, 142, 60, 0.95);
         }
 
         .hidden {
@@ -308,12 +308,13 @@
         const WORD_LENGTH = 5;
         const MAX_GUESSES = 6;
 
-        // Lista de palabras válidas en español (simplificada)
         const VALID_WORDS = [
-            'RITMO', 'PIANO', 'CANTO', 'METRO', 'TEMPO', 'ACORDE', 'OPERA', 
+            'RITMO', 'PIANO', 'CANTO', 'METRO', 'TEMPO', 'OPERA', 
             'SALSA', 'TANGO', 'VALSE', 'RONDA', 'CORAL', 'BANDA', 'GRITO',
             'CLAVE', 'NOTAS', 'TONAL', 'MODAL', 'FRASE', 'CANON', 'GRAVE',
-            'AGUDO', 'MEDIO', 'CALMA', 'BRAVO', 'LENTO', 'RAPIDO'
+            'AGUDO', 'MEDIO', 'CALMA', 'BRAVO', 'LENTO', 'RAPIDO', 'PIANO',
+            'RITMO', 'ARCOS', 'FAGOT', 'OBOES', 'PEDAL', 'MARCA', 'MAYOR',
+            'MENOR', 'PAUSA', 'PUNTO', 'LAZO', 'CORO', 'VALS', 'ARIA'
         ];
 
         let currentGuess = "";
@@ -327,7 +328,6 @@
             const hintText = document.getElementById('hintText');
             
             if (hintNum === 1 && hintsUsed < 1) {
-                // Mostrar UNA vocal aleatoria
                 const vowels = ['I', 'O'];
                 const randomVowel = vowels[Math.floor(Math.random() * vowels.length)];
                 hintText.textContent = `Pista: La palabra contiene la vocal: ${randomVowel}`;
@@ -335,7 +335,6 @@
                 document.getElementById('hintBtn1').disabled = true;
                 hintsUsed = 1;
             } else if (hintNum === 2 && hintsUsed < 2) {
-                // Mostrar UNA consonante aleatoria
                 const consonants = ['R', 'T', 'M'];
                 const randomConsonant = consonants[Math.floor(Math.random() * consonants.length)];
                 hintText.textContent = `Pista: La palabra contiene la consonante: ${randomConsonant}`;
@@ -393,9 +392,8 @@
                 return;
             }
 
-            // Verificar si la palabra existe (simulación de RAE)
             if (!VALID_WORDS.includes(currentGuess.toUpperCase())) {
-                showMessage('Palabra no válida', 'error');
+                showMessage('Palabra no valida', 'error');
                 return;
             }
 
