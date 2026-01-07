@@ -12,8 +12,10 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
+            font-family: 'Courier New', monospace;
+            background: url('../../Assets/EscritorioPruebaConnections.jpg');
+            background-size: cover;
+            background-position: center;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -35,53 +37,114 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 0.9rem;
+            border-radius: 5px;
         }
 
         .back-btn:hover {
             background: rgba(80, 80, 80, 0.9);
         }
 
-        .game-container {
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .intro-dialogue {
             max-width: 700px;
+            padding: 2rem;
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid rgba(100, 100, 100, 0.6);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #d0d0d0;
+        }
+
+        .continue-btn {
+            padding: 0.8rem 2rem;
+            background: rgba(100, 40, 40, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(150, 100, 100, 0.6);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+            float: right;
+            border-radius: 5px;
+        }
+
+        .continue-btn:hover {
+            background: rgba(150, 100, 100, 0.9);
+        }
+
+        .game-wrapper {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            max-width: 1300px;
+            width: 100%;
+            padding-top: 5rem;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .game-container {
+            max-width: 1300px;
             width: 100%;
             max-height: 95vh;
-            background: rgba(240, 240, 240, 0.8);
+            background: rgba(182, 182, 182, 0.6);
             border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             overflow-y: auto;
+            position: relative;
+            z-index: 10;
         }
 
         .header {
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.85), rgba(192, 57, 43, 0.85));
-            color: #e8e8e8;
-            padding: 1.5rem;
             text-align: center;
+            margin-top: 1rem;
         }
 
-        .header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 0.3rem;
+        h1 {
+            color: #2a2a2a;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         .content {
             padding: 1.5rem;
-        }
-
-        .dialogue {
-            background: rgba(248, 249, 250, 0.9);
-            padding: 1rem;
-            border-left: 5px solid rgba(231, 76, 60, 0.7);
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            font-size: 0.9rem;
-            color: #2a2a2a;
+            padding-top: 0;
         }
 
         .instruction {
             background: rgba(255, 243, 205, 0.9);
             padding: 1rem;
             border-left: 4px solid #d4a017;
-            margin: 1rem 0;
+            border-radius: 5px;
+            margin: 0.5rem 0;
             color: #6a4f0f;
             font-size: 0.85rem;
         }
@@ -125,7 +188,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 1.5rem 0;
             position: relative;
             height: 240px;
         }
@@ -163,7 +225,7 @@
         }
 
         .hex.outer {
-            background: rgba(200, 200, 200, 0.9);
+            background: rgba(231, 231, 231, 0.9);
             color: #2a2a2a;
         }
 
@@ -171,12 +233,12 @@
             filter: brightness(1.1);
         }
 
-        .hex-0 { left: 50%; top: 5px; transform: translate(-50%, 0); }
-        .hex-1 { right: 10px; top: 25%; }
-        .hex-2 { right: 10px; bottom: 25%; }
-        .hex-3 { left: 50%; bottom: 5px; transform: translate(-50%, 0); }
-        .hex-4 { left: 10px; bottom: 25%; }
-        .hex-5 { left: 10px; top: 25%; }
+        .hex-0 { left: 50%; top: -10px; transform: translate(-50%, 0); }
+        .hex-1 { right: -10px; top: 30px;}
+        .hex-2 { right: -10px; bottom: 30px; }
+        .hex-3 { left: 50%; bottom: -10px; transform: translate(-50%, 0); }
+        .hex-4 { left: -10px; bottom: 30px; }
+        .hex-5 { left: -10px; top: 30px; }
 
         .input-area {
             text-align: center;
@@ -327,73 +389,81 @@
         .hidden {
             display: none;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
-    <button class="back-btn" onclick="goBack()">Volver a Clase</button>
+    <div class="game-wrapper">
+        <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
+        
+        <div class="overlay"></div>
 
-    <div class="game-container">
-        <div class="header">
-            <h1>SE TE ACABO EL GUION DE LA CLASE</h1>
-            <p>Descifra las palabras musicales</p>
-        </div>
-
-        <div class="content">
-            <div class="dialogue">
-                Los alumnos ya terminaron la practica antes de tiempo...<br><br>
-                
-                Los apuntes del profesor anterior solo tienen garabatos. Tocara improvisar.<br><br>
-                
-                Encuentra palabras relacionadas con musica. Necesitas encontrar: TEMPO, OPERA y TROMPETA
-            </div>
-
-            <div class="instruction">
-                <strong>REGLAS:</strong><br>
-                La letra del centro (amarilla) debe estar en todas las palabras<br>
-                Las palabras deben tener minimo 4 letras<br>
-                Usa las letras cuantas veces quieras
-            </div>
-
-            <button class="hint-btn" onclick="toggleHint()">Ver Pista</button>
-            <div class="hint-box" id="hintBox">
-                <strong>PISTA:</strong> Una palabra empieza por "TE"<br>
-                Otra palabra empieza por "OP"<br>
-                Y otra palabra empieza por "TR"
-            </div>
-
-            <div class="honeycomb">
-                <div class="hex-container">
-                    <div class="hex center" onclick="addLetter('O')">O</div>
-                    <div class="hex outer hex-0" onclick="addLetter('R')">R</div>
-                    <div class="hex outer hex-1" onclick="addLetter('T')">T</div>
-                    <div class="hex outer hex-2" onclick="addLetter('A')">A</div>
-                    <div class="hex outer hex-3" onclick="addLetter('M')">M</div>
-                    <div class="hex outer hex-4" onclick="addLetter('E')">E</div>
-                    <div class="hex outer hex-5" onclick="addLetter('P')">P</div>
+        <div class="intro-overlay" id="introOverlay">
+            <div class="intro-dialogue">
+                <div class="intro-text">
+                    Los alumnos ya terminaron la practica antes de tiempo...<br>
+                    Los apuntes del profesor anterior solo tienen garabatos. Tocara improvisar.<br>
                 </div>
+                <button class="continue-btn" onclick="closeIntro()">Continuar</button>
             </div>
-
-            <div class="input-area">
-                <input type="text" id="wordInput" class="word-input" readonly placeholder="Haz clic en las letras...">
-                
-                <div class="controls">
-                    <button class="btn delete-btn" onclick="deleteLetter()">Borrar</button>
-                    <button class="btn shuffle-btn" onclick="shuffleLetters()">Mezclar</button>
-                    <button class="btn submit-btn" onclick="submitWord()">Enviar</button>
-                </div>
-            </div>
-
-            <div id="message" class="message hidden"></div>
-
-            <div class="found-words">
-                <h3>Palabras encontradas: <span id="wordCount">0</span></h3>
-                <div class="word-list" id="wordList"></div>
-            </div>
-
-            <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
         </div>
-    </div>
+        <div class="game-container">
+            <div class="header">
+                <h1>SE TE ACABO EL GUION DE LA CLASE</h1>
+            </div>
+            <div class="content">
+                <div class="instruction">
+                    <strong>REGLAS:</strong><br>
+                    La letra del centro (amarilla) debe estar en todas las palabras<br>
+                    Las palabras deben tener minimo 4 letras<br>
+                    Usa las letras cuantas veces quieras
+                </div>
 
+                <button class="hint-btn" onclick="toggleHint()">Ver Pista</button>
+                <div class="hint-box" id="hintBox">
+                    <strong>PISTA:</strong> Una palabra empieza por "TE", 
+                    otra palabra empieza por "OP",
+                    y otra palabra empieza por "TR"
+                </div>
+
+                <div class="honeycomb">
+                    <div class="hex-container">
+                        <div class="hex center" onclick="addLetter('O')">O</div>
+                        <div class="hex outer hex-0" id="hex-0" onclick="addLetter('R')">R</div>
+                        <div class="hex outer hex-1" id="hex-1" onclick="addLetter('T')">T</div>
+                        <div class="hex outer hex-2" id="hex-2" onclick="addLetter('A')">A</div>
+                        <div class="hex outer hex-3" id="hex-3" onclick="addLetter('M')">M</div>
+                        <div class="hex outer hex-4" id="hex-4" onclick="addLetter('E')">E</div>
+                        <div class="hex outer hex-5" id="hex-5" onclick="addLetter('P')">P</div>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <input type="text" id="wordInput" class="word-input" readonly placeholder="Haz clic en las letras...">
+                    
+                    <div class="controls">
+                        <button class="btn delete-btn" onclick="deleteLetter()">Borrar</button>
+                        <button class="btn shuffle-btn" onclick="shuffleLetters()">Mezclar</button>
+                        <button class="btn submit-btn" onclick="submitWord()">Enviar</button>
+                    </div>
+                </div>
+
+                <div id="message" class="message hidden"></div>
+
+                <div class="found-words">
+                    <h3>Palabras encontradas: <span id="wordCount">0</span></h3>
+                    <div class="word-list" id="wordList"></div>
+                </div>
+
+                <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
+            </div>
+        </div>
+    </div>    
+    
     <script>
         const LETTERS = ['R', 'T', 'A', 'M', 'E', 'P'];
         const CENTER = 'O';
@@ -410,6 +480,7 @@
         let currentWord = '';
         let foundWords = [];
         let foundKeyWords = [];
+        let hexLetters = [...LETTERS]; // Copia de letras para shuffle
 
         function toggleHint() {
             const hintBox = document.getElementById('hintBox');
@@ -427,17 +498,19 @@
         }
 
         function shuffleLetters() {
-            const hexes = document.querySelectorAll('.hex.outer');
-            const letters = Array.from(hexes).map(h => h.textContent);
-            
-            for (let i = letters.length - 1; i > 0; i--) {
+            // Barajar el array de letras
+            for (let i = hexLetters.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [letters[i], letters[j]] = [letters[j], letters[i]];
+                [hexLetters[i], hexLetters[j]] = [hexLetters[j], hexLetters[i]];
             }
 
-            hexes.forEach((hex, i) => {
-                hex.textContent = letters[i];
-                hex.onclick = () => addLetter(letters[i]);
+            // Actualizar los hexes con las nuevas letras
+            hexLetters.forEach((letter, i) => {
+                const hex = document.getElementById(`hex-${i}`);
+                if (hex) {
+                    hex.textContent = letter;
+                    hex.onclick = () => addLetter(letter);
+                }
             });
         }
 
@@ -505,6 +578,14 @@
                     msg.classList.add('hidden');
                 }
             }, 3000);
+        }
+
+        function closeIntro() {
+            const overlay = document.getElementById('introOverlay');
+            overlay.style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 500);
         }
 
         function goBack() {

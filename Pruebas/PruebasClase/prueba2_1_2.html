@@ -1,4 +1,28 @@
-<!DOCTYPE html>
+function renderEmail() {
+            const content = document.getElementById('emailContent');
+            content.innerHTML = '';
+
+            emailPhrases.forEach((phrase, pIdx) => {
+                phrase.forEach((word, wIdx) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'word';
+                    
+                    if (wordsRevealed[pIdx][wIdx].revealed) {
+                        wordSpan.textContent = word;
+                        wordSpan.classList.add('revealed');
+                    } else {
+                        wordSpan.textContent = '_'.repeat(word.length);
+                    }
+                    
+                    if (wordsRevealed[pIdx][wIdx].crossed) {
+                        wordSpan.classList.add('crossed');
+                    }
+                    
+                    content.appendChild(wordSpan);
+                });
+                content.appendChild(document.createElement('br'));
+            });
+        }<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -13,19 +37,73 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-            min-height: 100vh;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .intro-dialogue {
+            max-width: 700px;
             padding: 2rem;
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid rgba(100, 100, 100, 0.6);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #d0d0d0;
+        }
+
+        .continue-btn {
+            padding: 0.8rem 2rem;
+            background: rgba(103, 58, 183, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(156, 39, 176, 0.6);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+            float: right;
+            border-radius: 5px;
+        }
+
+        .continue-btn:hover {
+            background: rgba(156, 39, 176, 0.9);
+        }
+
+        .game-wrapper {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
         }
 
         .back-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 0.8rem 1.5rem;
+            top: 10px;
+            left: 10px;
+            padding: 0.5rem 1rem;
             background: rgba(20, 20, 20, 0.85);
             color: #e8e8e8;
             border: 2px solid rgba(100, 100, 100, 0.6);
@@ -33,64 +111,62 @@
             font-family: 'Courier New', monospace;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
+            border-radius: 5px;
         }
 
         .back-btn:hover {
             background: rgba(80, 80, 80, 0.9);
-            border-color: rgba(150, 150, 150, 0.8);
         }
 
         .game-container {
             max-width: 900px;
             width: 100%;
+            max-height: 95vh;
             background: rgba(240, 240, 240, 0.8);
             border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .header {
             background: rgba(103, 58, 183, 0.85);
             color: #e8e8e8;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .content {
-            padding: 2rem;
-            color: #2a2a2a;
-        }
-
-        .dialogue {
-            background: rgba(248, 249, 250, 0.9);
             padding: 1.5rem;
-            border-left: 5px solid rgba(103, 58, 183, 0.7);
-            margin-bottom: 2rem;
-            line-height: 1.8;
+            color: #2a2a2a;
         }
 
         .instruction {
             background: rgba(227, 242, 253, 0.9);
-            padding: 1.5rem;
+            padding: 1rem;
             border-left: 4px solid rgba(33, 150, 243, 0.7);
-            margin: 2rem 0;
+            margin-bottom: 1rem;
             color: #1565c0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            border-radius: 5px;
         }
 
         .email-preview {
             background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
+            padding: 1.5rem;
             border: 2px solid rgba(100, 100, 100, 0.5);
             border-radius: 10px;
-            margin: 2rem 0;
-            min-height: 200px;
+            margin: 1rem 0;
+            min-height: 150px;
             font-family: 'Courier New', monospace;
             line-height: 2;
+            font-size: 0.95rem;
         }
 
         .word {
@@ -121,30 +197,51 @@
             background: rgba(30, 30, 30, 0.9);
             padding: 2rem;
             border-radius: 10px;
-            margin: 2rem 0;
+            margin: 1rem 0;
             text-align: center;
+        }
+
+        .status-bar {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 1rem;
+            border-radius: 5px;
+            color: #e8e8e8;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-info {
+            font-weight: bold;
         }
 
         .beat-display {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.5rem;
             margin: 2rem 0;
-            min-height: 100px;
+            min-height: 120px;
             align-items: center;
         }
 
         .beat {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             background: rgba(100, 100, 100, 0.5);
             border: 3px solid rgba(150, 150, 150, 0.5);
-            border-radius: 10px;
+            border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             transition: all 0.2s;
+            position: relative;
+        }
+
+        .beat.reference {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.8);
         }
 
         .beat.active {
@@ -164,6 +261,13 @@
             border-color: #c62828;
         }
 
+        .beat-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.7rem;
+            color: #e8e8e8;
+        }
+
         .controls {
             display: flex;
             justify-content: center;
@@ -172,45 +276,32 @@
         }
 
         .rhythm-btn {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             background: rgba(103, 58, 183, 0.8);
             color: #e8e8e8;
-            border: 3px solid rgba(156, 39, 176, 0.6);
+            border: 4px solid rgba(156, 39, 176, 0.6);
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: 'Courier New', monospace;
         }
 
-        .rhythm-btn:hover {
+        .rhythm-btn:hover:not(:disabled) {
             background: rgba(156, 39, 176, 0.9);
             transform: scale(1.05);
         }
 
-        .rhythm-btn:active {
+        .rhythm-btn:active:not(:disabled) {
             transform: scale(0.95);
         }
 
         .rhythm-btn:disabled {
             background: rgba(100, 100, 100, 0.5);
             cursor: not-allowed;
-        }
-
-        .status-bar {
-            background: rgba(30, 30, 30, 0.8);
-            padding: 1rem;
-            border-radius: 5px;
-            color: #e8e8e8;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .progress-info {
-            font-weight: bold;
+            opacity: 0.5;
         }
 
         .message {
@@ -219,6 +310,7 @@
             border-radius: 5px;
             text-align: center;
             font-weight: bold;
+            font-size: 0.9rem;
         }
 
         .message.error {
@@ -243,7 +335,7 @@
             color: #e8e8e8;
             border: none;
             border-radius: 5px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             margin-top: 1rem;
@@ -256,75 +348,94 @@
         .hidden {
             display: none;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
     </style>
 </head>
 <body>
-    <button class="back-btn" onclick="goBack()">Volver a Clase</button>
-
-    <div class="game-container">
-        <div class="header">
-            <h1>Y TU QUIEN ERES</h1>
-            <p>Sigue el ritmo para escribir el correo</p>
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-dialogue">
+            <div class="intro-text">
+                Te llega un correo de un alumno (ladysman217@universidad.es) preguntandote porque le has puesto un suspenso.<br><br>
+                
+                Revisas la lista de asistencia y ves que no ha asistido a mas que la clase de presentacion de la asignatura. De hecho, no ha llegado a abrir la asignatura en el portal digital. Espera, entonces como ha podido ver la nota...?<br><br>
+                
+                Bueno, da igual. Le respondes lo que esperas que sea un amable correo explicandole que tu has tenido que evaluar siguiendo los criterios que ha dejado escritos el profesor anterior, que no puedes hacer mucho mas por ayudarle (principalmente porque no sabes ni quien es, pero esto no lo dices en el correo).
+            </div>
+            <button class="continue-btn" onclick="closeIntro()">Continuar</button>
         </div>
+    </div>
 
-        <div class="content">
-            <div class="dialogue">
-                Estas en clase, dejando a la gente trabajar cuando alguien te levanta la mano...<br><br>
-                
-                Resulta que el alumno no sabe quien eres. Has sido tan discreto que ni siquiera te conocen.<br><br>
-                
-                Tendras que escribirle un correo... pero tu teclado esta roto. Solo responde a ritmos especificos.
+    <div class="game-wrapper">
+        <button class="back-btn" onclick="goBack()">Volver a Clase</button>
+
+        <div class="game-container">
+            <div class="header">
+                <h1>Y TU QUIEN ERES</h1>
+                <p>Sigue el ritmo para escribir el correo</p>
             </div>
 
-            <div class="instruction">
-                <strong>INSTRUCCIONES:</strong><br>
-                Observa la secuencia de ritmos que aparece en pantalla.<br>
-                Cuando termine, reproduce la secuencia presionando ESPACIO en el momento correcto.<br>
-                Cada ritmo correcto revelara una palabra del correo.<br>
-                Si fallas, la palabra se tachara y deberas repetir la secuencia completa.
-            </div>
+            <div class="content">
+                <div class="instruction">
+                    <strong>INSTRUCCIONES:</strong><br>
+                    1. Observa la secuencia de ritmos (la primera nota es blanca, es la REFERENCIA)<br>
+                    2. Cuando termine, reproduce el ritmo completo presionando ESPACIO<br>
+                    3. Si aciertas el ritmo completo, se revela la frase entera<br>
+                    4. Si fallas, debes repetir la secuencia
+                </div>
 
-            <div class="email-preview" id="emailPreview">
-                <div id="emailContent"></div>
-            </div>
+                <div class="email-preview" id="emailPreview">
+                    <div id="emailContent"></div>
+                </div>
 
-            <div class="rhythm-game">
-                <div class="status-bar">
-                    <div class="progress-info">
-                        <span>Frase: <span id="phraseNum">1</span>/4</span>
-                        <span style="margin-left: 2rem;">Palabra: <span id="wordNum">0</span>/<span id="totalWords">0</span></span>
+                <div class="rhythm-game">
+                    <div class="status-bar">
+                        <div class="progress-info">
+                            <span>Frase: <span id="phraseNum">1</span>/5</span>
+                            <span style="margin-left: 2rem;">Palabras en frase: <span id="wordNum">0</span></span>
+                        </div>
+                        <div id="statusMessage">Preparate...</div>
                     </div>
-                    <div id="statusMessage">Preparate...</div>
+
+                    <div class="beat-display" id="beatDisplay"></div>
+
+                    <div class="controls">
+                        <button class="rhythm-btn" id="spaceBtn" onclick="playerBeat()" disabled>
+                            ESPACIO
+                        </button>
+                    </div>
+
+                    <div id="message" class="message hidden"></div>
                 </div>
 
-                <div class="beat-display" id="beatDisplay"></div>
-
-                <div class="controls">
-                    <button class="rhythm-btn" id="spaceBtn" onclick="playerBeat()" disabled>
-                        ESPACIO
-                    </button>
-                </div>
-
-                <div id="message" class="message hidden"></div>
+                <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
             </div>
-
-            <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
         </div>
     </div>
 
     <script>
         const emailPhrases = [
             ["Estimado", "alumno"],
-            ["Gracias", "por", "tu", "mensaje"],
-            ["He", "revisado", "los", "registros"],
-            ["Saludos", "cordiales", "Profesor", "Sustituto"]
+            ["Gracias", "por", "tu"],
+            ["He", "revisado", "los"],
+            ["La", "calificacion", "se"],
+            ["en", "criterios", "anteriores"]
         ];
 
         const rhythmPatterns = [
-            [500, 500],              // Frase 1: tap-tap
-            [400, 400, 600, 400],    // Frase 2: tap-tap-pausa-tap
-            [300, 300, 300, 500, 500], // Frase 3: tap-tap-tap-pausa-pausa
-            [600, 400, 400, 600]     // Frase 4: pausa-tap-tap-pausa
+            [600, 600],                    // Frase 1: 2 palabras = 2 notas usuario
+            [500, 700, 500],               // Frase 2: 3 palabras = 3 notas usuario
+            [400, 400, 600],               // Frase 3: 3 palabras = 3 notas usuario
+            [500, 600, 600],               // Frase 4: 3 palabras = 3 notas usuario
+            [400, 500, 700]                // Frase 5: 3 palabras = 3 notas usuario
         ];
 
         let currentPhrase = 0;
@@ -335,6 +446,8 @@
         let expectedSequence = [];
         let startTime = 0;
         let wordsRevealed = [];
+        let waitingForInput = false;
+        const TOLERANCE = 450; // 300% más tolerancia (era 150ms)
 
         function initGame() {
             wordsRevealed = emailPhrases.map(phrase => phrase.map(() => ({ revealed: false, crossed: false })));
@@ -355,7 +468,7 @@
                         wordSpan.textContent = word;
                         wordSpan.classList.add('revealed');
                     } else {
-                        wordSpan.textContent = '_____';
+                        wordSpan.textContent = '_'.repeat(word.length);
                     }
                     
                     if (wordsRevealed[pIdx][wIdx].crossed) {
@@ -382,20 +495,27 @@
 
         function playSequence() {
             isPlaying = true;
+            waitingForInput = false;
             document.getElementById('spaceBtn').disabled = true;
             const pattern = rhythmPatterns[currentPhrase];
             const beatDisplay = document.getElementById('beatDisplay');
             beatDisplay.innerHTML = '';
 
-            pattern.forEach(() => {
+            // Crear beats: 1 referencia + las necesarias para el patrón
+            const refBeat = document.createElement('div');
+            refBeat.className = 'beat reference';
+            refBeat.innerHTML = '♪<div class="beat-label">REF</div>';
+            beatDisplay.appendChild(refBeat);
+
+            for (let i = 0; i < pattern.length; i++) {
                 const beat = document.createElement('div');
                 beat.className = 'beat';
-                beat.textContent = '♪';
+                beat.innerHTML = `♪<div class="beat-label">${i + 1}</div>`;
                 beatDisplay.appendChild(beat);
-            });
+            }
 
-            let currentBeat = 0;
             const beats = beatDisplay.querySelectorAll('.beat');
+            let currentBeat = 0;
 
             function activateNextBeat() {
                 if (currentBeat > 0) {
@@ -405,7 +525,8 @@
                 if (currentBeat < beats.length) {
                     beats[currentBeat].classList.add('active');
                     
-                    const nextDelay = pattern[currentBeat];
+                    // La nota de referencia también tiene un timing (primer intervalo del patrón)
+                    const nextDelay = currentBeat === 0 ? pattern[0] : pattern[currentBeat - 1];
                     currentBeat++;
                     
                     setTimeout(activateNextBeat, nextDelay);
@@ -423,27 +544,43 @@
         function startPlayerTurn() {
             isPlaying = false;
             isPlayerTurn = true;
+            waitingForInput = false;
             playerSequence = [];
             expectedSequence = rhythmPatterns[currentPhrase];
-            startTime = Date.now();
             
             document.getElementById('spaceBtn').disabled = false;
-            document.getElementById('statusMessage').textContent = 'Tu turno - Reproduce el ritmo';
-            showMessage('Presiona ESPACIO para reproducir el ritmo', 'info');
+            document.getElementById('statusMessage').textContent = 'Tu turno - Presiona ESPACIO';
+            showMessage('Presiona ESPACIO siguiendo el ritmo', 'info');
+            
+            // Iluminar la nota blanca automáticamente al inicio del turno del jugador
+            const beatDisplay = document.getElementById('beatDisplay');
+            const beats = Array.from(beatDisplay.querySelectorAll('.beat'));
+            
+            setTimeout(() => {
+                beats[0].classList.add('active');
+                setTimeout(() => {
+                    beats[0].classList.remove('active');
+                    // Ahora sí puede empezar a presionar
+                    waitingForInput = true;
+                    startTime = Date.now(); // Establecer el tiempo de inicio después de la referencia
+                }, 200);
+            }, 500); // Pequeña pausa antes de mostrar la referencia
         }
 
         function playerBeat() {
-            if (!isPlayerTurn) return;
+            if (!isPlayerTurn || !waitingForInput) return;
 
             const currentTime = Date.now();
+            
+            // Calcular tiempo desde el inicio (que se estableció después de la nota blanca)
             const timeSinceStart = currentTime - startTime;
             playerSequence.push(timeSinceStart);
-            startTime = currentTime;
 
             const beatDisplay = document.getElementById('beatDisplay');
-            const beats = beatDisplay.querySelectorAll('.beat');
-            const beatIndex = playerSequence.length - 1;
+            const beats = Array.from(beatDisplay.querySelectorAll('.beat'));
+            const beatIndex = playerSequence.length; // 1, 2, 3...
 
+            // Activar el beat correspondiente (saltando la referencia que es 0)
             if (beatIndex < beats.length) {
                 beats[beatIndex].classList.add('active');
                 setTimeout(() => {
@@ -451,7 +588,9 @@
                 }, 200);
             }
 
+            // Si completamos todas las notas necesarias
             if (playerSequence.length === expectedSequence.length) {
+                waitingForInput = false;
                 checkRhythm();
             }
         }
@@ -460,22 +599,25 @@
             isPlayerTurn = false;
             document.getElementById('spaceBtn').disabled = true;
 
-            const tolerance = 150;
             let correct = true;
+            const beatDisplay = document.getElementById('beatDisplay');
+            const beats = beatDisplay.querySelectorAll('.beat');
 
+            // Comparar los tiempos de pulsación con el patrón esperado
+            // playerSequence tiene los tiempos absolutos desde startTime
+            // expectedSequence tiene los intervalos esperados
+            
+            let cumulativeExpected = 0;
             for (let i = 0; i < expectedSequence.length; i++) {
-                const expected = expectedSequence[i];
+                cumulativeExpected += expectedSequence[i];
                 const actual = playerSequence[i];
-                const diff = Math.abs(expected - actual);
+                const diff = Math.abs(cumulativeExpected - actual);
 
-                const beatDisplay = document.getElementById('beatDisplay');
-                const beats = beatDisplay.querySelectorAll('.beat');
-
-                if (diff > tolerance) {
+                if (diff > TOLERANCE) {
                     correct = false;
-                    beats[i].classList.add('fail');
+                    beats[i + 1].classList.add('fail');
                 } else {
-                    beats[i].classList.add('success');
+                    beats[i + 1].classList.add('success');
                 }
             }
 
@@ -489,42 +631,49 @@
         }
 
         function handleSuccess() {
-            wordsRevealed[currentPhrase][currentWord].revealed = true;
-            wordsRevealed[currentPhrase][currentWord].crossed = false;
-            currentWord++;
+            // Revelar TODAS las palabras de la frase actual
+            for (let i = 0; i < emailPhrases[currentPhrase].length; i++) {
+                wordsRevealed[currentPhrase][i].revealed = true;
+                wordsRevealed[currentPhrase][i].crossed = false;
+            }
             
             renderEmail();
-            updateWordCount();
-            showMessage('Correcto', 'success');
+            showMessage('Correcto - Frase completada', 'success');
 
-            if (currentWord < emailPhrases[currentPhrase].length) {
+            // Pasar a la siguiente frase
+            currentPhrase++;
+            
+            // Si completamos las 5 frases, terminar el juego
+            if (currentPhrase >= 5) {
                 setTimeout(() => {
-                    playSequence();
-                }, 1500);
-            } else {
-                currentPhrase++;
-                
-                if (currentPhrase < emailPhrases.length) {
-                    setTimeout(() => {
-                        startPhrase();
-                    }, 2000);
-                } else {
                     showMessage('Has completado el correo', 'success');
                     document.getElementById('completeBtn').classList.remove('hidden');
                     document.querySelector('.rhythm-game').style.display = 'none';
-                }
+                    localStorage.setItem('prueba2_1_2_completed', 'true');
+                }, 1000);
+            } else {
+                // Pasar a la siguiente frase
+                setTimeout(() => {
+                    startPhrase();
+                }, 2000);
             }
         }
 
         function handleFailure() {
-            wordsRevealed[currentPhrase][currentWord].crossed = true;
-            wordsRevealed[currentPhrase][currentWord].revealed = false;
+            // Marcar TODAS las palabras de la frase como tachadas
+            for (let i = 0; i < emailPhrases[currentPhrase].length; i++) {
+                wordsRevealed[currentPhrase][i].crossed = true;
+                wordsRevealed[currentPhrase][i].revealed = false;
+            }
             
             renderEmail();
             showMessage('Fallaste el ritmo. Intentalo de nuevo', 'error');
 
             setTimeout(() => {
-                wordsRevealed[currentPhrase][currentWord].crossed = false;
+                // Limpiar las palabras tachadas
+                for (let i = 0; i < emailPhrases[currentPhrase].length; i++) {
+                    wordsRevealed[currentPhrase][i].crossed = false;
+                }
                 renderEmail();
                 playSequence();
             }, 2000);
@@ -543,16 +692,30 @@
             status.textContent = text;
             
             setTimeout(() => {
-                msg.classList.add('hidden');
+                if (type !== 'success') {
+                    msg.classList.add('hidden');
+                }
             }, 3000);
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && isPlayerTurn) {
+            if ((e.code === 'Space' || e.key === ' ') && isPlayerTurn && waitingForInput) {
                 e.preventDefault();
                 playerBeat();
             }
         });
+
+        function closeIntro() {
+            const overlay = document.getElementById('introOverlay');
+            overlay.style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 500);
+            
+            if (!localStorage.getItem('prueba2_1_2_visited')) {
+                localStorage.setItem('prueba2_1_2_visited', 'true');
+            }
+        }
 
         function goBack() {
             window.location.href = '../../Escenarios/clase.html';
@@ -562,6 +725,12 @@
             localStorage.setItem('prueba2_1_2_completed', 'true');
             window.location.href = '../../Escenarios/clase.html';
         }
+
+        window.onload = function() {
+            if (localStorage.getItem('prueba2_1_2_visited')) {
+                closeIntro();
+            }
+        };
 
         initGame();
     </script>
