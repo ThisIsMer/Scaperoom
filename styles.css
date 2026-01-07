@@ -1,0 +1,1007 @@
+/* ============================================
+   ESTILOS GENERALES - SCAPEROOM
+   ============================================ */
+
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    color: #e8e8e8;
+    overflow: hidden;
+}
+
+/* ============================================
+   FONDOS Y OVERLAYS
+   ============================================ */
+
+.game-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 1rem;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* ============================================
+   CONTENEDORES PRINCIPALES
+   ============================================ */
+
+.game-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-height: 95vh;
+    background: rgba(133, 133, 133, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+.content {
+    padding: 1.5rem;
+    color: #2a2a2a;
+}
+
+/* ============================================
+   HEADERS
+   ============================================ */
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+}
+
+.header h1,
+h1 {
+    color: #2a2a2a;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p,
+.subtitle {
+    color: #d3d3d3;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* ============================================
+   BOTONES DE NAVEGACIÓN
+   ============================================ */
+
+.back-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 0.8rem 1.5rem;
+    background: rgba(20, 20, 20, 0.85);
+    color: #e8e8e8;
+    border: 2px solid rgba(100, 100, 100, 0.6);
+    z-index: 1000;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    border-radius: 5px;
+}
+
+.back-btn:hover {
+    background: rgba(80, 80, 80, 0.9);
+    border-color: rgba(150, 150, 150, 0.8);
+}
+
+/* ============================================
+   DIÁLOGOS E INTRODUCCIONES
+   ============================================ */
+
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.5s;
+}
+
+.intro-dialogue {
+    max-width: 700px;
+    padding: 2rem;
+    background: rgba(30, 30, 30, 0.95);
+    border: 2px solid rgba(100, 100, 100, 0.6);
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #d0d0d0;
+}
+
+.dialogue {
+    background: rgba(71, 68, 58, 0.9);
+    padding: 1.5rem;
+    border-left: 5px solid #695f46;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    color: #c3a45d;
+}
+
+/* ============================================
+   INSTRUCCIONES Y HINTS
+   ============================================ */
+
+.instruction {
+    background: rgba(71, 68, 58, 0.9);
+    padding: 1rem;
+    border-left: 4px solid #695f46;
+    margin-bottom: 1rem;
+    color: #c3a45d;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border-radius: 5px;
+}
+
+.hint-section,
+.hint-container {
+    background: rgba(71, 68, 58, 0.9);
+    padding: 1rem;
+    border-left: 4px solid #695f46;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.hint-btn {
+    padding: 0.5rem 1rem;
+    background: #7b6f50;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.hint-btn:hover {
+    background: #7d662c;
+}
+
+.hint-btn:disabled {
+    background: rgba(180, 180, 180, 0.8);
+    cursor: not-allowed;
+}
+
+.hint-box {
+    background: rgba(255, 243, 205, 0.9);
+    padding: 1rem;
+    border-left: 4px solid #7b6f50;
+    margin-top: 1rem;
+    display: none;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    border-radius: 5px;
+    color: #6a4f0f;
+}
+
+.hint-box.visible {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+.hint-text {
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: #c3a45d;
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN
+   ============================================ */
+
+.btn,
+button {
+    padding: 0.8rem 1.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    border: 2px solid #4a4a4a;
+    background: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 5px;
+}
+
+.btn:hover,
+button:hover {
+    background: rgba(74, 74, 74, 0.9);
+    color: #f0f0f0;
+}
+
+.btn:disabled,
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.continue-btn {
+    padding: 0.8rem 2rem;
+    background: rgba(100, 40, 40, 0.85);
+    color: #e8e8e8;
+    border: 2px solid rgba(150, 100, 100, 0.6);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    transition: all 0.3s;
+    float: right;
+    border-radius: 5px;
+}
+
+.continue-btn:hover {
+    background: rgba(150, 100, 100, 0.9);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(100, 40, 40, 0.85);
+    color: #e8e8e8;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.submit-btn:hover {
+    background: rgba(80, 30, 30, 0.95);
+    transform: translateY(-2px);
+}
+
+.complete-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(67, 160, 71, 0.60);
+    color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.complete-btn:hover {
+    background: rgba(56, 142, 60, 0.60);
+}
+
+/* ============================================
+   MENSAJES Y FEEDBACK
+   ============================================ */
+
+.message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.message.error {
+    background: rgba(167, 167, 167, 0.95);
+    color: #810606;
+}
+
+.message.success {
+    background: rgba(167, 167, 167, 0.95);
+    color: #0c8016;
+}
+
+.message.warning {
+    background: rgba(167, 167, 167, 0.95);
+    color: #8d390d;
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+
+.hidden {
+    display: none;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes slideDown {
+    from { 
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(100, 40, 40, 0.5);
+    }
+    50% { 
+        box-shadow: 0 0 40px rgba(180, 120, 120, 0.8);
+    }
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.5; }
+}
+
+/* ============================================
+   PRUEBA 1 - CONNECTIONS (Practicas por Corregir)
+   ============================================ */
+
+/* Grilla de palabras */
+.words-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.word-card {
+    padding: 1rem;
+    background: rgba(220, 220, 220, 0.9);
+    border: 2px solid rgba(150, 150, 150, 0.7);
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
+    color: #2a2a2a;
+}
+
+.word-card:hover {
+    background: rgba(200, 200, 200, 0.95);
+    transform: translateY(-2px);
+}
+
+.word-card.selected {
+    background: rgba(92, 62, 62, 0.9);
+    color: #f0f0f0;
+    border-color: rgba(61, 38, 38, 0.9);
+}
+
+.word-card.correct {
+    background: rgba(76, 175, 80, 0.9);
+    color: #f0f0f0;
+    border-color: rgba(76, 175, 80, 0.9);
+    cursor: default;
+}
+
+/* Grupos resueltos */
+.solved-groups {
+    margin-bottom: 1.5rem;
+}
+
+.group {
+    padding: 1rem;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.group h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.group.yellow {
+    background: rgba(249, 168, 37, 0.35);
+    color: #cbcbcb;
+}
+
+.group.green {
+    background: rgba(67, 160, 71, 0.60);
+    color: #cbcbcb;
+}
+
+.group.blue {
+    background: rgba(30, 136, 229, 0.60);
+    color: #cbcbcb;
+}
+
+.group.purple {
+    background: rgba(142, 36, 170, 0.60);
+    color: #cbcbcb;
+}
+
+/* Controles */
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.attempts {
+    text-align: center;
+    color: #c2c2c2;
+    margin-bottom: 1rem;
+}
+
+/* ============================================
+   PRUEBA 2 - WORDLE (Portal del Curso)
+   ============================================ */
+
+/* Tablero */
+.board {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 2px;
+    margin: 1rem auto;
+    max-width: 320px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+}
+
+/* Tiles */
+.tile {
+    width: 58px;
+    height: 58px;
+    border: 2px solid rgba(150, 150, 150, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: rgba(235, 235, 235, 0.9);
+    color: #1a1a1a;
+}
+
+.tile.filled {
+    border-color: rgba(100, 100, 100, 0.8);
+}
+
+.tile.correct {
+    background: rgba(106, 170, 100, 0.9);
+    border-color: rgba(106, 170, 100, 0.9);
+    color: #f0f0f0;
+}
+
+.tile.present {
+    background: rgba(201, 180, 88, 0.9);
+    border-color: rgba(201, 180, 88, 0.9);
+    color: #f0f0f0;
+}
+
+.tile.absent {
+    background: rgba(120, 124, 126, 0.9);
+    border-color: rgba(120, 124, 126, 0.9);
+    color: #f0f0f0;
+}
+
+/* Teclado */
+.keyboard {
+    margin-top: 1rem;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.key {
+    padding: 1rem 0.5rem;
+    min-width: 43px;
+    background: rgba(211, 214, 218, 0.9);
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+}
+
+.key:hover {
+    background: rgba(150, 150, 150, 0.95);
+}
+
+.key.correct {
+    background: rgba(106, 170, 100, 0.9);
+    color: #f0f0f0;
+}
+
+.key.present {
+    background: rgba(201, 180, 88, 0.9);
+    color: #f0f0f0;
+}
+
+.key.absent {
+    background: rgba(120, 124, 126, 0.9);
+    color: #f0f0f0;
+}
+
+.key.wide {
+    min-width: 65px;
+}
+
+/* ============================================
+   PRUEBA 3 - CIFRADO CÉSAR (Horarios)
+   ============================================ */
+
+/* Documentos */
+.documents-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.document {
+    background: rgba(219, 219, 219, 0.65);
+    padding: 1.2rem;
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.document h3 {
+    color: rgba(100, 40, 40, 0.9);
+    margin-bottom: 0.8rem;
+    text-align: center;
+    border-bottom: 2px solid rgba(100, 40, 40, 0.7);
+    padding-bottom: 0.4rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Tabla de horarios */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    color: #0a0a0a;
+}
+
+.schedule-table th,
+.schedule-table td {
+    border: 1px solid rgba(120, 120, 120, 0.6);
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.schedule-table th {
+    background: rgba(74, 74, 74, 0.8);
+    color: #e8e8e8;
+    font-weight: bold;
+}
+
+.schedule-table tr:nth-child(even) {
+    background: rgba(245, 245, 245, 0.5);
+}
+
+/* Lista de códigos */
+.code-list {
+    list-style: none;
+    padding: 0;
+}
+
+.code-item {
+    padding: 0.8rem;
+    background: rgba(249, 249, 249, 0.95);
+    border-left: 4px solid rgba(100, 40, 40, 0.7);
+    margin-bottom: 0.6rem;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.code-cipher {
+    font-weight: bold;
+    color: rgba(100, 40, 40, 0.9);
+    letter-spacing: 1px;
+    font-family: 'Courier New', monospace;
+    min-width: 120px;
+}
+
+.code-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 2px solid rgba(120, 120, 120, 0.6);
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.code-input:focus {
+    outline: none;
+    border-color: rgba(100, 40, 40, 0.9);
+    box-shadow: 0 0 5px rgba(100, 40, 40, 0.3);
+}
+
+/* Ejemplo de cifrado */
+.cipher-example {
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+}
+
+.cipher-row {
+    display: inline-block;
+    justify-content: space-between;
+}
+
+/* ============================================
+   PRUEBA 2.1-2 - RITMO (Y tu quien eres)
+   ============================================ */
+
+/* Email preview */
+.email-preview {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1.5rem;
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    border-radius: 10px;
+    margin: 1rem 0;
+    min-height: 150px;
+    font-family: 'Courier New', monospace;
+    line-height: 2;
+    font-size: 0.95rem;
+}
+
+.word {
+    display: inline-block;
+    margin: 0 0.3rem;
+    padding: 0.2rem 0.5rem;
+    transition: all 0.3s;
+}
+
+.word.revealed {
+    background: rgba(76, 175, 80, 0.3);
+    border-radius: 3px;
+}
+
+.word.crossed {
+    text-decoration: line-through;
+    color: #e74c3c;
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Juego de ritmo */
+.rhythm-game {
+    background: rgba(30, 30, 30, 0.9);
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.status-bar {
+    background: rgba(20, 20, 20, 0.8);
+    padding: 1rem;
+    border-radius: 5px;
+    color: #e8e8e8;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-info {
+    font-weight: bold;
+}
+
+.beat-display {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    min-height: 120px;
+    align-items: center;
+}
+
+.beat {
+    width: 90px;
+    height: 90px;
+    background: rgba(100, 100, 100, 0.5);
+    border: 3px solid rgba(150, 150, 150, 0.5);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.beat.reference {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.beat.active {
+    background: rgba(255, 193, 7, 0.9);
+    border-color: #ffa000;
+    transform: scale(1.2);
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.6);
+}
+
+.beat.success {
+    background: rgba(76, 175, 80, 0.9);
+    border-color: #388e3c;
+}
+
+.beat.fail {
+    background: rgba(244, 67, 54, 0.9);
+    border-color: #c62828;
+}
+
+.beat-label {
+    position: absolute;
+    bottom: -25px;
+    font-size: 0.7rem;
+    color: #e8e8e8;
+}
+
+.rhythm-btn {
+    width: 120px;
+    height: 120px;
+    background: rgba(103, 58, 183, 0.8);
+    color: #e8e8e8;
+    border: 4px solid rgba(156, 39, 176, 0.6);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Courier New', monospace;
+}
+
+.rhythm-btn:hover:not(:disabled) {
+    background: rgba(156, 39, 176, 0.9);
+    transform: scale(1.05);
+}
+
+.rhythm-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.rhythm-btn:disabled {
+    background: rgba(100, 100, 100, 0.5);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ============================================
+   PRUEBA 2.2-3 - SPELLING BEE (Se te acabo el guion)
+   ============================================ */
+
+/* Honeycomb */
+.honeycomb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 240px;
+}
+
+.hex-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+}
+
+.hex {
+    position: absolute;
+    width: 60px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1.8rem;
+    font-weight: bold;
+    user-select: none;
+}
+
+.hex.center {
+    background: rgba(249, 168, 37, 0.9);
+    color: #1a1a1a;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 80px;
+    font-size: 2rem;
+}
+
+.hex.outer {
+    background: rgba(231, 231, 231, 0.9);
+    color: #2a2a2a;
+}
+
+.hex:hover {
+    filter: brightness(1.1);
+}
+
+.hex-0 { left: 50%; top: -10px; transform: translate(-50%, 0); }
+.hex-1 { right: -10px; top: 30px;}
+.hex-2 { right: -10px; bottom: 30px; }
+.hex-3 { left: 50%; bottom: -10px; transform: translate(-50%, 0); }
+.hex-4 { left: -10px; bottom: 30px; }
+.hex-5 { left: -10px; top: 30px; }
+
+/* Input area */
+.input-area {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.word-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.8rem;
+    font-size: 1.3rem;
+    text-align: center;
+    border: 3px solid rgba(33, 150, 243, 0.7);
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* Palabras encontradas */
+.found-words {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(248, 249, 250, 0.9);
+    border-radius: 10px;
+}
+
+.found-words h3 {
+    color: #2a2a2a;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.word-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.word-tag {
+    padding: 0.4rem 0.8rem;
+    background: rgba(76, 175, 80, 0.8);
+    color: #e8e8e8;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.word-tag.key-word {
+    background: rgba(249, 168, 37, 0.9);
+    color: #1a1a1a;
+    font-weight: bold;
+}
+
+/* Botones específicos */
+.delete-btn {
+    background: rgba(231, 76, 60, 0.9);
+    color: #e8e8e8;
+    border-color: rgba(231, 76, 60, 0.9);
+}
+
+.delete-btn:hover {
+    background: rgba(192, 57, 43, 0.95);
+}
+
+.shuffle-btn {
+    background: rgba(52, 152, 219, 0.9);
+    color: #e8e8e8;
+    border-color: rgba(52, 152, 219, 0.9);
+}
+
+.shuffle-btn:hover {
+    background: rgba(41, 128, 185, 0.95);
+}
+
+/* ============================================
+   PRUEBA 2.3 - CALENDARIO (Calendario de Examenes)
+   ============================================ */
+
+.calendar-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.calendar-box {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(106, 76, 147, 0.6);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.calendar-title {
+    font-weight: bold;
+    color: rgba(106, 76, 147, 0.9);
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    text-align: center;
+    border-bottom: 2px solid rgba(106, 76, 147, 0.6);
+    padding-bottom: 0.4rem;
+}
+
+.event-list {
+    list-style: none;
+    padding: 0;
+}
+
+.event-item {
+    padding: 0.5rem;
+    margin-bottom: 0.4rem}

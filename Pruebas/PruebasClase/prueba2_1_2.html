@@ -1,364 +1,10 @@
-function renderEmail() {
-            const content = document.getElementById('emailContent');
-            content.innerHTML = '';
-
-            emailPhrases.forEach((phrase, pIdx) => {
-                phrase.forEach((word, wIdx) => {
-                    const wordSpan = document.createElement('span');
-                    wordSpan.className = 'word';
-                    
-                    if (wordsRevealed[pIdx][wIdx].revealed) {
-                        wordSpan.textContent = word;
-                        wordSpan.classList.add('revealed');
-                    } else {
-                        wordSpan.textContent = '_'.repeat(word.length);
-                    }
-                    
-                    if (wordsRevealed[pIdx][wIdx].crossed) {
-                        wordSpan.classList.add('crossed');
-                    }
-                    
-                    content.appendChild(wordSpan);
-                });
-                content.appendChild(document.createElement('br'));
-            });
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 2.1-2 - Y tu quien eres</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #0a0a0a;
-            color: #e8e8e8;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.5s;
-        }
-
-        .intro-dialogue {
-            max-width: 700px;
-            padding: 2rem;
-            background: rgba(30, 30, 30, 0.95);
-            border: 2px solid rgba(100, 100, 100, 0.6);
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
-        }
-
-        .intro-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            color: #d0d0d0;
-        }
-
-        .continue-btn {
-            padding: 0.8rem 2rem;
-            background: rgba(103, 58, 183, 0.85);
-            color: #e8e8e8;
-            border: 2px solid rgba(156, 39, 176, 0.6);
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            transition: all 0.3s;
-            float: right;
-            border-radius: 5px;
-        }
-
-        .continue-btn:hover {
-            background: rgba(156, 39, 176, 0.9);
-        }
-
-        .game-wrapper {
-            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .back-btn {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            padding: 0.5rem 1rem;
-            background: rgba(20, 20, 20, 0.85);
-            color: #e8e8e8;
-            border: 2px solid rgba(100, 100, 100, 0.6);
-            z-index: 1000;
-            font-family: 'Courier New', monospace;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-            border-radius: 5px;
-        }
-
-        .back-btn:hover {
-            background: rgba(80, 80, 80, 0.9);
-        }
-
-        .game-container {
-            max-width: 900px;
-            width: 100%;
-            max-height: 95vh;
-            background: rgba(240, 240, 240, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-        }
-
-        .header {
-            background: rgba(103, 58, 183, 0.85);
-            color: #e8e8e8;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .content {
-            padding: 1.5rem;
-            color: #2a2a2a;
-        }
-
-        .instruction {
-            background: rgba(227, 242, 253, 0.9);
-            padding: 1rem;
-            border-left: 4px solid rgba(33, 150, 243, 0.7);
-            margin-bottom: 1rem;
-            color: #1565c0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            border-radius: 5px;
-        }
-
-        .email-preview {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1.5rem;
-            border: 2px solid rgba(100, 100, 100, 0.5);
-            border-radius: 10px;
-            margin: 1rem 0;
-            min-height: 150px;
-            font-family: 'Courier New', monospace;
-            line-height: 2;
-            font-size: 0.95rem;
-        }
-
-        .word {
-            display: inline-block;
-            margin: 0 0.3rem;
-            padding: 0.2rem 0.5rem;
-            transition: all 0.3s;
-        }
-
-        .word.revealed {
-            background: rgba(76, 175, 80, 0.3);
-            border-radius: 3px;
-        }
-
-        .word.crossed {
-            text-decoration: line-through;
-            color: #e74c3c;
-            animation: shake 0.3s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .rhythm-game {
-            background: rgba(30, 30, 30, 0.9);
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            text-align: center;
-        }
-
-        .status-bar {
-            background: rgba(20, 20, 20, 0.8);
-            padding: 1rem;
-            border-radius: 5px;
-            color: #e8e8e8;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .progress-info {
-            font-weight: bold;
-        }
-
-        .beat-display {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 2rem 0;
-            min-height: 120px;
-            align-items: center;
-        }
-
-        .beat {
-            width: 90px;
-            height: 90px;
-            background: rgba(100, 100, 100, 0.5);
-            border: 3px solid rgba(150, 150, 150, 0.5);
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.5rem;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .beat.reference {
-            background: rgba(255, 255, 255, 0.8);
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-
-        .beat.active {
-            background: rgba(255, 193, 7, 0.9);
-            border-color: #ffa000;
-            transform: scale(1.2);
-            box-shadow: 0 0 30px rgba(255, 193, 7, 0.6);
-        }
-
-        .beat.success {
-            background: rgba(76, 175, 80, 0.9);
-            border-color: #388e3c;
-        }
-
-        .beat.fail {
-            background: rgba(244, 67, 54, 0.9);
-            border-color: #c62828;
-        }
-
-        .beat-label {
-            position: absolute;
-            bottom: -25px;
-            font-size: 0.7rem;
-            color: #e8e8e8;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .rhythm-btn {
-            width: 120px;
-            height: 120px;
-            background: rgba(103, 58, 183, 0.8);
-            color: #e8e8e8;
-            border: 4px solid rgba(156, 39, 176, 0.6);
-            border-radius: 50%;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Courier New', monospace;
-        }
-
-        .rhythm-btn:hover:not(:disabled) {
-            background: rgba(156, 39, 176, 0.9);
-            transform: scale(1.05);
-        }
-
-        .rhythm-btn:active:not(:disabled) {
-            transform: scale(0.95);
-        }
-
-        .rhythm-btn:disabled {
-            background: rgba(100, 100, 100, 0.5);
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        .message {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .message.error {
-            background: rgba(255, 235, 238, 0.95);
-            color: #c62828;
-        }
-
-        .message.success {
-            background: rgba(232, 245, 233, 0.95);
-            color: #2e7d32;
-        }
-
-        .message.info {
-            background: rgba(227, 242, 253, 0.95);
-            color: #1565c0;
-        }
-
-        .complete-btn {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(76, 175, 80, 0.9);
-            color: #e8e8e8;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-
-        .complete-btn:hover {
-            background: rgba(56, 142, 60, 0.95);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-    </style>
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <div class="intro-overlay" id="introOverlay">
@@ -733,6 +379,32 @@ function renderEmail() {
         };
 
         initGame();
+        
+        function renderEmail() {
+            const content = document.getElementById('emailContent');
+            content.innerHTML = '';
+
+            emailPhrases.forEach((phrase, pIdx) => {
+                phrase.forEach((word, wIdx) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'word';
+                    
+                    if (wordsRevealed[pIdx][wIdx].revealed) {
+                        wordSpan.textContent = word;
+                        wordSpan.classList.add('revealed');
+                    } else {
+                        wordSpan.textContent = '_'.repeat(word.length);
+                    }
+                    
+                    if (wordsRevealed[pIdx][wIdx].crossed) {
+                        wordSpan.classList.add('crossed');
+                    }
+                    
+                    content.appendChild(wordSpan);
+                });
+                content.appendChild(document.createElement('br'));
+            });
+        }
     </script>
 </body>
 </html>
