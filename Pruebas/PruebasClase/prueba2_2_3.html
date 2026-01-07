@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba 2.2-3 - Se te acabó el guión</title>
+    <title>Prueba 2.2-3 - Se te acabo el guion</title>
     <style>
         * {
             margin: 0;
@@ -13,318 +13,315 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-image: url('../Assets/GarabatosProfesor.jpg');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
-            position: relative;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(44, 62, 80, 0.85);
+            padding: 1rem;
+            overflow: hidden;
         }
 
         .back-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 0.8rem 1.5rem;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            border: 2px solid #666;
+            top: 10px;
+            left: 10px;
+            padding: 0.5rem 1rem;
+            background: rgba(20, 20, 20, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(100, 100, 100, 0.6);
             z-index: 1000;
             font-family: 'Courier New', monospace;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
         .back-btn:hover {
-            background: #666;
-            border-color: #fff;
+            background: rgba(80, 80, 80, 0.9);
         }
 
         .game-container {
-            position: relative;
-            z-index: 10;
             max-width: 700px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            max-height: 95vh;
+            background: rgba(240, 240, 240, 0.8);
             border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .header {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            padding: 2rem;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.85), rgba(192, 57, 43, 0.85));
+            color: #e8e8e8;
+            padding: 1.5rem;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .content {
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .dialogue {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-left: 5px solid #e74c3c;
-            margin-bottom: 2rem;
-            color: #333;
-            line-height: 1.8;
+            background: rgba(248, 249, 250, 0.9);
+            padding: 1rem;
+            border-left: 5px solid rgba(231, 76, 60, 0.7);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            color: #2a2a2a;
         }
 
         .instruction {
-            background: #fff3cd;
-            padding: 1.5rem;
-            border-left: 4px solid #ffc107;
-            margin: 2rem 0;
-            color: #856404;
+            background: rgba(255, 243, 205, 0.9);
+            padding: 1rem;
+            border-left: 4px solid #d4a017;
+            margin: 1rem 0;
+            color: #6a4f0f;
+            font-size: 0.85rem;
+        }
+
+        .hint-btn {
+            padding: 0.5rem 1rem;
+            background: #d4a017;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .hint-btn:hover {
+            background: #e5b028;
+        }
+
+        .hint-btn:disabled {
+            background: rgba(180, 180, 180, 0.8);
+            cursor: not-allowed;
+        }
+
+        .hint-box {
+            background: rgba(255, 243, 205, 0.9);
+            padding: 1rem;
+            border-left: 4px solid #d4a017;
+            margin-bottom: 1rem;
+            color: #6a4f0f;
+            display: none;
+            font-size: 0.85rem;
+        }
+
+        .hint-box.visible {
+            display: block;
         }
 
         .honeycomb {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 2rem 0;
+            margin: 1.5rem 0;
             position: relative;
-            height: 300px;
+            height: 240px;
         }
 
         .hex-container {
             position: relative;
-            width: 250px;
-            height: 250px;
+            width: 220px;
+            height: 220px;
         }
 
         .hex {
             position: absolute;
-            width: 70px;
-            height: 80px;
+            width: 60px;
+            height: 70px;
             display: flex;
             justify-content: center;
             align-items: center;
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             cursor: pointer;
-            transition: transform 0.2s;
-            font-size: 2rem;
+            transition: all 0.2s;
+            font-size: 1.8rem;
             font-weight: bold;
             user-select: none;
         }
 
         .hex.center {
-            background: #f9a825;
-            color: #000;
+            background: rgba(249, 168, 37, 0.9);
+            color: #1a1a1a;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
+            width: 70px;
+            height: 80px;
+            font-size: 2rem;
         }
 
         .hex.outer {
-            background: #e0e0e0;
-            color: #333;
+            background: rgba(200, 200, 200, 0.9);
+            color: #2a2a2a;
         }
 
-        .hex:active {
-            transform: translate(-50%, -50%) scale(0.95);
+        .hex:hover {
+            filter: brightness(1.1);
         }
 
-        .hex-0 { left: 50%; top: 0; transform: translate(-50%, 0); }
-        .hex-1 { right: 0; top: 25%; transform: translate(0, 0); }
-        .hex-2 { right: 0; bottom: 25%; transform: translate(0, 0); }
-        .hex-3 { left: 50%; bottom: 0; transform: translate(-50%, 0); }
-        .hex-4 { left: 0; bottom: 25%; transform: translate(0, 0); }
-        .hex-5 { left: 0; top: 25%; transform: translate(0, 0); }
+        .hex-0 { left: 50%; top: 5px; transform: translate(-50%, 0); }
+        .hex-1 { right: 10px; top: 25%; }
+        .hex-2 { right: 10px; bottom: 25%; }
+        .hex-3 { left: 50%; bottom: 5px; transform: translate(-50%, 0); }
+        .hex-4 { left: 10px; bottom: 25%; }
+        .hex-5 { left: 10px; top: 25%; }
 
         .input-area {
             text-align: center;
-            margin: 2rem 0;
+            margin: 1.5rem 0;
         }
 
         .word-input {
             width: 100%;
             max-width: 400px;
-            padding: 1rem;
-            font-size: 1.5rem;
+            padding: 0.8rem;
+            font-size: 1.3rem;
             text-align: center;
-            border: 3px solid #2196f3;
+            border: 3px solid rgba(33, 150, 243, 0.7);
             border-radius: 10px;
             text-transform: uppercase;
             font-weight: bold;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .controls {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             justify-content: center;
             margin: 1rem 0;
         }
 
-        .hint-section {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-
-        .hint-btn-bee {
-            padding: 0.6rem 1.2rem;
-            background: #ffc107;
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .hint-btn-bee:hover {
-            background: #ffb300;
-        }
-
-        .hint-btn-bee:disabled {
-            background: #e0e0e0;
-            cursor: not-allowed;
-        }
-
-        .hint-text-bee {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            border-radius: 5px;
-            color: #856404;
-            font-weight: bold;
-        }
-
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            border: 2px solid #333;
-            background: #fff;
+            font-size: 0.9rem;
+            border: 2px solid #4a4a4a;
+            background: rgba(255, 255, 255, 0.9);
             cursor: pointer;
             transition: all 0.2s;
             border-radius: 5px;
         }
 
         .btn:hover {
-            background: #333;
-            color: #fff;
+            background: rgba(74, 74, 74, 0.9);
+            color: #e8e8e8;
         }
 
         .delete-btn {
-            background: #e74c3c;
-            color: #fff;
-            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.9);
+            color: #e8e8e8;
+            border-color: rgba(231, 76, 60, 0.9);
         }
 
         .delete-btn:hover {
-            background: #c0392b;
+            background: rgba(192, 57, 43, 0.95);
         }
 
         .shuffle-btn {
-            background: #3498db;
-            color: #fff;
-            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.9);
+            color: #e8e8e8;
+            border-color: rgba(52, 152, 219, 0.9);
         }
 
         .shuffle-btn:hover {
-            background: #2980b9;
+            background: rgba(41, 128, 185, 0.95);
         }
 
         .submit-btn {
-            background: #27ae60;
-            color: #fff;
-            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.9);
+            color: #e8e8e8;
+            border-color: rgba(39, 174, 96, 0.9);
         }
 
         .submit-btn:hover {
-            background: #229954;
+            background: rgba(34, 153, 84, 0.95);
         }
 
         .found-words {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: #f8f9fa;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(248, 249, 250, 0.9);
             border-radius: 10px;
         }
 
         .found-words h3 {
-            color: #333;
-            margin-bottom: 1rem;
+            color: #2a2a2a;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
         }
 
         .word-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .word-tag {
-            padding: 0.5rem 1rem;
-            background: #4caf50;
-            color: #fff;
+            padding: 0.4rem 0.8rem;
+            background: rgba(76, 175, 80, 0.8);
+            color: #e8e8e8;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .word-tag.key-word {
-            background: #f9a825;
-            color: #000;
+            background: rgba(249, 168, 37, 0.9);
+            color: #1a1a1a;
             font-weight: bold;
         }
 
         .message {
-            margin-top: 1rem;
-            padding: 1rem;
+            margin-top: 0.8rem;
+            padding: 0.8rem;
             border-radius: 5px;
             text-align: center;
             font-weight: bold;
+            font-size: 0.9rem;
         }
 
         .message.error {
-            background: #ffebee;
+            background: rgba(255, 235, 238, 0.95);
             color: #c62828;
         }
 
         .message.success {
-            background: #e8f5e9;
+            background: rgba(232, 245, 233, 0.95);
             color: #2e7d32;
         }
 
         .message.info {
-            background: #e3f2fd;
+            background: rgba(227, 242, 253, 0.95);
             color: #1565c0;
         }
 
         .complete-btn {
             width: 100%;
-            padding: 1rem;
-            background: #4caf50;
-            color: #fff;
+            padding: 0.8rem;
+            background: rgba(76, 175, 80, 0.9);
+            color: #e8e8e8;
             border: none;
             border-radius: 5px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             margin-top: 1rem;
         }
 
         .complete-btn:hover {
-            background: #45a049;
+            background: rgba(56, 142, 60, 0.95);
         }
 
         .hidden {
@@ -333,29 +330,35 @@
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
     <button class="back-btn" onclick="goBack()">Volver a Clase</button>
 
     <div class="game-container">
         <div class="header">
-            <h1>SE TE ACABÓ EL GUIÓN DE LA CLASE</h1>
+            <h1>SE TE ACABO EL GUION DE LA CLASE</h1>
             <p>Descifra las palabras musicales</p>
         </div>
 
         <div class="content">
             <div class="dialogue">
-                Los alumnos ya terminaron la práctica antes de tiempo...<br><br>
+                Los alumnos ya terminaron la practica antes de tiempo...<br><br>
                 
-                Los apuntes del profesor anterior solo tienen garabatos. Tocará improvisar.<br><br>
+                Los apuntes del profesor anterior solo tienen garabatos. Tocara improvisar.<br><br>
                 
-                Encuentra palabras relacionadas con música. Necesitas encontrar: <strong>TEMPO</strong>, <strong>OPERA</strong> y <strong>TROMPETA</strong>
+                Encuentra palabras relacionadas con musica. Necesitas encontrar: TEMPO, OPERA y TROMPETA
             </div>
 
             <div class="instruction">
                 <strong>REGLAS:</strong><br>
-                • La letra del centro (amarilla) debe estar en todas las palabras<br>
-                • Las palabras deben tener mínimo 4 letras<br>
-                • Usa las letras cuantas veces quieras
+                La letra del centro (amarilla) debe estar en todas las palabras<br>
+                Las palabras deben tener minimo 4 letras<br>
+                Usa las letras cuantas veces quieras
+            </div>
+
+            <button class="hint-btn" onclick="toggleHint()">Ver Pista</button>
+            <div class="hint-box" id="hintBox">
+                <strong>PISTA:</strong> Una palabra empieza por "TE"<br>
+                Otra palabra empieza por "OP"<br>
+                Y otra palabra empieza por "TR"
             </div>
 
             <div class="honeycomb">
@@ -377,11 +380,6 @@
                     <button class="btn delete-btn" onclick="deleteLetter()">Borrar</button>
                     <button class="btn shuffle-btn" onclick="shuffleLetters()">Mezclar</button>
                     <button class="btn submit-btn" onclick="submitWord()">Enviar</button>
-                </div>
-
-                <div class="hint-section">
-                    <button class="hint-btn-bee" id="hintBtn" onclick="showHintBee()">Ver Pista</button>
-                    <div class="hint-text-bee hidden" id="hintText"></div>
                 </div>
             </div>
 
@@ -406,27 +404,16 @@
             'POETA', 'AROMA', 'TOMA', 'ROMA', 'PORO', 'MORO', 'TORO', 'PATO',
             'ROPA', 'PORTA', 'TROPA', 'ARPO', 'MORA', 'TORRE', 'PORRA', 'POMO',
             'RETO', 'ATEO', 'MOTE', 'TOPE', 'PERO', 'REPO', 'ROPE', 'APERO',
-            'PORTE', 'MOTOR', 'PROA', 'PROM', 'TOPE', 'RETO', 'ORATE'
+            'PORTE', 'MOTOR', 'PROA', 'PROM', 'ORATE'
         ];
 
         let currentWord = '';
         let foundWords = [];
         let foundKeyWords = [];
 
-        function showHintBee() {
-            const remainingWords = VALID_WORDS.filter(w => !foundWords.includes(w));
-            
-            if (remainingWords.length > 0) {
-                const hintWord = remainingWords[0];
-                const hintText = document.getElementById('hintText');
-                hintText.textContent = `Pista: Una palabra empieza por "${hintWord.substring(0, 2)}"`;
-                hintText.classList.remove('hidden');
-                document.getElementById('hintBtn').disabled = true;
-                
-                setTimeout(() => {
-                    document.getElementById('hintBtn').disabled = false;
-                }, 10000);
-            }
+        function toggleHint() {
+            const hintBox = document.getElementById('hintBox');
+            hintBox.classList.toggle('visible');
         }
 
         function addLetter(letter) {
@@ -514,7 +501,9 @@
             msg.classList.remove('hidden');
             
             setTimeout(() => {
-                msg.classList.add('hidden');
+                if (type === 'error' || type === 'info') {
+                    msg.classList.add('hidden');
+                }
             }, 3000);
         }
 

@@ -13,14 +13,15 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-image: url('../Assets/Despacho.jpg');
+            background-image: url('../../Assets/PruebaAccederAlCurso.jpg');
             background-size: cover;
             background-position: center;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            overflow: hidden;
         }
 
         .overlay {
@@ -55,46 +56,49 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 500px;
-            padding: 2rem;
-            background: rgba(240, 240, 240, 0.8);
+            max-width: 550px;
+            max-height: 100vh;
+            padding: 1rem;
+            background: rgba(218, 218, 218, 0.7);
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
             text-align: center;
+            overflow-y: auto;
         }
 
         h1 {
             color: #2a2a2a;
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
         }
 
         .subtitle {
             color: #4a4a4a;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
         }
 
         .hint-section {
-            background: rgba(255, 243, 205, 0.9);
-            padding: 1rem;
+            background: rgba(176, 164, 127, 0.9);
+            padding: 0.5rem;
             border-radius: 5px;
-            margin-bottom: 1rem;
             text-align: center;
         }
 
         .hint-btn {
-            padding: 0.5rem 1rem;
-            background: #d4a017;
+            padding: 0.4rem 0.8rem;
+            background: #e2d1a6;
             color: #1a1a1a;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
             margin: 0 0.25rem;
+            font-size: 0.85rem;
         }
 
         .hint-btn:hover {
-            background: #e5b028;
+            background: #c8ab62;
         }
 
         .hint-btn:disabled {
@@ -111,20 +115,20 @@
         .board {
             display: grid;
             grid-template-rows: repeat(6, 1fr);
-            gap: 3px;
+            gap: 2px;
             margin: 1rem auto;
-            max-width: 350px;
+            max-width: 320px;
         }
 
         .row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 3px;
+            gap: 2px;
         }
 
         .tile {
-            width: 62px;
-            height: 62px;
+            width: 58px;
+            height: 58px;
             border: 2px solid rgba(150, 150, 150, 0.7);
             display: flex;
             justify-content: center;
@@ -132,7 +136,7 @@
             font-size: 2rem;
             font-weight: bold;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(235, 235, 235, 0.9);
             color: #1a1a1a;
         }
 
@@ -159,7 +163,7 @@
         }
 
         .keyboard {
-            margin-top: 2rem;
+            margin-top: 1rem;
         }
 
         .keyboard-row {
@@ -256,7 +260,7 @@
         <div class="hint-section">
             <button class="hint-btn" id="hintBtn1" onclick="showHint(1)">Pista: Vocal</button>
             <button class="hint-btn" id="hintBtn2" onclick="showHint(2)">Pista: Consonante</button>
-            <div class="hint-text hidden" id="hintText"></div>
+            <div class="hint-text" id="hintText"></div>
         </div>
 
         <div class="board" id="board"></div>
@@ -309,12 +313,220 @@
         const MAX_GUESSES = 6;
 
         const VALID_WORDS = [
-            'RITMO', 'PIANO', 'CANTO', 'METRO', 'TEMPO', 'OPERA', 
-            'SALSA', 'TANGO', 'VALSE', 'RONDA', 'CORAL', 'BANDA', 'GRITO',
-            'CLAVE', 'NOTAS', 'TONAL', 'MODAL', 'FRASE', 'CANON', 'GRAVE',
-            'AGUDO', 'MEDIO', 'CALMA', 'BRAVO', 'LENTO', 'RAPIDO', 'PIANO',
-            'RITMO', 'ARCOS', 'FAGOT', 'OBOES', 'PEDAL', 'MARCA', 'MAYOR',
-            'MENOR', 'PAUSA', 'PUNTO', 'LAZO', 'CORO', 'VALS', 'ARIA'
+            'ACORDE', 'AGUDO', 'ARCOS', 'BANDA', 'BLUES', 'BRAVO', 'CALMA', 
+            'CANON', 'CANTO', 'CLAVE', 'CORAL', 'DANZA', 'DIESI', 'DRUMS',
+            'ETUDE', 'FAGOT', 'FRASE', 'FUGAZ', 'GRAVE', 'GRITO', 'GRUPO',
+            'LENTO', 'LOWER', 'MAYOR', 'MEDIO', 'MENOR', 'METAL', 'METRO',
+            'MODAL', 'MODOS', 'MUDAR', 'NOTAS', 'OBOES', 'OPERA', 'PAUSA',
+            'PEDAL', 'PIANO', 'PULSO', 'PUNTO', 'RITMO', 'RONDA', 'SALSA',
+            'SALTO', 'SCALA', 'SERIE', 'SEXTA', 'SIGNS', 'SONES', 'SONGS',
+            'SUAVE', 'TANGO', 'TEMPO', 'TENOR', 'TIPLE', 'TONAL', 'TONOS',
+            'TRINO', 'TUBAR', 'TUPLA', 'ULTRA', 'UNION', 'VALSE', 'VALS',
+            'VIHLA', 'VOCAL', 'VOCES',
+            'ABAJO', 'ABEJA', 'ABRIL', 'ACEÑA', 'ACRES', 'ACTOR', 'ADIOS',
+            'AFORO', 'AGORA', 'AGRIO', 'AGUAS', 'AIRES', 'ALAMO', 'ALBUM',
+            'ALERO', 'ALETA', 'ALGOL', 'ALIEN', 'ALTAR', 'AMBAR', 'AMBOS',
+            'AMENO', 'AMIGO', 'ANCHO', 'ANCLA', 'ANGEL', 'ANIMA', 'ANTES',
+            'APODO', 'ARBOL', 'ARENA', 'ARGOS', 'ARMAS', 'AROMO', 'ARROZ',
+            'ASADO', 'ASILO', 'ATLAS', 'ATOMO', 'AULAL', 'AULAS', 'AVION',
+            'AYUDA', 'AZOTE', 'BAILE', 'BALDE', 'BANCO', 'BARRA', 'BARCO',
+            'BASES', 'BASTA', 'BEBES', 'BELLO', 'BICHO', 'BILLAR', 'BLANC',
+            'BOLAS', 'BOLSO', 'BOMBA', 'BONOS', 'BORDO', 'BOTAS', 'BRAZA',
+            'BRISA', 'BRUJA', 'BRUTO', 'BUENO', 'BUFON', 'BULTO', 'BUSCA',
+            'CABAL', 'CABLE', 'CACHO', 'CAJON', 'CALDO', 'CALMA', 'CALOR',
+            'CAMAS', 'CAMPO', 'CANAL', 'CAOBA', 'CARGA', 'CARNE', 'CARPA',
+            'CARRO', 'CARTA', 'CASAS', 'CASCO', 'CASOS', 'CAUCE', 'CAUSA',
+            'CAZAS', 'CEBRA', 'CEDRO', 'CEGAR', 'CEJAS', 'CENAR', 'CERCA',
+            'CERCO', 'CEROS', 'CERRO', 'CESTA', 'CICLO', 'CIELO', 'CIENO',
+            'CIFRA', 'CINTA', 'CIRCO', 'CISNE', 'CITAR', 'CLARA', 'CLARO',
+            'CLASE', 'CLAVO', 'CLIMA', 'COBRO', 'COCER', 'COCOS', 'CODAL',
+            'COFRE', 'COLAR', 'COLOR', 'COMAS', 'COMBO', 'COMER', 'COMET',
+            'COMIC', 'COMUN', 'CONOS', 'COPAS', 'CORAL', 'CORER', 'COROS',
+            'CORTE', 'CORZO', 'COSER', 'COSMO', 'COSTA', 'COSTO', 'COXIS',
+            'CREER', 'CREMA', 'CRETA', 'CRISIS', 'CROMO', 'CRUZA', 'CUAJO',
+            'CUARQ', 'CUASI', 'CUATE', 'CUBAN', 'CUBAS', 'CUBOS', 'CUCAO',
+            'CUERO', 'CUEVA', 'CULPA', 'CULTO', 'CUOTA', 'CUPLA', 'CURAR',
+            'CURBA', 'CURSO', 'CURVO', 'DAÑAR', 'DARDO', 'DATOS', 'DEBAN',
+            'DEBER', 'DECIR', 'DEDAL', 'DEDOS', 'DEJAR', 'DELTA', 'DEMOS',
+            'DENSO', 'DEPOT', 'DETAL', 'DICHO', 'DIENTE', 'DIGNO', 'DIMES',
+            'DIOSA', 'DISCO', 'DIVAN', 'DOBLE', 'DOGMA', 'DOLOR', 'DONAR',
+            'DONDE', 'DORAR', 'DRAMA', 'DROGA', 'DUDAR', 'DUELO', 'DUNAS',
+            'EBANO', 'EDEMA', 'EDITA', 'EDUCA', 'EFEBO', 'EFOCA', 'EGIDA',
+            'EJEMPL', 'ELECT', 'ELITE', 'ELLAS', 'ELLOS', 'EMAIL', 'ENANO',
+            'ENCAR', 'ENEMA', 'ENERO', 'ENOJO', 'ENTRE', 'ENZIM', 'EPOCA',
+            'ERROR', 'ESBRO', 'ESCOP', 'ESLOR', 'ESMAI', 'ESPED', 'ESPÍA',
+            'ESQUI', 'ESTAR', 'ESTOS', 'ESTRO', 'ETAPA', 'ETICA', 'EUROS',
+            'EXACT', 'EXITO', 'FACTO', 'FALDA', 'FALLO', 'FALSO', 'FALTA',
+            'FANAL', 'FAROS', 'FATAL', 'FATUA', 'FAUNA', 'FAVOR', 'FECHA',
+            'FELIZ', 'FERIA', 'FERRO', 'FICHA', 'FIERA', 'FIJAR', 'FINAL',
+            'FINCA', 'FIRMA', 'FISCO', 'FLACO', 'FLAMA', 'FLASH', 'FLOJA',
+            'FLORA', 'FLOTA', 'FLUIR', 'FOCAL', 'FOGON', 'FOLÍA', 'FONDA',
+            'FONDO', 'FORMA', 'FORMO', 'FORRO', 'FOSAR', 'FOSIL', 'FOTOS',
+            'FRASE', 'FRESA', 'FRENO', 'FRESA', 'FRIAR', 'FRISA', 'FRITO',
+            'FRUTA', 'FUEGO', 'FUERA', 'FUERO', 'FUGAR', 'FULGO', 'FUMAR',
+            'FUNDA', 'FUROR', 'FUSIL', 'GACHO', 'GAFAS', 'GAITA', 'GALAS',
+            'GALGO', 'GALLO', 'GAMBA', 'GAMMA', 'GANSO', 'GARBO', 'GARRA',
+            'GASTO', 'GATOS', 'GAUSS', 'GAVILAN', 'GEMIR', 'GENTE', 'GESTA',
+            'GESTO', 'GIRAR', 'GLOSA', 'GOCES', 'GOFIO', 'GOLFO', 'GOLPE',
+            'GOMAS', 'GORDA', 'GORRO', 'GOTAS', 'GOZAN', 'GOZAR', 'GRADO',
+            'GRAJO', 'GRAMA', 'GRANO', 'GRATO', 'GRAVA', 'GRAVE', 'GRECA',
+            'GREDA', 'GRIFO', 'GRIPE', 'GRITO', 'GRÚA', 'GRUPO', 'GUAPO',
+            'GUARO', 'GUBIA', 'GUERR', 'GUETO', 'GUION', 'GUISA', 'GUSANO',
+            'GUSTO', 'HABER', 'HACIA', 'HACHA', 'HADAS', 'HALAL', 'HALAR',
+            'HARÉN', 'HARPO', 'HASTA', 'HATOS', 'HEBRA', 'HECHA', 'HECHO',
+            'HEDOR', 'HELAR', 'HELIZ', 'HEMBRA', 'HENDIR', 'HERIR', 'HERMAR',
+            'HEROE', 'HERVIR', 'HIELO', 'HIENA', 'HIERR', 'HIJOS', 'HILAR',
+            'HIMEN', 'HIMNO', 'HINCH', 'HINDU', 'HIPAR', 'HOGAR', 'HOJAS',
+            'HOLAS', 'HOLGA', 'HOMBRE', 'HONDO', 'HONOR', 'HORAS', 'HORCA',
+            'HORDA', 'HORROR', 'HOTEL', 'HOYAS', 'HOYOS', 'HUECO', 'HUELE',
+            'HUERO', 'HUESO', 'HUEVO', 'HUIDA', 'HUILA', 'HUIRS', 'HUMAR',
+            'HUMOR', 'HUNDIR', 'HURTO', 'ICONO', 'IDEAS', 'IDEAL', 'IDEAR',
+            'IDIOT', 'IDOLA', 'IGLES', 'IGUAL', 'ILESO', 'IMPAR', 'INDEX',
+            'INDIO', 'INFAME', 'INFLAR', 'INPUT', 'INTER', 'INTRO', 'INUIT',
+            'IRICO', 'ISLAS', 'IZQUI', 'JABAL', 'JABON', 'JACOB', 'JAIME',
+            'JALEO', 'JARAL', 'JARRA', 'JAULA', 'JEFES', 'JESUS', 'JIMON',
+            'JIRÓN', 'JOCOSO', 'JODER', 'JOFRA', 'JONIA', 'JORGE', 'JORNÀ',
+            'JOTAS', 'JOYAS', 'JUBON', 'JUDIA', 'JUDÍO', 'JUEGO', 'JUEZO',
+            'JUGAR', 'JUGOS', 'JUICIAR', 'JULIO', 'JUMAS', 'JUMBO', 'JUNTA',
+            'JUNTO', 'JUPON', 'JURAL', 'JURAR', 'JUREL', 'JURIS', 'JUSTA',
+            'JUSTO', 'LABOR', 'LABRA', 'LACRAR', 'LADAR', 'LADEF', 'LADEO',
+            'LADOS', 'LADRE', 'LAGAR', 'LAGOS', 'LAIDE', 'LAMER', 'LAMPA',
+            'LANAS', 'LANCE', 'LANZA', 'LAPIZ', 'LARDO', 'LARGO', 'LARVA',
+            'LASCA', 'LASER', 'LASNA', 'LATÍN', 'LATIR', 'LATON', 'LATTE',
+            'LAUDI', 'LAUDO', 'LAUNA', 'LAVAR', 'LAXAR', 'LAYAS', 'LAZON',
+            'LAZOS', 'LEBÉN', 'LECHO', 'LEDOR', 'LEGAL', 'LEGAR', 'LEGUA',
+            'LEJOS', 'LELOS', 'LEMAS', 'LEMUR', 'LENAN', 'LENAR', 'LENDRÉ',
+            'LENTO', 'LEONA', 'LEPRA', 'LERDO', 'LETAL', 'LETRA', 'LEUDAR',
+            'LEVAS', 'LEVES', 'LEXIA', 'LEYES', 'LIANA', 'LIBAR', 'LIBRA',
+            'LIBRE', 'LIBRO', 'LICEO', 'LICIT', 'LICOR', 'LIDIA', 'LIEBRE',
+            'LIENA', 'LIGAR', 'LIGAZ', 'LIGER', 'LIGHT', 'LIGUE', 'LIJAS',
+            'LILAS', 'LIMAS', 'LIMEN', 'LIMES', 'LIMON', 'LINAR', 'LINCE',
+            'LINDA', 'LINDO', 'LINEA', 'LINER', 'LINGA', 'LINOS', 'LIRAS',
+            'LIRIO', 'LIRON', 'LISER', 'LISIA', 'LISOS', 'LISTA', 'LISTO',
+            'LITAS', 'LITES', 'LITIO', 'LITRO', 'LIVOR', 'LLAGA', 'LLAMA',
+            'LLANO', 'LLANT', 'LLAPA', 'LLAVE', 'LLECA', 'LLEGA', 'LLENA',
+            'LLENO', 'LLEVA', 'LLORA', 'LLORO', 'LLUVIA', 'LOADO', 'LOBAN',
+            'LOBAR', 'LOBOS', 'LOCAL', 'LOCHA', 'LOCIO', 'LOCOS', 'LODEN',
+            'LOGAR', 'LOGIA', 'LOGRA', 'LOGRO', 'LOICA', 'LOISA', 'LOMAS',
+            'LOMED', 'LOMOS', 'LONAS', 'LONGS', 'LONJA', 'LORAS', 'LORES',
+            'LORIS', 'LOROS', 'LOSAS', 'LOSEL', 'LOTES', 'LOZAS', 'LUCAS',
+            'LUCES', 'LUCHA', 'LUCHO', 'LUCIO', 'LUCIR', 'LUCRO', 'LUDOS',
+            'LUGAR', 'LUISA', 'LUJAR', 'LUJOS', 'LUMEN', 'LUNAR', 'LUNES',
+            'LUPIA', 'LUPUS', 'LUSCO', 'LUSOS', 'LUTAR', 'LUTOS', 'LUXAR',
+            'LUYAS', 'LUZEN', 'LUZON', 'MACHO', 'MACIS', 'MACOM', 'MACOS',
+            'MACRI', 'MADAM', 'MADAR', 'MADRE', 'MAGMA', 'MAGNO', 'MAGOS',
+            'MAHÓN', 'MAIER', 'MAINE', 'MAJAR', 'MAJOS', 'MALAS', 'MALDA',
+            'MALED', 'MALES', 'MALHA', 'MALIN', 'MALLA', 'MALLO', 'MALOS',
+            'MALTA', 'MALVA', 'MAMAN', 'MAMAR', 'MAMAS', 'MAMBO', 'MAMEY',
+            'MAMON', 'MAMUT', 'MANAO', 'MANCA', 'MANCO', 'MANDA', 'MANDO',
+            'MANES', 'MANGA', 'MANGO', 'MANIA', 'MANIE', 'MANIO', 'MANIR',
+            'MANIÚ', 'MANJA', 'MANON', 'MANOS', 'MANSA', 'MANTA', 'MANTO',
+            'MANUS', 'MAÑAS', 'MAPAS', 'MAQUE', 'MARCA', 'MAREO', 'MARES',
+            'MARGA', 'MARGE', 'MARGO', 'MARIA', 'MARIN', 'MARIO', 'MARLI',
+            'MARLO', 'MARMI', 'MARON', 'MAROS', 'MARRA', 'MARRO', 'MARSA',
+            'MART', 'MARZO', 'MASAI', 'MASAR', 'MASAS', 'MASCO', 'MASES',
+            'MASIA', 'MASON', 'MASTO', 'MATAS', 'MATAR', 'MATCH', 'MATED',
+            'MATES', 'MATIZ', 'MATON', 'MATOS', 'MAULÁ', 'MAYOR', 'MAZAL',
+            'MAZAS', 'MAZOS', 'MEADA', 'MEAJA', 'MEANO', 'MEARS', 'MECAS',
+            'MECHA', 'MECHO', 'MEDAL', 'MEDÁN', 'MEDAR', 'MEDIA', 'MEDIO',
+            'MEDIOS', 'MEDIN', 'MEDIR', 'MEDRÓ', 'MEGAS', 'MEICO', 'MEIGA',
+            'MEJAN', 'MEJOR', 'MELAR', 'MELAS', 'MELIS', 'MELON', 'MELÓN',
+            'MELSA', 'MELVA', 'MEMES', 'MEMOS', 'MENAS', 'MENAR', 'MENDA',
+            'MENOR', 'MENOS', 'MENTA', 'MENTÉ', 'MENTI', 'MENUS', 'MEONA',
+            'MERCS', 'MERCY', 'MEREZ', 'MERIT', 'MERLA', 'MERLE', 'MEROS',
+            'MESAS', 'MESAR', 'MESES', 'MESON', 'METAS', 'METED', 'METER',
+            'METGE', 'METIO', 'METIS', 'METRO', 'MEUNA', 'MEXER', 'MEYAS',
+            'MEZCL', 'MEZQU', 'MIAJA', 'MIASNO', 'MIAU', 'MICAS', 'MICHE',
+            'MICRA', 'MICRO', 'MIDAS', 'MIDED', 'MIDEN', 'MIDEO', 'MIDES',
+            'MIEDO', 'MIELA', 'MIERA', 'MIGAS', 'MIGAR', 'MIGRA', 'MIJAI',
+            'MILAD', 'MILAN', 'MILES', 'MILIT', 'MILLA', 'MIMAD', 'MIMAS',
+            'MIMEN', 'MIMES', 'MIMO', 'MIMOS', 'MINAR', 'MINAS', 'MINED',
+            'MINEN', 'MINER', 'MINES', 'MINGA', 'MINIÓ', 'MÍNOR', 'MINOS',
+            'MINUS', 'MINUÉ', 'MIÑÓN', 'MIOPE', 'MIQUI', 'MIRAD', 'MIRAR',
+            'MIRAS', 'MIRED', 'MIREN', 'MIRES', 'MIRIS', 'MIRLA', 'MIRLO',
+            'MIRON', 'MIRRA', 'MIRTO', 'MISAS', 'MISCA', 'MISCE', 'MISEM',
+            'MISEN', 'MISER', 'MISIA', 'MISIL', 'MISIÓ', 'MISMO', 'MISON',
+            'MITAR', 'MITIN', 'MITOS', 'MITRA', 'MIXTA', 'MIXTO', 'MIZAR',
+            'MOBLE', 'MOCAS', 'MOCHA', 'MOCHÍ', 'MOCHO', 'MOCIL', 'MOCOS',
+            'MODAL', 'MODAS', 'MODEL', 'MODES', 'MODIÉ', 'MODIO', 'MODON',
+            'MODOS', 'MODUL', 'MOELA', 'MOFAR', 'MOFAS', 'MOFLE', 'MOGIN',
+            'MOGÓN', 'MOHAR', 'MOHÓN', 'MOHOS', 'MOINA', 'MOIRA', 'MOJAR',
+            'MOJEL', 'MOJEN', 'MOJES', 'MOJÓN', 'MOJOS', 'MOLAR', 'MOLAS',
+            'MOLDE', 'MOLES', 'MOLER', 'MOLÍA', 'MOLIE', 'MOLÍN', 'MOLIO',
+            'MOLLA', 'MOLLE', 'MOLON', 'MOLOS', 'MOLSA', 'MOMBO', 'MOMIA',
+            'MOMIO', 'MOMOS', 'MOMUS', 'MONÁD', 'MONAR', 'MONAS', 'MONDA',
+            'MONDE', 'MONDO', 'MONEC', 'MONEL', 'MONER', 'MONGA', 'MONGE',
+            'MONIS', 'MONJE', 'MONON', 'MONOS', 'MONTA', 'MONTE', 'MONTO',
+            'MOÑOS', 'MOPAN', 'MOPAR', 'MOQUE', 'MORAD', 'MORAL', 'MORAR',
+            'MORAS', 'MORBO', 'MORCA', 'MORCE', 'MORCO', 'MORDE', 'MORDI',
+            'MOREA', 'MOREL', 'MOREN', 'MORER', 'MORES', 'MORFA', 'MORIR',
+            'MORLA', 'MORNÁ', 'MOROS', 'MORRA', 'MORRO', 'MORSA', 'MORSE',
+            'MORTA', 'MORTO', 'MOSÁC', 'MOSCA', 'MOSÉN', 'MOSOR', 'MOSTO',
+            'MOTAS', 'MOTEL', 'MOTEN', 'MOTES', 'MOTIN', 'MOTON', 'MOTOR',
+            'MOTOS', 'MOUCA', 'MOVAD', 'MOVAL', 'MOVER', 'MOVIA', 'MOVIE',
+            'MOVIO', 'MOVIS', 'MOYED', 'MOYEN', 'MOYER', 'MOYES', 'MOYOS',
+            'MOZAL', 'MOZAS', 'MOZOA', 'MOZOS', 'MUARÉ', 'MUCÁN', 'MUCAR',
+            'MUCAS', 'MUCHO', 'MUCIL', 'MUCOS', 'MUCRO', 'MUDAD', 'MUDAR',
+            'MUDAS', 'MUDED', 'MUDEN', 'MUDES', 'MUDEZ', 'MUDIO', 'MUDOS',
+            'MUELA', 'MUELE', 'MUELÍ', 'MUELO', 'MUEÑA', 'MUERA', 'MUERE',
+            'MUERO', 'MUERT', 'MUESA', 'MUESO', 'MUEVE', 'MUEVO', 'MUFLE',
+            'MUFTI', 'MUGAN', 'MUGAR', 'MUGEN', 'MUGER', 'MUGÍA', 'MUGIE',
+            'MUGIO', 'MUGIR', 'MUGRO', 'MUJER', 'MUJIC', 'MUJIK', 'MUJOL',
+            'MULAD', 'MULAR', 'MULAS', 'MULED', 'MULER', 'MULES', 'MULETA',
+            'MULIO', 'MULLA', 'MULLE', 'MULLO', 'MULSA', 'MULSO', 'MULTA',
+            'MULTE', 'MULTO', 'MUMIA', 'MUNDA', 'MUNDI', 'MUNDO', 'MUNIA',
+            'MUNIC', 'MUÑIR', 'MUNÓN', 'MURAR', 'MURAS', 'MURCA', 'MURGA',
+            'MURIO', 'MURIÓ', 'MUROS', 'MURRA', 'MURRI', 'MURTA', 'MURZÓ',
+            'MUSAC', 'MUSAS', 'MUSCA', 'MUSCO', 'MUSES', 'MUSEO', 'MUSGO',
+            'MUSIC', 'MUSIA', 'MUSÍO', 'MUSIT', 'MUSLO', 'MUSÓN', 'MUSOS',
+            'MUSTA', 'MUSTI', 'MUSTO', 'MUTAR', 'MUTAS', 'MUTED', 'MUTEN',
+            'MUTES', 'MUTIA', 'MUTIS', 'MUTON', 'MUTRA', 'MUTUA', 'MUTUO',
+            'MUYEN', 'MUYER', 'MUYES', 'MUZOS', 'NABAB', 'NABAL', 'NABAO',
+            'NABAR', 'NABÁS', 'NABIA', 'NABIS', 'NABLA', 'NABOL', 'NABOR',
+            'NABOS', 'NACAR', 'NACHA', 'NACHE', 'NACHO', 'NACIÓ', 'NADAR',
+            'NADIE', 'NAFRA', 'NAFTA', 'NAGUA', 'NAHOA', 'NAIFE', 'NAIPE',
+            'NAIRE', 'NALCA', 'NALGA', 'NALON', 'NANAS', 'NANCE', 'NANGA',
+            'NANSA', 'NAOLA', 'NAONE', 'NAPEA', 'NAPES', 'NAPIA', 'NAPLE',
+            'NAPOS', 'NAQUE', 'NARAN', 'NARAR', 'NARIZ', 'NARRA', 'NARRE',
+            'NARRO', 'NASAL', 'NASAR', 'NASON', 'NATAS', 'NATÍO', 'NATIS',
+            'NATOS', 'NATUR', 'NAVAL', 'NAVAR', 'NAVAS', 'NAVES', 'NAVÍO',
+            'NAYAS', 'NAYAR', 'NAZAL', 'NAZAS', 'NAZIA', 'NAZIS', 'NEBLE',
+            'NEBOT', 'NEBRI', 'NEBUS', 'NECAS', 'NECED', 'NECER', 'NECIA',
+            'NECIO', 'NECNO', 'NECRO', 'NEEDA', 'NEFAS', 'NEFOS', 'NEGAD',
+            'NEGAR', 'NEGAS', 'NEGED', 'NEGEN', 'NEGER', 'NEGES', 'NEGLO',
+            'NEGRA', 'NEGRO', 'NEGRÓ', 'NEGUA', 'NEGUÉ', 'NEGUR', 'NEIGA',
+            'NEJAR', 'NELLA', 'NEMAS', 'NEMES', 'NEMIO', 'NEMON', 'NENAS',
+            'NENES', 'NENEO', 'NENGO', 'NENÍA', 'NEONÁ', 'NEPAS', 'NEPAL',
+            'NEPIÉ', 'NERÍN', 'NERIO', 'NEROL', 'NERON', 'NERTA', 'NERVA',
+            'NERVIÓ', 'NERVO', 'NESAR', 'NETAS', 'NETOS', 'NEUMA', 'NEURA',
+            'NEXOS', 'NEXTI', 'NEZNA', 'NIARA', 'NIARA', 'NICAR', 'NICHA',
+            'NICHE', 'NICHO', 'NIDAL', 'NIDAR', 'NIDOS', 'NIEBLA', 'NIEGA',
+            'NIELS', 'NIETO', 'NIEVA', 'NIEVE', 'NIEVO', 'NIGUA', 'NIHIL',
+            'NIJAR', 'NIJEL', 'NIJEZ', 'NILÓN', 'NIMBA', 'NIMBO', 'NIMIA',
+            'NIMIO', 'NINFO', 'NINFA', 'NINJA', 'NINÓN', 'NIÑOS', 'NIÑAS',
+            'NIOBE', 'NIOLO', 'NIPIS', 'NIPÓN', 'NIPLE', 'NIPON', 'NIPÓN',
+            'NIQUI', 'NISNI', 'NITID', 'NITOS', 'NITRA', 'NITRE', 'NITRO',
+            'NIVEL', 'NIVED', 'NIVEN', 'NIVER', 'NIVEL', 'NIVIS', 'NIXON',
+            'NIZAS', 'NNRÚN', 'NOAYA', 'NOBÉL', 'NOBLE', 'NOBRA', 'NOCHE',
+            'NOCHÉ', 'NOCHS', 'NOCIÓ', 'NOCIÓN', 'NODAR', 'NODÓN', 'NODOS',
+            'NOEMA', 'NOGAL', 'NOLIS', 'NOLLA', 'NOLLE', 'NOMAS', 'NOMAT',
+            'NOMIC', 'NOMIS', 'NOMOS', 'NONAS', 'NONÁS', 'NONES', 'NOÑOS',
+            'NOPAL', 'NORAY', 'NORÉS', 'NORIA', 'NORMA', 'NORNE', 'NORON',
+            'NORSE', 'NORTE', 'NORZA', 'NOSCE', 'NOSER', 'NOSOS', 'NOTAR',
+            'NOTAS', 'NOTED', 'NOTEN', 'NOTER', 'NOTES', 'NOTÉS', 'NOTHO',
+            'NOTIC', 'NOTÍO', 'NOTON', 'NOTOS', 'NOVAL', 'NOVAR', 'NOVAS',
+            'NOVEL', 'NOVEM', 'NOVEN', 'NOVER', 'NOVES', 'NOVIA', 'NOVIE',
+            'NOVIÓ', 'NOVIO', 'NOVIS', 'NOVON', 'NOZAL', 'NUBES', 'NUBLA',
+            'NUBLE', 'NUBLO', 'NUBÓN', 'NUBOS', 'NUBRA', 'NUCAL', 'NUCAR',
+            'NUCAS', 'NUCEA', 'NUCHE', 'NUDOS', 'NUERA', 'NUERO', 'NUERZA',
+            'NUEVA', 'NUEVE', 'NUEVO', 'NULÁS', 'NULID', 'NULLA', 'NULLO',
+            'NULOS', 'NUMAL', 'NUMAS', 'NUMEN', 'NUMÉR', 'NUMOS', 'NUNCA',
+            'NUNCIÓ', 'NUNCI', 'NUNIZ', 'NURSE', 'ÑABLE', 'ÑACAS', 'ÑACUE',
+            'ÑAMEL', 'ÑAMES', 'ÑAÑA', 'ÑAÑOS', 'ÑAPAS', 'ÑAQUE', 'ÑATÁS',
+            'ÑATAS', 'ÑATON', 'ÑATOS', 'ÑATOS', 'ÑECAS', 'ÑECLA', 'ÑEÑES',
+            'ÑEQUE', 'ÑISCA', 'ÑÓCLO', 'ÑONGO', 'ÑOÑAS', 'ÑOÑOS', 'ÑORAS',
+            'ÑUBLE', 'ÑUDOS', 'ÑUFAR', 'ÑUFLO', 'ÑUNCA', 'ÑUSTA', 'ÑUTOS'
+
         ];
 
         let currentGuess = "";
@@ -331,14 +543,14 @@
                 const vowels = ['I', 'O'];
                 const randomVowel = vowels[Math.floor(Math.random() * vowels.length)];
                 hintText.textContent = `Pista: La palabra contiene la vocal: ${randomVowel}`;
-                hintText.classList.remove('hidden');
+                hintText.classList.add('visible');
                 document.getElementById('hintBtn1').disabled = true;
                 hintsUsed = 1;
             } else if (hintNum === 2 && hintsUsed < 2) {
                 const consonants = ['R', 'T', 'M'];
                 const randomConsonant = consonants[Math.floor(Math.random() * consonants.length)];
                 hintText.textContent = `Pista: La palabra contiene la consonante: ${randomConsonant}`;
-                hintText.classList.remove('hidden');
+                hintText.classList.add('visible');
                 document.getElementById('hintBtn2').disabled = true;
                 hintsUsed = 2;
             }

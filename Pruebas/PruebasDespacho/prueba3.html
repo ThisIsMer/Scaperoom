@@ -13,10 +13,64 @@
 
         body {
             font-family: 'Courier New', monospace;
-            background-image: url('../Assets/Despacho.jpg');
+            background: #0a0a0a;
+            color: #e8e8e8;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .intro-dialogue {
+            max-width: 700px;
+            padding: 2rem;
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid rgba(100, 100, 100, 0.6);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #d0d0d0;
+        }
+
+        .continue-btn {
+            padding: 0.8rem 2rem;
+            background: rgba(100, 40, 40, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(150, 100, 100, 0.6);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+            float: right;
+            border-radius: 5px;
+        }
+
+        .continue-btn:hover {
+            background: rgba(150, 100, 100, 0.9);
+        }
+
+        .game-wrapper {
+            background: url('../../Assets/EscritorioPruebaConnections.jpg');
             background-size: cover;
             background-position: center;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,14 +83,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.55);
         }
 
         .back-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 0.8rem 1.5rem;
+            top: 10px;
+            left: 10px;
+            padding: 0.5rem 1rem;
             background: rgba(20, 20, 20, 0.85);
             color: #e8e8e8;
             border: 2px solid rgba(100, 100, 100, 0.6);
@@ -44,81 +98,106 @@
             font-family: 'Courier New', monospace;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
+            border-radius: 5px;
         }
 
         .back-btn:hover {
             background: rgba(80, 80, 80, 0.9);
-            border-color: rgba(150, 150, 150, 0.8);
         }
 
         .game-container {
             position: relative;
             z-index: 10;
-            max-width: 1000px;
-            padding: 2rem;
-            background: rgba(240, 240, 240, 0.8);
+            max-width: 1300px;
+            width: 95%;
+            max-height: 90vh;
+            padding-top: 1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            background: rgba(240, 240, 240, 0.70);
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            margin-top: 2rem;
         }
 
         h1 {
             color: #2a2a2a;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .dialogue {
-            background: rgba(220, 220, 220, 0.9);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-left: 5px solid rgba(100, 40, 40, 0.7);
-            color: #2a2a2a;
-            line-height: 1.6;
-            font-style: italic;
+        .instruction {
+            background: rgba(128, 128, 128, 0.6);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid rgba(171, 217, 255, 0.7);
+            color: #162230;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            border-radius: 5px;
+        }
+
+        .hint-btn {
+            padding: 0.5rem 1rem;
+            background: #c8b074;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .hint-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
         .hint-box {
-            background: rgba(255, 243, 205, 0.9);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            flex: inline-block;
+            background: rgba(255, 243, 205, 0.95);
+            color: #0a0a0a;
+            padding: 0.6rem;
             border-left: 4px solid #d4a017;
             border-radius: 5px;
+            display: none;
         }
 
-        .hint-title {
-            font-weight: bold;
-            color: #2a2a2a;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+        .hint-box.visible {
+            display: block;
+            animation: slideDown 0.3s ease-out;
         }
 
         .cipher-example {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1rem;
             border-radius: 5px;
-            margin-top: 0.5rem;
             font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
         }
 
         .cipher-row {
-            display: flex;
+            display: inline-block;
             justify-content: space-between;
-            margin: 0.5rem 0;
-            padding: 0.5rem;
-            background: rgba(200, 200, 200, 0.5);
-            border-radius: 3px;
         }
 
         .documents-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .document {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1.5rem;
+            background: rgba(219, 219, 219, 0.65);
+            padding: 1.2rem;
             border: 2px solid rgba(100, 100, 100, 0.5);
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
             border-radius: 5px;
@@ -126,15 +205,21 @@
 
         .document h3 {
             color: rgba(100, 40, 40, 0.9);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             text-align: center;
             border-bottom: 2px solid rgba(100, 40, 40, 0.7);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.4rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .schedule-table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            color: #0a0a0a;
         }
 
         .schedule-table th,
@@ -147,6 +232,11 @@
         .schedule-table th {
             background: rgba(74, 74, 74, 0.8);
             color: #e8e8e8;
+            font-weight: bold;
+        }
+
+        .schedule-table tr:nth-child(even) {
+            background: rgba(245, 245, 245, 0.5);
         }
 
         .code-list {
@@ -154,338 +244,346 @@
             padding: 0;
         }
 
-        .code-list li {
+        .code-item {
             padding: 0.8rem;
-            margin-bottom: 0.5rem;
-            background: rgba(249, 249, 249, 0.9);
+            background: rgba(249, 249, 249, 0.95);
             border-left: 4px solid rgba(100, 40, 40, 0.7);
-            font-family: 'Courier New', monospace;
+            margin-bottom: 0.6rem;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
         }
 
         .code-cipher {
             font-weight: bold;
             color: rgba(100, 40, 40, 0.9);
-            margin-right: 1rem;
-            letter-spacing: 2px;
-        }
-
-        .answer-section {
-            background: rgba(220, 220, 220, 0.9);
-            padding: 2rem;
-            border: 3px solid rgba(100, 40, 40, 0.7);
-            border-radius: 5px;
-        }
-
-        .answer-section h3 {
-            color: rgba(100, 40, 40, 0.9);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .question {
-            margin-bottom: 1.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 1rem;
-            border-radius: 5px;
-        }
-
-        .question label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #2a2a2a;
-        }
-
-        .question input {
-            width: 100%;
-            padding: 0.8rem;
+            letter-spacing: 1px;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            min-width: 120px;
+        }
+
+        .code-input {
+            flex: 1;
+            padding: 0.5rem;
             border: 2px solid rgba(120, 120, 120, 0.6);
-            background: rgba(255, 255, 255, 0.95);
             border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: rgba(100, 40, 40, 0.9);
+            box-shadow: 0 0 5px rgba(100, 40, 40, 0.3);
         }
 
         .submit-btn {
             width: 100%;
-            padding: 1rem;
+            padding: 0.8rem;
             background: rgba(100, 40, 40, 0.85);
             color: #e8e8e8;
             border: none;
             font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
             margin-top: 1rem;
             border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .submit-btn:hover {
             background: rgba(80, 30, 30, 0.95);
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .message {
             margin-top: 1rem;
-            padding: 1rem;
+            padding: 0.8rem;
             border-radius: 5px;
             text-align: center;
             font-weight: bold;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .message.visible {
+            display: block;
+            animation: slideDown 0.3s ease-out;
         }
 
         .message.error {
             background: rgba(255, 235, 238, 0.95);
             color: #c62828;
+            border-left: 4px solid #c62828;
         }
 
         .message.success {
             background: rgba(232, 245, 233, 0.95);
             color: #2e7d32;
-        }
-
-        .hint {
-            background: rgba(255, 243, 205, 0.9);
-            padding: 1rem;
-            margin-top: 1rem;
-            border-left: 4px solid #d4a017;
-            color: #6a4f0f;
-            font-size: 0.9rem;
+            border-left: 4px solid #2e7d32;
         }
 
         .complete-btn {
             width: 100%;
-            padding: 1rem;
+            padding: 0.8rem;
             background: rgba(76, 175, 80, 0.9);
             color: #e8e8e8;
             border: none;
             font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
             margin-top: 1rem;
             border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            display: none;
         }
 
         .complete-btn:hover {
             background: rgba(56, 142, 60, 0.95);
+            transform: translateY(-2px);
         }
 
-        .hidden {
-            display: none;
+        .complete-btn.visible {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .documents-container {
+                grid-template-columns: 1fr;
+            }
+
+            .game-container {
+                width: 98%;
+                padding: 1rem;
+            }
+
+            .code-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <button class="back-btn" onclick="goBack()">Volver al Despacho</button>
-    
-    <div class="overlay"></div>
-    
-    <div class="game-container">
-        <h1>CUAL ES MI HORARIO</h1>
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-dialogue">
+            <div class="intro-text">
+                Tocará aprenderse cuando tienes las clases (o por lo menos saber a qué hora terminar tu meditación andaluza para llegar a la hora, 20 minutitos arriba o abajo no le importan a nadie).<br><br>
+                
+                Empiezas a mirar el documento y por algún motivo los horarios vienen clasificados con números por nombre de asignatura. Genial... Ahora, ¿dónde tenías la chuleta de las asignaturas? Seguro que era algo tal que así...
+            </div>
+            <button class="continue-btn" onclick="closeIntro()">Continuar</button>
+        </div>
+    </div>
+
+    <div class="game-wrapper">
+        <button class="back-btn" onclick="goBack()">← Volver al Despacho</button>
         
-        <div class="dialogue">
-            Tocara aprenderse cuando tienes las clases... o por lo menos saber a que hora terminar tu meditacion andaluza para llegar a la hora. 20 minutitos arriba o abajo no le importan a nadie...<br><br>
+        <div class="overlay"></div>
+        
+        <div class="game-container">
+            <h1>¿Cuál Es Mi Horario?</h1>
             
-            Empiezas a mirar el documento y por algun motivo los horarios vienen clasificados con codigos cifrados por nombre de asignatura. Genial... Ahora tendras que descifrarlos.
-        </div>
-
-        <div class="hint-box">
-            <div class="hint-title">PISTA DE DESCIFRADO</div>
-            <p>Cada letra del codigo esta desplazada 3 posiciones hacia atras en el alfabeto.</p>
-            <div class="cipher-example">
-                <strong>Ejemplo con palabra independiente:</strong>
-                <div class="cipher-row">
-                    <span>Palabra normal:</span>
-                    <span><strong>GATO</strong></span>
-                </div>
-                <div class="cipher-row">
-                    <span>Palabra cifrada:</span>
-                    <span><strong>DXQL</strong></span>
-                </div>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #4a4a4a;">
-                    (G→D, A→X, T→Q, O→L) Cada letra retrocede 3 posiciones
-                </p>
+            <div class="instruction">
+                <strong>INSTRUCCIÓN:</strong> Los horarios están puestos con su código de asignatura. Descifra cual es cada una.
             </div>
-        </div>
 
-        <div class="documents-container">
-            <div class="document">
-                <h3>HORARIO SEMANAL</h3>
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Dia</th>
+            <div class="hint-container">
+                <button class="hint-btn" onclick="toggleHint()">Ver Pista</button>
+                <div class="hint-box" id="hintBox">
+                    <div class="cipher-example">
+                        <div class="cipher-row">
+                            <span>Palabra normal:</span>
+                            <span><strong>GATO</strong></span>
+                            <span>Palabra cifrada:</span>
+                            <span><strong>DXQL</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="documents-container">
+                <div class="document">
+                    <h3>Horario Semanal</h3>
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
                             <th>Hora</th>
-                            <th>Codigo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Lunes</td>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
                             <td>09:00</td>
-                            <td><strong>EXOBÑXZFKQ</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Lunes</td>
-                            <td>11:00</td>
-                            <td><strong>XOKXE</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Miercoles</td>
+                            <td>ZLKBXOFX</td>
+                            <td>ASIGNATURA_1</td>
+                            <td>EXOBÑXZFKQ</td>
+                            <td>ASIGNATURA_2</td>
+                            <td>BFPQLOFX</td>
+                            </tr>
+                            <tr>
                             <td>10:00</td>
-                            <td><strong>ZLKBXOFX</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Miercoles</td>
-                            <td>15:00</td>
-                            <td><strong>ZLRKFZFÑX</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Viernes</td>
-                            <td>09:00</td>
-                            <td><strong>EXOBÑXZFKQ</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Viernes</td>
-                            <td>12:00</td>
-                            <td><strong>BFPQLOFX</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                            <td>ASIGNATURA_3</td>
+                            <td>XOKXE</td>
+                            <td>ASIGNATURA_4</td>
+                            <td>ZLRKFZFÑX</td>
+                            <td>ASIGNATURA_5</td>
+                            </tr>
+                        </tbody>
+                        </table>
 
-            <div class="document">
-                <h3>ASIGNATURAS CIFRADAS</h3>
-                <ul class="code-list">
-                    <li><span class="code-cipher">ZLKBXOFX</span> = ?</li>
-                    <li><span class="code-cipher">EXOBÑXZFKQ</span> = ?</li>
-                    <li><span class="code-cipher">BFPQLOFX</span> = ?</li>
-                    <li><span class="code-cipher">XOKXE</span> = ?</li>
-                    <li><span class="code-cipher">ZLRKFZFÑX</span> = ?</li>
-                </ul>
-                <div style="margin-top: 1rem; padding: 1rem; background: rgba(227, 242, 253, 0.8); border-radius: 5px;">
-                    <strong>Alfabeto de referencia:</strong><br>
-                    A B C D E F G H I J K L M N Ñ O P Q R S T U V W X Y Z
+                </div>
+
+                <div class="document">
+                    <h3>Asignaturas Cifradas</h3>
+                    <div class="code-list">
+                        <div class="code-item">
+                            <span class="code-cipher">ZLKBXOFX</span>
+                            <input type="text" class="code-input" id="answer1" placeholder="Descifra..." maxlength="30">
+                        </div>
+                        <div class="code-item">
+                            <span class="code-cipher">EXOBÑXZFKQ</span>
+                            <input type="text" class="code-input" id="answer2" placeholder="Descifra..." maxlength="30">
+                        </div>
+                        <div class="code-item">
+                            <span class="code-cipher">BFPQLOFX</span>
+                            <input type="text" class="code-input" id="answer3" placeholder="Descifra..." maxlength="30">
+                        </div>
+                        <div class="code-item">
+                            <span class="code-cipher">XOKXE</span>
+                            <input type="text" class="code-input" id="answer4" placeholder="Descifra..." maxlength="30">
+                        </div>
+                        <div class="code-item">
+                            <span class="code-cipher">ZLRKFZFÑX</span>
+                            <input type="text" class="code-input" id="answer5" placeholder="Descifra..." maxlength="30">
+                        </div>
+                    </div>
+
+                    <button class="submit-btn" onclick="checkAnswers()">Verificar Respuestas</button>
+                    
+                    <div id="message" class="message"></div>
                 </div>
             </div>
+
+            <button class="complete-btn" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver al Despacho</button>
         </div>
-
-        <div class="answer-section" id="answerSection">
-            <h3>DESCIFRA LAS ASIGNATURAS</h3>
-            
-            <div class="question">
-                <label>1. Que asignatura tienes los lunes a las 09:00?</label>
-                <input type="text" id="answer1" placeholder="Nombre de la asignatura descifrada...">
-            </div>
-
-            <div class="question">
-                <label>2. A que hora tienes COMPOSICION?</label>
-                <input type="text" id="answer2" placeholder="Formato: HH:MM">
-            </div>
-
-            <div class="question">
-                <label>3. Cuantas clases de HARMONIZACION tienes a la semana?</label>
-                <input type="number" id="answer3" placeholder="Numero...">
-            </div>
-
-            <button class="submit-btn" onclick="checkAnswers()">VERIFICAR RESPUESTAS</button>
-            
-            <div id="message" class="message hidden"></div>
-            <div id="hint" class="hint hidden"></div>
-        </div>
-
-        <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver al Despacho</button>
     </div>
 
     <script>
-        function decipherCaesar(text) {
-            const alphabet = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
-            let result = '';
-            
-            for (let char of text.toUpperCase()) {
-                const index = alphabet.indexOf(char);
-                if (index !== -1) {
-                    let newIndex = index + 3;
-                    if (newIndex >= alphabet.length) {
-                        newIndex = newIndex - alphabet.length;
-                    }
-                    result += alphabet[newIndex];
-                } else {
-                    result += char;
-                }
-            }
-            
-            return result;
-        }
-
-        const cipheredSubjects = {
-            'ZLKBXOFX': 'CONTARIA',      // MELODIA
-            'EXOBÑXZFKQ': 'HARMONIZACION', // HARMONIZACION
-            'BFPQLOFX': 'ETNOGRAFIA',     // HISTORIA
-            'XOKXE': 'ARMAR',            // ARMAR
-            'ZLRKFZFÑX': 'COMPOSICION'    // COMPOSICION
-        };
-
         const correctAnswers = {
-            answer1: ['harmonizacion', 'harmonización'],
-            answer2: ['15:00', '15', '3:00 pm', '3pm', '15:00h'],
-            answer3: '2'
+            answer1: ['databases', 'base de datos', 'basededatos'],
+            answer2: ['harmonization', 'harmonización', 'harmonizacion', 'armonizacion', 'armonización'],
+            answer3: ['software', 'programas'],
+            answer4: ['music', 'musica', 'música'],
+            answer5: ['programming', 'programacion', 'programación']
         };
 
         let attempts = 0;
 
+        function closeIntro() {
+            const overlay = document.getElementById('introOverlay');
+            overlay.style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+            
+            if (!localStorage.getItem('prueba3_visited')) {
+                localStorage.setItem('prueba3_visited', 'true');
+            }
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hintBox');
+            hintBox.classList.toggle('visible');
+        }
+
         function normalizeText(text) {
             return text.toLowerCase().trim()
                 .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                .replace(/\s+/g, ' ');
+                .replace(/\s+/g, '');
         }
 
         function checkAnswers() {
             const ans1 = normalizeText(document.getElementById('answer1').value);
             const ans2 = normalizeText(document.getElementById('answer2').value);
-            const ans3 = document.getElementById('answer3').value.trim();
+            const ans3 = normalizeText(document.getElementById('answer3').value);
+            const ans4 = normalizeText(document.getElementById('answer4').value);
+            const ans5 = normalizeText(document.getElementById('answer5').value);
 
             const message = document.getElementById('message');
-            const hint = document.getElementById('hint');
 
             const isAns1Correct = correctAnswers.answer1.some(a => normalizeText(a) === ans1);
-            const isAns2Correct = correctAnswers.answer2.includes(ans2);
-            const isAns3Correct = ans3 === correctAnswers.answer3;
+            const isAns2Correct = correctAnswers.answer2.some(a => normalizeText(a) === ans2);
+            const isAns3Correct = correctAnswers.answer3.some(a => normalizeText(a) === ans3);
+            const isAns4Correct = correctAnswers.answer4.some(a => normalizeText(a) === ans4);
+            const isAns5Correct = correctAnswers.answer5.some(a => normalizeText(a) === ans5);
 
-            if (isAns1Correct && isAns2Correct && isAns3Correct) {
-                message.className = 'message success';
-                message.textContent = 'PERFECTO. Ya sabes cuando llegar a clase';
-                message.classList.remove('hidden');
-                hint.classList.add('hidden');
+            if (isAns1Correct && isAns2Correct && isAns3Correct && isAns4Correct && isAns5Correct) {
+                message.className = 'message success visible';
+                message.textContent = '¡Perfecto! Ya sabes cuándo llegar a clase';
                 
-                document.getElementById('answerSection').classList.add('hidden');
-                document.getElementById('completeBtn').classList.remove('hidden');
+                document.getElementById('completeBtn').classList.add('visible');
+                document.querySelectorAll('.code-input').forEach(input => input.disabled = true);
+                document.querySelector('.submit-btn').disabled = true;
                 
                 localStorage.setItem('prueba3_completed', 'true');
             } else {
                 attempts++;
-                message.className = 'message error';
+                message.className = 'message error visible';
                 
                 let errors = [];
-                if (!isAns1Correct) errors.push('Pregunta 1: Recuerda descifrar EXOBÑXZFKQ (cada letra +3 posiciones)');
-                if (!isAns2Correct) errors.push('Pregunta 2: Busca ZLRKFZFÑX en el horario');
-                if (!isAns3Correct) errors.push('Pregunta 3: Cuenta cuantas veces aparece EXOBÑXZFKQ');
+                if (!isAns1Correct) errors.push('ZLKBXOFX');
+                if (!isAns2Correct) errors.push('EXOBÑXZFKQ');
+                if (!isAns3Correct) errors.push('BFPQLOFX');
+                if (!isAns4Correct) errors.push('XOKXE');
+                if (!isAns5Correct) errors.push('ZLRKFZFÑX');
                 
-                message.textContent = 'Algunas respuestas son incorrectas. ' + errors.join('. ');
-                message.classList.remove('hidden');
+                message.textContent = 'Algunas respuestas no son correctas. Revisa: ' + errors.join(', ');
 
-                if (attempts === 1) {
-                    hint.textContent = 'Pista: Para descifrar, suma 3 a cada letra. E+3=H, X+3=A, O+3=R...';
-                    hint.classList.remove('hidden');
-                } else if (attempts === 2) {
-                    hint.innerHTML = 'Pista adicional: EXOBÑXZFKQ descifrado es <strong>HARMONIZACION</strong>. Ahora encuentra las otras.';
-                    hint.classList.remove('hidden');
+                if (attempts === 2) {
+                    message.textContent += 'Piensalo bien (tengo que poner una pista de verdad)';
+                } else if (attempts >= 3) {
+                    message.innerHTML += '<br><br> Piensalo bien (tengo que poner una pista de verdad)';
                 }
             }
         }
 
-        document.querySelectorAll('input').forEach(input => {
+        document.querySelectorAll('.code-input').forEach(input => {
             input.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     checkAnswers();
@@ -502,10 +600,11 @@
             window.location.href = '../../Escenarios/despacho.html';
         }
 
-        console.log('Asignaturas descifradas (para debug):');
-        for (let [cipher, plain] of Object.entries(cipheredSubjects)) {
-            console.log(`${cipher} → ${plain}`);
-        }
+        window.onload = function() {
+            if (localStorage.getItem('prueba3_visited')) {
+                closeIntro();
+            }
+        };
     </script>
 </body>
 </html>
