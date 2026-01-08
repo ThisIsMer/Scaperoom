@@ -5,6 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 3 - Horarios Cifrados</title>
     <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            background: url('../../Assets/EscritorioPruebaConnections.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .game-container {
+            max-width: 1300px;
+            width: 95%;
+            padding-top: 1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .documents-container {
+                grid-template-columns: 1fr;
+            }
+
+            .game-container {
+                width: 98%;
+                padding: 1rem;
+            }
+
+            .code-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="intro-overlay" id="introOverlay">
@@ -44,57 +89,55 @@
                 </div>
             </div>
 
-
             <div class="documents-container">
                 <div class="document">
                     <h3>Horario Semanal</h3>
                     <table class="schedule-table">
                         <thead>
                             <tr>
-                            <th>Hora</th>
-                            <th>Lunes</th>
-                            <th>Martes</th>
-                            <th>Miércoles</th>
-                            <th>Jueves</th>
-                            <th>Viernes</th>
+                                <th>Hora</th>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                            <td>10:00</td>
-                            <td>RITMO</td>
-                            <td>ZLOXI</td>
-                            <td>ZLOXI</td>
-                            <td>LMBOX</td>
-                            <td>LMBOX</td>
+                                <td>10:00</td>
+                                <td>RITMO</td>
+                                <td>ZLOXI</td>
+                                <td>ZLOXI</td>
+                                <td>LMBOX</td>
+                                <td>LMBOX</td>
                             </tr>
                             <tr>
-                            <td>11:00</td>
-                            <td>OFQJL</td>
-                            <td>CORAL</td>
-                            <td>ZLOXI</td>
-                            <td>LMBOX</td>
-                            <td>OPERA</td>
+                                <td>11:00</td>
+                                <td>OFQJL</td>
+                                <td>CORAL</td>
+                                <td>ZLOXI</td>
+                                <td>LMBOX</td>
+                                <td>OPERA</td>
                             </tr>
                             <tr>
-                            <td>12:00</td>
-                            <td>ZXKQL</td>
-                            <td>ZXKQL</td>
-                            <td>PIANO</td>
-                            <td>MFXKL</td>
-                            <td>OFQJL</td>
+                                <td>12:00</td>
+                                <td>ZXKQL</td>
+                                <td>ZXKQL</td>
+                                <td>PIANO</td>
+                                <td>MFXKL</td>
+                                <td>OFQJL</td>
                             </tr>
                             <tr>
-                            <td>13:00</td>
-                            <td>ZXKQL</td>
-                            <td>CANTO</td>
-                            <td>MFXKL</td>
-                            <td>MFXKL </td>
-                            <td>OFQJL</td>
+                                <td>13:00</td>
+                                <td>ZXKQL</td>
+                                <td>CANTO</td>
+                                <td>MFXKL</td>
+                                <td>MFXKL</td>
+                                <td>OFQJL</td>
                             </tr>
                         </tbody>
-                        </table>
-
+                    </table>
                 </div>
 
                 <div class="document">
@@ -124,11 +167,11 @@
 
                     <button class="submit-btn" onclick="checkAnswers()">Verificar Respuestas</button>
                     
-                    <div id="message" class="message"></div>
+                    <div id="message" class="message hidden"></div>
                 </div>
             </div>
 
-            <button class="complete-btn" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver al Despacho</button>
+            <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver al Despacho</button>
         </div>
     </div>
 
@@ -182,17 +225,19 @@
             const isAns5Correct = correctAnswers.answer5.some(a => normalizeText(a) === ans5);
 
             if (isAns1Correct && isAns2Correct && isAns3Correct && isAns4Correct && isAns5Correct) {
-                message.className = 'message success visible';
+                message.className = 'message success';
+                message.classList.remove('hidden');
                 message.textContent = '¡Perfecto! Ya sabes cuándo llegar a clase';
                 
-                document.getElementById('completeBtn').classList.add('visible');
+                document.getElementById('completeBtn').classList.remove('hidden');
                 document.querySelectorAll('.code-input').forEach(input => input.disabled = true);
                 document.querySelector('.submit-btn').disabled = true;
                 
                 localStorage.setItem('prueba3_completed', 'true');
             } else {
                 attempts++;
-                message.className = 'message error visible';
+                message.className = 'message error';
+                message.classList.remove('hidden');
                 
                 let errors = [];
                 if (!isAns1Correct) errors.push('ZLKBXOFX');
@@ -204,9 +249,9 @@
                 message.textContent = 'Algunas respuestas no son correctas. Revisa: ' + errors.join(', ');
 
                 if (attempts === 2) {
-                    message.textContent += 'Piensalo bien (tengo que poner una pista de verdad)';
+                    message.textContent += ' | Piensalo bien (necesitas ver la pista)';
                 } else if (attempts >= 3) {
-                    message.innerHTML += '<br><br> Piensalo bien (tengo que poner una pista de verdad)';
+                    message.textContent += ' | El cifrado desplaza 3 posiciones';
                 }
             }
         }

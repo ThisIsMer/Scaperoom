@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 2.1-2 - Y tu quien eres</title>
     <link rel="stylesheet" href="../../styles.css">
+    <style>
+        .game-wrapper {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            height: 100vh;
+        }
+
+        .game-container {
+            max-width: 900px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(103, 58, 183, 0.85), rgba(74, 111, 165, 0.85));
+        }
+    </style>
 </head>
 <body>
     <div class="intro-overlay" id="introOverlay">
@@ -21,7 +35,7 @@
     </div>
 
     <div class="game-wrapper">
-        <button class="back-btn" onclick="goBack()">Volver a Clase</button>
+        <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
 
         <div class="game-container">
             <div class="header">
@@ -77,11 +91,11 @@
         ];
 
         const rhythmPatterns = [
-            [600, 600],                    // Frase 1: 2 palabras = 2 notas usuario
-            [500, 700, 500],               // Frase 2: 3 palabras = 3 notas usuario
-            [400, 400, 600],               // Frase 3: 3 palabras = 3 notas usuario
-            [500, 600, 600],               // Frase 4: 3 palabras = 3 notas usuario
-            [400, 500, 700]                // Frase 5: 3 palabras = 3 notas usuario
+            [600, 600],
+            [500, 700, 500],
+            [400, 400, 600],
+            [500, 600, 600],
+            [400, 500, 700]
         ];
 
         let currentPhrase = 0;
@@ -93,7 +107,7 @@
         let startTime = 0;
         let wordsRevealed = [];
         let waitingForInput = false;
-        const TOLERANCE = 450; // 300% más tolerancia (era 150ms)
+        const TOLERANCE = 450;
 
         function initGame() {
             wordsRevealed = emailPhrases.map(phrase => phrase.map(() => ({ revealed: false, crossed: false })));
@@ -130,7 +144,6 @@
         function startPhrase() {
             currentWord = 0;
             document.getElementById('phraseNum').textContent = currentPhrase + 1;
-            document.getElementById('totalWords').textContent = emailPhrases[currentPhrase].length;
             updateWordCount();
             showMessage('Observa la secuencia...', 'info');
             
@@ -147,7 +160,6 @@
             const beatDisplay = document.getElementById('beatDisplay');
             beatDisplay.innerHTML = '';
 
-            // Crear beats: 1 referencia + las necesarias para el patrón
             const refBeat = document.createElement('div');
             refBeat.className = 'beat reference';
             refBeat.innerHTML = '♪<div class="beat-label">REF</div>';
@@ -171,7 +183,6 @@
                 if (currentBeat < beats.length) {
                     beats[currentBeat].classList.add('active');
                     
-                    // La nota de referencia también tiene un timing (primer intervalo del patrón)
                     const nextDelay = currentBeat === 0 ? pattern[0] : pattern[currentBeat - 1];
                     currentBeat++;
                     
@@ -198,7 +209,6 @@
             document.getElementById('statusMessage').textContent = 'Tu turno - Presiona ESPACIO';
             showMessage('Presiona ESPACIO siguiendo el ritmo', 'info');
             
-            // Iluminar la nota blanca automáticamente al inicio del turno del jugador
             const beatDisplay = document.getElementById('beatDisplay');
             const beats = Array.from(beatDisplay.querySelectorAll('.beat'));
             
@@ -206,27 +216,23 @@
                 beats[0].classList.add('active');
                 setTimeout(() => {
                     beats[0].classList.remove('active');
-                    // Ahora sí puede empezar a presionar
                     waitingForInput = true;
-                    startTime = Date.now(); // Establecer el tiempo de inicio después de la referencia
+                    startTime = Date.now();
                 }, 200);
-            }, 500); // Pequeña pausa antes de mostrar la referencia
+            }, 500);
         }
 
         function playerBeat() {
             if (!isPlayerTurn || !waitingForInput) return;
 
             const currentTime = Date.now();
-            
-            // Calcular tiempo desde el inicio (que se estableció después de la nota blanca)
             const timeSinceStart = currentTime - startTime;
             playerSequence.push(timeSinceStart);
 
             const beatDisplay = document.getElementById('beatDisplay');
             const beats = Array.from(beatDisplay.querySelectorAll('.beat'));
-            const beatIndex = playerSequence.length; // 1, 2, 3...
+            const beatIndex = playerSequence.length;
 
-            // Activar el beat correspondiente (saltando la referencia que es 0)
             if (beatIndex < beats.length) {
                 beats[beatIndex].classList.add('active');
                 setTimeout(() => {
@@ -234,7 +240,6 @@
                 }, 200);
             }
 
-            // Si completamos todas las notas necesarias
             if (playerSequence.length === expectedSequence.length) {
                 waitingForInput = false;
                 checkRhythm();
@@ -249,10 +254,6 @@
             const beatDisplay = document.getElementById('beatDisplay');
             const beats = beatDisplay.querySelectorAll('.beat');
 
-            // Comparar los tiempos de pulsación con el patrón esperado
-            // playerSequence tiene los tiempos absolutos desde startTime
-            // expectedSequence tiene los intervalos esperados
-            
             let cumulativeExpected = 0;
             for (let i = 0; i < expectedSequence.length; i++) {
                 cumulativeExpected += expectedSequence[i];
@@ -277,7 +278,6 @@
         }
 
         function handleSuccess() {
-            // Revelar TODAS las palabras de la frase actual
             for (let i = 0; i < emailPhrases[currentPhrase].length; i++) {
                 wordsRevealed[currentPhrase][i].revealed = true;
                 wordsRevealed[currentPhrase][i].crossed = false;
@@ -286,10 +286,8 @@
             renderEmail();
             showMessage('Correcto - Frase completada', 'success');
 
-            // Pasar a la siguiente frase
             currentPhrase++;
             
-            // Si completamos las 5 frases, terminar el juego
             if (currentPhrase >= 5) {
                 setTimeout(() => {
                     showMessage('Has completado el correo', 'success');
@@ -298,7 +296,6 @@
                     localStorage.setItem('prueba2_1_2_completed', 'true');
                 }, 1000);
             } else {
-                // Pasar a la siguiente frase
                 setTimeout(() => {
                     startPhrase();
                 }, 2000);
@@ -306,7 +303,6 @@
         }
 
         function handleFailure() {
-            // Marcar TODAS las palabras de la frase como tachadas
             for (let i = 0; i < emailPhrases[currentPhrase].length; i++) {
                 wordsRevealed[currentPhrase][i].crossed = true;
                 wordsRevealed[currentPhrase][i].revealed = false;
@@ -316,7 +312,6 @@
             showMessage('Fallaste el ritmo. Intentalo de nuevo', 'error');
 
             setTimeout(() => {
-                // Limpiar las palabras tachadas
                 for (let i = 0; i < emailPhrases[currentPhrase].length; i++) {
                     wordsRevealed[currentPhrase][i].crossed = false;
                 }
@@ -379,32 +374,6 @@
         };
 
         initGame();
-        
-        function renderEmail() {
-            const content = document.getElementById('emailContent');
-            content.innerHTML = '';
-
-            emailPhrases.forEach((phrase, pIdx) => {
-                phrase.forEach((word, wIdx) => {
-                    const wordSpan = document.createElement('span');
-                    wordSpan.className = 'word';
-                    
-                    if (wordsRevealed[pIdx][wIdx].revealed) {
-                        wordSpan.textContent = word;
-                        wordSpan.classList.add('revealed');
-                    } else {
-                        wordSpan.textContent = '_'.repeat(word.length);
-                    }
-                    
-                    if (wordsRevealed[pIdx][wIdx].crossed) {
-                        wordSpan.classList.add('crossed');
-                    }
-                    
-                    content.appendChild(wordSpan);
-                });
-                content.appendChild(document.createElement('br'));
-            });
-        }
     </script>
 </body>
 </html>

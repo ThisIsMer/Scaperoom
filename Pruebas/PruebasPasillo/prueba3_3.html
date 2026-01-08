@@ -5,11 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 3.3 - Formación Extraordinaria</title>
     <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .game-container {
+            max-width: 900px;
+            background: #fff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .video-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            border-radius: 10px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
     <button class="back-btn" onclick="goBack()">← Volver al Pasillo</button>
 
-    <div class="container">
+    <div class="game-container">
         <div class="header">
             <h1>📧 CURSO DE FORMACIÓN EXTRAORDINARIO</h1>
             <p>Capacitación Urgente sobre Asignación de Aulas</p>
@@ -36,51 +78,35 @@
             </div>
 
             <div class="video-container">
-                <div class="retro-video">
-                    <div class="video-title">🎥 FORMACIÓN: "Uso del Email Universitario" (1997) 🎥</div>
-                    <div class="video-content">
-                        <div class="video-detail">[00:05] Presentador <span class="presenter-name">"Manolo Pérez"</span> entra en escena</div>
-                        <div class="video-detail">[00:12] Lleva puesto un <span class="tracksuit">chándal azul de los 90</span></div>
-                        <div class="video-detail">[00:34] "El email tarda exactamente <strong>47 segundos</strong> en llegar"</div>
-                        <div class="video-detail">[01:15] Aparece su gato mascota: <span class="cat-name">"Whiskers Jr."</span></div>
-                        <div class="video-detail">[02:03] Teclado visible en escritorio: marca <span class="keyboard-brand">COMPAQ</span></div>
-                        <div class="video-detail">[02:47] El presentador <span class="timestamp">se suena los mocos</span></div>
-                        <div class="video-detail">[03:20] "Recuerden: nunca usen mayúsculas, es de mala educación"</div>
-                        <div class="video-detail">[04:05] Video termina con música MIDI</div>
-                    </div>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/j0YXfeNxJJ0?si=bcVCn9iQGsGCPhJN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             </div>
 
             <div class="quiz-section">
                 <div class="quiz-title">📝 EXAMEN DE COMPRENSIÓN DEL VÍDEO</div>
                 <p style="text-align: center; margin-bottom: 2rem; color: #666;">
-                    (Debes responder sobre los detalles más absurdos del vídeo, no sobre lo importante)
+                    (Responde según lo que viste en el vídeo)
                 </p>
 
                 <div class="question">
-                    <div class="question-text">1. ¿Cuántos segundos tarda el email en llegar según el vídeo?</div>
-                    <input type="number" id="q1" placeholder="Número de segundos...">
+                    <div class="question-text">1. ¿Qué tipo de contenido es el vídeo?</div>
+                    <input type="text" id="q1" placeholder="Tu respuesta...">
                 </div>
 
                 <div class="question">
-                    <div class="question-text">2. ¿Cuál es el nombre del gato mascota del presentador?</div>
-                    <input type="text" id="q2" placeholder="Nombre del gato...">
+                    <div class="question-text">2. ¿Cuál es el tema principal del vídeo?</div>
+                    <input type="text" id="q2" placeholder="Tu respuesta...">
                 </div>
 
                 <div class="question">
-                    <div class="question-text">3. ¿Qué marca de teclado aparece en el escritorio?</div>
-                    <select id="q3">
-                        <option value="">Selecciona una opción...</option>
-                        <option value="IBM">IBM</option>
-                        <option value="COMPAQ">COMPAQ</option>
-                        <option value="HP">HP</option>
-                        <option value="DELL">DELL</option>
-                    </select>
+                    <div class="question-text">3. ¿Qué aprendiste del vídeo?</div>
+                    <input type="text" id="q3" placeholder="Tu respuesta...">
                 </div>
 
                 <div class="question">
-                    <div class="question-text">4. ¿En qué minuto (MM:SS) el presentador se suena los mocos?</div>
-                    <input type="text" id="q4" placeholder="Formato: MM:SS (ej: 02:47)">
+                    <div class="question-text">4. ¿Cuál es tu opinión sobre el contenido?</div>
+                    <input type="text" id="q4" placeholder="Tu respuesta...">
                 </div>
 
                 <button class="submit-btn" onclick="checkAnswers()">ENVIAR RESPUESTAS</button>
@@ -115,28 +141,17 @@
     </div>
 
     <script>
-        const correctAnswers = {
-            q1: '47',
-            q2: ['whiskers jr', 'whiskers jr.', 'whiskersjr'],
-            q3: 'COMPAQ',
-            q4: ['02:47', '2:47']
-        };
-
         function checkAnswers() {
             const a1 = document.getElementById('q1').value.trim();
-            const a2 = document.getElementById('q2').value.toLowerCase().trim();
-            const a3 = document.getElementById('q3').value;
+            const a2 = document.getElementById('q2').value.trim();
+            const a3 = document.getElementById('q3').value.trim();
             const a4 = document.getElementById('q4').value.trim();
             const msg = document.getElementById('message');
 
-            const isQ1Correct = a1 === correctAnswers.q1;
-            const isQ2Correct = correctAnswers.q2.some(ans => a2.includes(ans.replace(/\./g, '')));
-            const isQ3Correct = a3 === correctAnswers.q3;
-            const isQ4Correct = correctAnswers.q4.includes(a4);
-
-            if (isQ1Correct && isQ2Correct && isQ3Correct && isQ4Correct) {
+            // Validar que todas las respuestas tengan al menos 3 caracteres
+            if (a1.length >= 3 && a2.length >= 3 && a3.length >= 3 && a4.length >= 3) {
                 msg.className = 'message success';
-                msg.textContent = '✓ ¡Perfecto! Has demostrado una atención al detalle impresionante en contenido completamente intrascendente.';
+                msg.textContent = '✓ ¡Perfecto! Has demostrado que viste el vídeo (o que eres muy creativo inventando respuestas).';
                 msg.classList.remove('hidden');
 
                 setTimeout(() => {
@@ -147,14 +162,7 @@
                 localStorage.setItem('prueba3_3_completed', 'true');
             } else {
                 msg.className = 'message error';
-                let hints = [];
-                
-                if (!isQ1Correct) hints.push('Pregunta 1: Revisa cuándo menciona los segundos');
-                if (!isQ2Correct) hints.push('Pregunta 2: Fíjate bien en el nombre completo del gato');
-                if (!isQ3Correct) hints.push('Pregunta 3: Mira la marca del teclado en el escritorio');
-                if (!isQ4Correct) hints.push('Pregunta 4: Formato MM:SS (con dos dígitos)');
-
-                msg.textContent = '❌ Algunas respuestas son incorrectas. ' + hints.join('. ');
+                msg.textContent = '❌ Por favor, responde todas las preguntas con respuestas válidas (mínimo 3 caracteres cada una).';
                 msg.classList.remove('hidden');
             }
         }

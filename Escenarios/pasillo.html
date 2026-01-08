@@ -5,12 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pasillo - La Sustitución</title>
     <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            background: #0a0a0a;
+        }
+
+        .room {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('../Assets/Pasillo.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .back-btn {
+            top: 20px;
+            left: 20px;
+        }
+
+        .intro-dialogue {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 800px;
+            padding: 1.5rem;
+            background: rgba(20, 20, 20, 0.85);
+            border: 2px solid rgba(100, 100, 100, 0.6);
+            z-index: 100;
+            animation: fadeIn 1s;
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #d0d0d0;
+        }
+
+        .close-btn {
+            padding: 0.5rem 1.5rem;
+            background: rgba(80, 80, 80, 0.8);
+            border: 1px solid rgba(120, 120, 120, 0.6);
+            color: #e8e8e8;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            float: right;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(100, 100, 100, 0.9);
+        }
+
+        .interactive-item {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            padding: 1rem 1.5rem;
+            background: rgba(100, 40, 40, 0.8);
+            border: 2px solid rgba(180, 120, 120, 0.7);
+            color: #e8e8e8;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(100, 40, 40, 0.5);
+        }
+
+        .interactive-item:hover {
+            background: rgba(180, 120, 120, 0.9);
+            color: #f0f0f0;
+            border-color: rgba(200, 150, 150, 0.9);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(180, 120, 120, 0.7);
+        }
+
+        .interactive-item.completed {
+            background: rgba(40, 100, 40, 0.8);
+            border-color: rgba(120, 180, 120, 0.7);
+        }
+
+        #maquina-cafe {
+            top: 30%;
+            left: 25%;
+        }
+
+        #formacion {
+            top: 30%;
+            right: 25%;
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.85);
+            padding: 1rem 2rem;
+            border: 2px solid rgba(100, 40, 40, 0.7);
+            z-index: 10;
+        }
+
+        .title h2 {
+            color: #d08080;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .next-scene-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: rgba(40, 100, 40, 0.85);
+            border: 2px solid rgba(120, 180, 120, 0.7);
+            color: #e8e8e8;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        .next-scene-btn:hover {
+            background: rgba(120, 180, 120, 0.9);
+            color: #f0f0f0;
+            transform: translateX(-50%) scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <div class="room">
         <div class="overlay"></div>
         
-        <button class="back-btn" onclick="goBack()">Volver a Clase</button>
+        <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
         
         <div class="title">
             <h2>ESCENARIO 3: EL DESCANSO</h2>

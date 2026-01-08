@@ -5,6 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Introducción - La Sustitución</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .scene {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            transition: background-image 1s ease-in-out;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .dialogue-box {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #666;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        .dialogue-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #ddd;
+        }
+
+        .continue-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            background: transparent;
+            color: #fff;
+            border: 2px solid #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            float: right;
+        }
+
+        .continue-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .glitch {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
 </head>
 <body>
     <div class="scene" id="scene">
@@ -72,28 +143,27 @@
         let currentScene = 1;
         const scene = document.getElementById('scene');
 
-        // Cambiar el fondo a pasillo en el diálogo 3
         function nextDialogue(num) {
             document.getElementById('dialogue' + currentScene).classList.add('hidden');
             document.getElementById('dialogue' + num).classList.remove('hidden');
             document.getElementById('dialogue' + num).style.animation = 'fadeIn 1s forwards';
             
             if (num === 2) {
-                scene.style.backgroundImage = "url('../Scaperoom/Assets/FachadaUni.jpg')";
+                scene.style.backgroundImage = "url('Assets/FachadaUni.jpg')";
             }
             if (num === 3) {
-                scene.style.backgroundImage = "url('../Scaperoom/Assets/Pasillo.jpg')";
+                scene.style.backgroundImage = "url('Assets/Pasillo.jpg')";
             }
             
             if (num === 6) {
-                scene.style.backgroundImage = "url('../Scaperoom/Assets/Despacho.jpg')";
+                scene.style.backgroundImage = "url('Assets/Despacho.jpg')";
             }
             
             currentScene = num;
         }
 
         function goToDespacho() {
-            window.location.href = '../Scaperoom/Escenarios/despacho.html';
+            window.location.href = 'Escenarios/despacho.html';
         }
     </script>
 </body>

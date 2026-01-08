@@ -5,6 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Sustitución - Scaperoom</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #000;
+            overflow: hidden;
+        }
+
+        .container {
+            min-height: 100vh;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url('Assets/FachadaUni.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 1.5rem;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #8b0000;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #8b0000;
+            text-shadow: 2px 2px 4px #000;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            font-style: italic;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            text-align: left;
+            color: #ddd;
+        }
+
+        .disclaimer {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #444;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .start-btn {
+            padding: 1rem 3rem;
+            font-size: 1.3rem;
+            font-family: 'Courier New', monospace;
+            background: #8b0000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .start-btn:hover {
+            background: #fff;
+            color: #8b0000;
+            border-color: #8b0000;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -28,8 +111,6 @@
             </div>
 
             <button class="start-btn" onclick="startGame()">COMENZAR</button>
-            
-            <div class="warning">Prepárate para lo inesperado</div>
         </div>
     </div>
 

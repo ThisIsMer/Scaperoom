@@ -5,6 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 2.4 - Te han robado el aula</title>
     <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .game-container {
+            max-width: 900px;
+            background: #fff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+        }
+
+        .conversation-box {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            min-height: 300px;
+        }
+
+        .message-bubble {
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 15px;
+            animation: fadeIn 0.5s;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            transition: color 0.3s;
+        }
+
+        .professor-message {
+            background: rgba(52, 152, 219, 0.2);
+            border-left: 4px solid #3498db;
+            margin-left: 2rem;
+        }
+
+        .player-message {
+            background: rgba(46, 204, 113, 0.2);
+            border-left: 4px solid #2ecc71;
+            margin-right: 2rem;
+        }
+
+        .color-red { color: #e74c3c; font-weight: bold; }
+        .color-blue { color: #3498db; font-weight: bold; }
+        .color-green { color: #2ecc71; font-weight: bold; }
+        .color-yellow { color: #f39c12; font-weight: bold; }
+        
+        .color-faded { 
+            color: #2c3e50 !important; 
+            font-weight: normal !important;
+        }
+
+        .simon-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .simon-button {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 15px;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .simon-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .simon-button:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .simon-button.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .simon-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .simon-red {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .simon-blue {
+            background: #3498db;
+            color: white;
+        }
+
+        .simon-green {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .simon-yellow {
+            background: #f39c12;
+            color: white;
+        }
+
+        .simon-button .key-label {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .status-text {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            color: #2c3e50;
+        }
+
+        .round-info {
+            text-align: center;
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
     <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
@@ -12,7 +154,7 @@
     <div class="game-container">
         <div class="header">
             <h1>🚨 TE HAN ROBADO EL AULA</h1>
-            <p>¡Aserta dominancia! ¡ROAR! 🦁</p>
+            <p>Defiende tu derecho a estar aquí</p>
         </div>
 
         <div class="content">
@@ -21,161 +163,311 @@
                 
                 "Disculpa... esta es mi aula. Tengo clase ahora."<br><br>
                 
-                <strong>¿Compañía? No te suena que fuera asignatura de dos profesores a la vez.</strong><br><br>
-                
-                Y efectivamente, no lo es. <strong>Estás en su aula</strong>. Le toca a su clase ahí. <strong>Has robado un aula.</strong><br><br>
-                
-                ¿Cómo que has robado el aula? ¡Si es la que ponía en el horario que tanto te tocó descifrar! Nonononono, no puedes permitir que te la roben. ¡Vamos! ¡Haz algo!
-            </div>
-
-            <div class="situation">
-                💼 <strong>Situación:</strong> Tienes que demostrar que TÚ tienes derecho a estar en esta aula. Hay varios documentos sobre la mesa, pero solo UNO es el verdadero documento oficial que prueba tu asignación.
+                <strong>Has robado un aula.</strong> Ahora tienes que demostrar que tienes razón replicando exactamente lo que dice el otro profesor.
             </div>
 
             <div class="instruction">
-                <h3>🔍 OBJETIVO: Identifica el documento VERDADERO</h3>
-                <p>Aparecen múltiples versiones de documentos oficiales (horario, asignación de aula) pero están contradictorias. Debes identificar cuál es el VERDADERO usando pensamiento crítico y lógica deductiva.</p>
-                <p><strong>Hay pistas falsas:</strong> sellos falsos, fechas inconsistentes, errores tipográficos deliberados.</p>
-                <p><strong>Think outside the box:</strong> La verdad está en los detalles, no en lo que parece oficial.</p>
+                <strong>🎮 CÓMO JUGAR:</strong><br>
+                1. El otro profesor dirá frases en diferentes colores<br>
+                2. Memoriza el orden de los colores (los colores desaparecerán)<br>
+                3. Presiona los botones en el mismo orden (o usa las teclas Q, W, A, S)<br>
+                4. Si aciertas, aparecerá tu respuesta. Si fallas, repite el patrón
             </div>
 
-            <div class="documents-grid" id="documentsGrid">
-                <!-- Documento 1: Muchos sellos pero errores graves -->
-                <div class="document" onclick="selectDocument(1)">
-                    <div class="document-header">
-                        <span class="doc-title">Documento A</span>
-                        <span class="doc-badge badge-official">5 SELLOS</span>
-                    </div>
-                    <div class="doc-content">
-                        <div class="doc-detail good">
-                            ✓ Aula: 217<br>
-                            ✓ Profesor: Sustituto
-                        </div>
-                        <div class="doc-detail error">
-                            ⚠ Fecha: 30 Febrero 2025
-                        </div>
-                        <div class="doc-detail error">
-                            ⚠ Firma: Prof. "Martínz" (error ortográfico)
-                        </div>
-                        <div class="clue warning">
-                            🤔 ¿Febrero tiene 30 días?
-                        </div>
-                    </div>
-                </div>
+            <div class="round-info" id="roundInfo">Ronda: <span id="currentRound">1</span> / 5</div>
 
-                <!-- Documento 2: Bonito pero vacío -->
-                <div class="document" onclick="selectDocument(2)">
-                    <div class="document-header">
-                        <span class="doc-title">Documento B</span>
-                        <span class="doc-badge badge-official">LAMINADO</span>
-                    </div>
-                    <div class="doc-content">
-                        <div class="doc-detail good">
-                            ✓ Diseño profesional
-                        </div>
-                        <div class="doc-detail good">
-                            ✓ Logo de la universidad
-                        </div>
-                        <div class="doc-detail error">
-                            ⚠ No especifica aula
-                        </div>
-                        <div class="doc-detail error">
-                            ⚠ No tiene fecha
-                        </div>
-                        <div class="clue">
-                            🤔 Parece oficial pero... ¿dónde está la info?
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Documento 3: EL VERDADERO -->
-                <div class="document" onclick="selectDocument(3)">
-                    <div class="document-header">
-                        <span class="doc-title">Documento C</span>
-                        <span class="doc-badge badge-suspicious">ARRUGADO</span>
-                    </div>
-                    <div class="doc-content">
-                        <div class="doc-detail good">
-                            ✓ Aula: 217<br>
-                            ✓ Fecha: 15 Enero 2025 (válida)
-                        </div>
-                        <div class="doc-detail good">
-                            ✓ Firma: Prof. Martínez<br>
-                            ✓ Coordinador: Dra. López
-                        </div>
-                        <div class="doc-detail good">
-                            ✓ Código verificación: UNI-217-25
-                        </div>
-                        <div class="clue">
-                            🤔 Está arrugado pero todos los datos cuadran...
-                        </div>
-                    </div>
-                </div>
+            <div class="conversation-box" id="conversationBox">
+                <div class="status-text" id="statusText">Observa lo que dice el profesor...</div>
             </div>
 
-            <button class="submit-btn" id="submitBtn" onclick="checkDocument()" disabled>PRESENTAR DOCUMENTO</button>
+            <div class="simon-controls" id="simonControls">
+                <button class="simon-button simon-red" onclick="playerInput('red')" id="btn-red" disabled>
+                    ROJO
+                    <span class="key-label">Q</span>
+                </button>
+                <button class="simon-button simon-blue" onclick="playerInput('blue')" id="btn-blue" disabled>
+                    AZUL
+                    <span class="key-label">W</span>
+                </button>
+                <button class="simon-button simon-green" onclick="playerInput('green')" id="btn-green" disabled>
+                    VERDE
+                    <span class="key-label">A</span>
+                </button>
+                <button class="simon-button simon-yellow" onclick="playerInput('yellow')" id="btn-yellow" disabled>
+                    AMARILLO
+                    <span class="key-label">S</span>
+                </button>
+            </div>
+
             <div id="message" class="message hidden"></div>
-            <div id="hint" class="hint hidden"></div>
 
             <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">✓ Completado - Volver a Clase</button>
         </div>
     </div>
 
     <script>
-        let selectedDoc = null;
-        let attempts = 0;
+        const conversations = [
+            {
+                professor: [
+                    { text: "Esta es", color: "red" },
+                    { text: "mi aula", color: "blue" }
+                ],
+                player: "Disculpa, pero tengo el horario aquí..."
+            },
+            {
+                professor: [
+                    { text: "Yo tengo", color: "green" },
+                    { text: "reserva", color: "yellow" },
+                    { text: "oficial", color: "red" }
+                ],
+                player: "Mira, yo también tengo documentación oficial."
+            },
+            {
+                professor: [
+                    { text: "No puedes", color: "blue" },
+                    { text: "estar aquí", color: "green" }
+                ],
+                player: "Claro que puedo, revisa mi asignación."
+            },
+            {
+                professor: [
+                    { text: "Voy a", color: "yellow" },
+                    { text: "llamar al", color: "red" },
+                    { text: "coordinador", color: "blue" },
+                    { text: "ahora mismo", color: "green" }
+                ],
+                player: "Perfecto, yo también quiero hablar con él."
+            },
+            {
+                professor: [
+                    { text: "Esto es", color: "red" },
+                    { text: "un error", color: "yellow" },
+                    { text: "del sistema", color: "blue" }
+                ],
+                player: "Sí, pero el error no es mío. Tengo razón."
+            }
+        ];
 
-        function selectDocument(docNum) {
-            selectedDoc = docNum;
+        let currentRound = 0;
+        let sequence = [];
+        let playerSequence = [];
+        let isPlayerTurn = false;
+        let isPlaying = false;
+        let messageBubbles = [];
+
+        function startRound() {
+            if (currentRound >= conversations.length) {
+                showMessage('¡Has defendido tu posición exitosamente!', 'success');
+                document.getElementById('completeBtn').classList.remove('hidden');
+                document.getElementById('simonControls').style.display = 'none';
+                localStorage.setItem('prueba2_4_completed', 'true');
+                return;
+            }
+
+            document.getElementById('currentRound').textContent = currentRound + 1;
+            sequence = conversations[currentRound].professor.map(p => p.color);
+            playerSequence = [];
+            isPlayerTurn = false;
+            messageBubbles = [];
             
-            // Limpiar selecciones
-            document.querySelectorAll('.document').forEach(doc => {
-                doc.classList.remove('selected');
-            });
-
-            // Seleccionar este
-            event.currentTarget.classList.add('selected');
-            document.getElementById('submitBtn').disabled = false;
+            // Limpiar y crear nuevo statusText
+            const conversationBox = document.getElementById('conversationBox');
+            conversationBox.innerHTML = '';
+            
+            const statusText = document.createElement('div');
+            statusText.id = 'statusText';
+            statusText.className = 'status-text';
+            statusText.textContent = 'Observa lo que dice el profesor...';
+            conversationBox.appendChild(statusText);
+            
+            disableButtons();
+            
+            setTimeout(() => {
+                playSequence();
+            }, 1500);
         }
 
-        function checkDocument() {
-            const message = document.getElementById('message');
-            const hint = document.getElementById('hint');
-            attempts++;
+        async function playSequence() {
+            isPlaying = true;
+            const conversationBox = document.getElementById('conversationBox');
+            
+            // Eliminar solo el statusText, no todo el contenido
+            const statusText = document.getElementById('statusText');
+            if (statusText) {
+                statusText.remove();
+            }
 
-            if (selectedDoc === 3) {
-                message.className = 'message success';
-                message.textContent = '✓ ¡CORRECTO! El Documento C es el verdadero. A pesar de estar arrugado (probablemente del bolsillo del Prof. Martínez), es el único con toda la información correcta y verificable. ¡Has defendido tu aula!';
-                message.classList.remove('hidden');
-                hint.classList.add('hidden');
-
-                document.getElementById('submitBtn').classList.add('hidden');
-                document.querySelectorAll('.document').forEach(doc => {
-                    doc.style.pointerEvents = 'none';
-                });
-                document.getElementById('completeBtn').classList.remove('hidden');
+            for (let i = 0; i < conversations[currentRound].professor.length; i++) {
+                const phrase = conversations[currentRound].professor[i];
                 
-                localStorage.setItem('prueba2_4_completed', 'true');
-            } else {
-                message.className = 'message error';
-                
-                if (selectedDoc === 1) {
-                    message.textContent = '❌ El Documento A tiene muchos sellos bonitos, pero... ¿30 de Febrero? Ese mes solo tiene 28-29 días. Además, "Martínz" está mal escrito.';
-                } else if (selectedDoc === 2) {
-                    message.textContent = '❌ El Documento B está muy bien laminado y parece profesional, pero no tiene información específica. ¿De qué sirve un documento que no dice aula ni fecha?';
+                // Desvanecer el color del mensaje anterior
+                if (i > 0 && messageBubbles[i - 1]) {
+                    const prevBubbleSpan = messageBubbles[i - 1].querySelector('span');
+                    if (prevBubbleSpan) {
+                        prevBubbleSpan.classList.remove(`color-${conversations[currentRound].professor[i - 1].color}`);
+                        prevBubbleSpan.classList.add('color-faded');
+                    }
                 }
                 
-                message.classList.remove('hidden');
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble professor-message';
+                bubble.innerHTML = `<span class="color-${phrase.color}">${phrase.text}</span>`;
+                conversationBox.appendChild(bubble);
+                messageBubbles.push(bubble);
 
-                if (attempts === 1) {
-                    hint.textContent = '💡 Pista: No te dejes llevar por las apariencias. Un documento arrugado puede ser más auténtico que uno laminado. Busca errores en fechas y nombres.';
-                    hint.classList.remove('hidden');
-                } else if (attempts >= 2) {
-                    hint.textContent = '💡 Pista fuerte: El Documento A tiene una fecha imposible (30 de Febrero). El Documento B no tiene información útil. ¿Qué queda?';
-                    hint.classList.remove('hidden');
+                highlightButton(phrase.color);
+                
+                await sleep(1200);
+            }
+
+            // Desvanecer el último mensaje también
+            if (messageBubbles.length > 0) {
+                const lastBubbleSpan = messageBubbles[messageBubbles.length - 1].querySelector('span');
+                if (lastBubbleSpan) {
+                    const lastColor = conversations[currentRound].professor[conversations[currentRound].professor.length - 1].color;
+                    lastBubbleSpan.classList.remove(`color-${lastColor}`);
+                    lastBubbleSpan.classList.add('color-faded');
                 }
             }
+
+            await sleep(500);
+            isPlaying = false;
+            startPlayerTurn();
         }
+
+        function startPlayerTurn() {
+            isPlayerTurn = true;
+            
+            // Agregar el statusText si no existe
+            const conversationBox = document.getElementById('conversationBox');
+            let statusText = document.getElementById('statusText');
+            
+            if (!statusText) {
+                statusText = document.createElement('div');
+                statusText.id = 'statusText';
+                statusText.className = 'status-text';
+                conversationBox.appendChild(statusText);
+            }
+            
+            statusText.textContent = 'Tu turno - Replica el patrón de colores';
+            enableButtons();
+        }
+
+        function playerInput(color) {
+            if (!isPlayerTurn || isPlaying) return;
+
+            playerSequence.push(color);
+            highlightButton(color);
+
+            // Verificar si el patrón es correcto hasta ahora
+            const correctSoFar = playerSequence.every((c, i) => c === sequence[i]);
+
+            if (!correctSoFar) {
+                handleError();
+                return;
+            }
+
+            // Si completó toda la secuencia correctamente
+            if (playerSequence.length === sequence.length) {
+                handleSuccess();
+            }
+        }
+
+        function handleSuccess() {
+            isPlayerTurn = false;
+            disableButtons();
+
+            const conversationBox = document.getElementById('conversationBox');
+            
+            const playerBubble = document.createElement('div');
+            playerBubble.className = 'message-bubble player-message';
+            playerBubble.textContent = conversations[currentRound].player;
+            conversationBox.appendChild(playerBubble);
+
+            showMessage('¡Correcto! Tu argumento es válido.', 'success');
+
+            setTimeout(() => {
+                currentRound++;
+                document.getElementById('message').classList.add('hidden');
+                
+                // Limpiar todo antes de la siguiente ronda
+                messageBubbles = [];
+                startRound();
+            }, 2500);
+        }
+
+        function handleError() {
+            isPlayerTurn = false;
+            disableButtons();
+            playerSequence = [];
+            showMessage('Secuencia incorrecta. Observa de nuevo...', 'error');
+
+            setTimeout(() => {
+                document.getElementById('message').classList.add('hidden');
+                // Limpiar mensajes anteriores y reiniciar
+                messageBubbles = [];
+                const conversationBox = document.getElementById('conversationBox');
+                conversationBox.innerHTML = '';
+                
+                const statusText = document.createElement('div');
+                statusText.id = 'statusText';
+                statusText.className = 'status-text';
+                statusText.textContent = 'Observa lo que dice el profesor...';
+                conversationBox.appendChild(statusText);
+                
+                playSequence();
+            }, 2000);
+        }
+
+        function highlightButton(color) {
+            const button = document.querySelector(`.simon-${color}`);
+            if (button) {
+                button.classList.add('active');
+                setTimeout(() => {
+                    button.classList.remove('active');
+                }, 300);
+            }
+        }
+
+        function enableButtons() {
+            document.querySelectorAll('.simon-button').forEach(btn => {
+                btn.disabled = false;
+            });
+        }
+
+        function disableButtons() {
+            document.querySelectorAll('.simon-button').forEach(btn => {
+                btn.disabled = true;
+            });
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!isPlayerTurn || isPlaying) return;
+
+            const keyMap = {
+                'q': 'red',
+                'w': 'blue',
+                'a': 'green',
+                's': 'yellow'
+            };
+
+            const color = keyMap[e.key.toLowerCase()];
+            if (color) {
+                e.preventDefault();
+                playerInput(color);
+            }
+        });
 
         function goBack() {
             window.location.href = '../../Escenarios/clase.html';
@@ -185,6 +477,9 @@
             localStorage.setItem('prueba2_4_completed', 'true');
             window.location.href = '../../Escenarios/clase.html';
         }
+
+        // Iniciar el juego
+        startRound();
     </script>
 </body>
 </html>

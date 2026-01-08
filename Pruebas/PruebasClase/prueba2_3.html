@@ -5,6 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 2.3 - Calendario de Examenes</title>
     <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-wrapper {
+            background: linear-gradient(135deg, #6a4c93 0%, #4a6fa5 100%);
+        }
+
+        .game-container {
+            max-width: 800px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(106, 76, 147, 0.85), rgba(74, 111, 165, 0.85));
+        }
+
+        .pips-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+
+        .pip-cell {
+            aspect-ratio: 1;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .pip-cell:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .pip-cell.filled {
+            background: #6a4c93;
+            border-color: #6a4c93;
+        }
+
+        .pip-cell.filled::after {
+            content: '●';
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .target-display {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .target-title {
+            font-weight: bold;
+            color: #6a4c93;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .target-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.3rem;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .target-cell {
+            aspect-ratio: 1;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .target-cell.target-filled::after {
+            content: '●';
+            color: #6a4c93;
+            font-size: 1.2rem;
+        }
+
+        .game-info {
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+
+        .moves-counter {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .reset-btn {
+            padding: 0.8rem 1.5rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #c0392b;
+        }
+    </style>
 </head>
 <body>
     <div class="intro-overlay" id="introOverlay">
@@ -12,121 +148,72 @@
             <div class="intro-text">
                 Estas en clase, dejando a la gente trabajar cuando alguien te levanta la mano.<br><br>
                 
-                Los alumnos tienen demasiados trabajos y examenes. Necesitas otra fecha para el examen porque se pisa con el trabajo de K-pop, el examen de Xue Hua Piao Piao y el evento de la Luna III Gordibolitas pam-pam.<br><br>
+                Los alumnos tienen demasiados trabajos y examenes. Necesitas otra fecha para el examen.<br><br>
                 
-                Como todos los demas profesores ya se saben los trucos y han pillado las fechas con margen, te toca a ti hacer los malabares para encajar cuando poner el examen.
+                Para encontrar la fecha perfecta, debes resolver este puzzle: replica el patrón objetivo haciendo clic en las casillas. Cada clic cambia la casilla y las adyacentes (arriba, abajo, izquierda, derecha).
             </div>
             <button class="continue-btn" onclick="closeIntro()">Continuar</button>
         </div>
     </div>
 
     <div class="game-wrapper">
-        <button class="back-btn" onclick="goBack()">Volver a Clase</button>
+        <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
 
         <div class="game-container">
             <div class="header">
                 <h1>CALENDARIO DE EXAMENES</h1>
-                <p>Hora de hacer malabares con las fechas</p>
+                <p>Encuentra el patrón perfecto</p>
             </div>
 
-            <div class="content" id="mainContent">
+            <div class="content">
                 <div class="instruction">
-                    <strong>OBJETIVO:</strong> Encuentra una fecha que no coincida con eventos bloqueados, que cumpla las restricciones y que permita tiempo de estudio.
+                    <strong>OBJETIVO:</strong> Replica el patrón objetivo. Cada clic cambia la casilla seleccionada y sus vecinas (arriba, abajo, izquierda, derecha).
                 </div>
 
-                <button class="hint-btn" onclick="toggleHint()">Ver Pista</button>
-                <div class="hint-box" id="hintBox">
-                    <strong>PISTA:</strong> Revisa las fechas bloqueadas y las restricciones. El examen debe ser:<br>
-                    - Entre el 15-27 de Enero<br>
-                    - No puede ser fin de semana<br>
-                    - Minimo 2 dias despues del 16 de Enero<br>
-                    - No puede coincidir con eventos bloqueados
+                <div class="target-display">
+                    <div class="target-title">PATRÓN OBJETIVO:</div>
+                    <div class="target-grid" id="targetGrid"></div>
                 </div>
 
-                <div class="calendar-section">
-                    <div class="calendar-box">
-                        <div class="calendar-title">EVENTOS BLOQUEADOS</div>
-                        <ul class="event-list">
-                            <li class="event-item">
-                                <span class="event-date">15 Enero</span>
-                                Trabajo K-pop Analysis
-                            </li>
-                            <li class="event-item">
-                                <span class="event-date">17 Enero</span>
-                                Examen Xue Hua Piao Piao
-                            </li>
-                            <li class="event-item">
-                                <span class="event-date">20 Enero</span>
-                                Luna III Gordibolitas
-                            </li>
-                            <li class="event-item">
-                                <span class="event-date">22 Enero</span>
-                                Examen Matematicas
-                            </li>
-                            <li class="event-item">
-                                <span class="event-date">24 Enero</span>
-                                Presentacion TFG
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="calendar-box">
-                        <div class="calendar-title">TUS RESTRICCIONES</div>
-                        <ul class="event-list">
-                            <li class="event-item">
-                                <span class="event-date">⚠️</span>
-                                Entre el 15-27 de Enero
-                            </li>
-                            <li class="event-item">
-                                <span class="event-date">⚠️</span>
-                                No puede ser fin de semana
-                            </li>
-                            <li class="event-item">
-                                <span class="event-date">⚠️</span>
-                                Minimo 2 dias despues del 16
-                            </li>
-                        </ul>
-                    </div>
+                <div class="game-info">
+                    Movimientos: <span class="moves-counter" id="movesCounter">0</span>
                 </div>
 
-                <div class="available-dates" id="dateOptions">
-                    <div class="date-option" onclick="selectDate('16-Ene')">16 Enero</div>
-                    <div class="date-option" onclick="selectDate('18-Ene')">18 Enero</div>
-                    <div class="date-option" onclick="selectDate('21-Ene')">21 Enero</div>
-                    <div class="date-option" onclick="selectDate('23-Ene')">23 Enero</div>
-                    <div class="date-option" onclick="selectDate('24-Ene')">24 Enero</div>
-                    <div class="date-option" onclick="selectDate('27-Ene')">27 Enero</div>
+                <div class="pips-board" id="pipsBoard"></div>
+
+                <div class="controls">
+                    <button class="reset-btn" onclick="resetBoard()">Reiniciar</button>
+                    <button class="reset-btn" style="background: #3498db;" onclick="showSolution()">💡 Ver Solución</button>
                 </div>
 
-                <button class="submit-btn" id="submitBtn" onclick="checkDate()" disabled>CONFIRMAR FECHA</button>
                 <div id="message" class="message hidden"></div>
             </div>
 
-            <div class="content hidden" id="examContent">
+            <div class="content hidden" id="examIntro">
                 <div class="exam-dialogue">
-                    Perfecto, ahora que tienes la fecha seleccionada, deberias comprobar como de dificil es el examen que dejo el anterior profesor para asegurarte de que los alumnos lo pueden resolver...
+                    Perfecto, ahora que tienes la fecha seleccionada, deberías comprobar cómo de difícil es el examen que dejó el anterior profesor para asegurarte de que los alumnos lo pueden resolver...
                 </div>
-                <img src="PruebaCalendarioDeExamenes.jpg" alt="Examen imposible" class="exam-image">
-                <p style="text-align: center; margin: 1rem 0; font-style: italic;">Vamos alla, seguro que no es muy complicado</p>
-                <input type="text" class="exam-input" id="q1" placeholder="Escribe lo que quieras aqui...">
+                <img src="../../Assets/Examen.jpg" alt="Examen imposible" class="exam-image">
+                <p style="text-align: center; margin: 1rem 0; font-style: italic; color: #2c3e50;">¡Vamos allá, seguro que no es muy complicado!</p>
+                <input type="text" class="exam-input" id="q1" placeholder="Tu respuesta para la pregunta 1...">
                 <button class="submit-btn" onclick="nextQuestion(2)">Responder Pregunta 1</button>
             </div>
 
             <div class="content hidden" id="exam2">
                 <div class="exam-dialogue">
-                    Eh, como que ese no? Bueno, da igual, seguro que el segundo si que es facil.
+                    ¿Eh, cómo que ese no? Bueno, da igual, seguro que el segundo sí que es fácil.
                 </div>
-                <img src="PruebaCalendarioDeExamenes.jpg" alt="Examen imposible" class="exam-image">
-                <input type="text" class="exam-input" id="q2" placeholder="Tu respuesta profunda aqui...">
+                <img src="../../Assets/Examen.jpg" alt="Examen imposible" class="exam-image">
+                <input type="text" class="exam-input" id="q2" placeholder="Tu respuesta para la pregunta 2...">
                 <button class="submit-btn" onclick="nextQuestion(3)">Responder Pregunta 2</button>
             </div>
 
             <div class="content hidden" id="exam3">
                 <div class="exam-dialogue">
-                    Pues parece que si que les piden nivel en esta uni, madre...
+                    Pues parece que sí que les piden nivel en esta uni, madre...
                 </div>
-                <img src="PruebaCalendarioDeExamenes.jpg" alt="Examen imposible" class="exam-image">
-                <input type="text" class="exam-input" id="q3" placeholder="Codigo del futuro...">
+                <img src="../../Assets/Examen.jpg" alt="Examen imposible" class="exam-image">
+                <input type="text" class="exam-input" id="q3" placeholder="Tu respuesta para la pregunta 3...">
                 <button class="submit-btn" onclick="finishExam()">Responder Pregunta 3</button>
             </div>
 
@@ -135,13 +222,156 @@
                     Bah, da igual. Seguro que los chicos lo pueden resolver, que son muy listos.
                 </div>
                 <button class="complete-btn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
+
+                <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
             </div>
         </div>
     </div>
 
     <script>
-        let selectedDate = null;
-        const correctDate = '23-Ene';
+        const GRID_SIZE = 5;
+        let board = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(false));
+        let targetPattern = [
+            [false, true, false, true, false],
+            [true, false, true, false, true],
+            [false, true, true, true, false],
+            [true, false, true, false, true],
+            [false, true, false, true, false]
+        ];
+        let moves = 0;
+        
+        // Solución verificada para este patrón
+        const solution = [
+            [0, 1], [0, 3],
+            [1, 0], [1, 4],
+            [2, 2],
+            [3, 0], [3, 4],
+            [4, 1], [4, 3]
+        ];
+
+        function initGame() {
+            renderBoard();
+            renderTarget();
+        }
+
+        function renderTarget() {
+            const targetGrid = document.getElementById('targetGrid');
+            targetGrid.innerHTML = '';
+
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'target-cell';
+                    if (targetPattern[i][j]) {
+                        cell.classList.add('target-filled');
+                    }
+                    targetGrid.appendChild(cell);
+                }
+            }
+        }
+
+        function renderBoard() {
+            const pipsBoard = document.getElementById('pipsBoard');
+            pipsBoard.innerHTML = '';
+
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'pip-cell';
+                    if (board[i][j]) {
+                        cell.classList.add('filled');
+                    }
+                    cell.onclick = () => handleClick(i, j);
+                    pipsBoard.appendChild(cell);
+                }
+            }
+        }
+
+        function handleClick(row, col) {
+            // Toggle la casilla clickeada
+            board[row][col] = !board[row][col];
+
+            // Toggle las casillas adyacentes
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]; // arriba, abajo, izquierda, derecha
+
+            for (const [dx, dy] of directions) {
+                const newRow = row + dx;
+                const newCol = col + dy;
+                
+                if (newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
+                    board[newRow][newCol] = !board[newRow][newCol];
+                }
+            }
+
+            moves++;
+            document.getElementById('movesCounter').textContent = moves;
+
+            renderBoard();
+            checkWin();
+        }
+
+        function checkWin() {
+            const isMatch = board.every((row, i) => 
+                row.every((cell, j) => cell === targetPattern[i][j])
+            );
+
+            if (isMatch) {
+                showMessage(`¡Perfecto! Has encontrado la fecha ideal en ${moves} movimientos.`, 'success');
+                document.getElementById('pipsBoard').style.pointerEvents = 'none';
+                
+                // Ocultar la sección del juego y mostrar el diálogo del examen
+                setTimeout(() => {
+                    document.querySelector('.content').classList.add('hidden');
+                    document.getElementById('examIntro').classList.remove('hidden');
+                }, 2000);
+                
+                localStorage.setItem('prueba2_3_completed', 'true');
+            }
+        }
+
+        function nextQuestion(num) {
+            if (num === 2) {
+                document.getElementById('examIntro').classList.add('hidden');
+                document.getElementById('exam2').classList.remove('hidden');
+            } else if (num === 3) {
+                document.getElementById('exam2').classList.add('hidden');
+                document.getElementById('exam3').classList.remove('hidden');
+            }
+        }
+
+        function finishExam() {
+            document.getElementById('exam3').classList.add('hidden');
+            document.getElementById('finalContent').classList.remove('hidden');
+        }
+
+        function resetBoard() {
+            board = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(false));
+            moves = 0;
+            document.getElementById('movesCounter').textContent = moves;
+            document.getElementById('message').classList.add('hidden');
+            renderBoard();
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+        }
+
+        function showSolution() {
+            if (confirm('¿Quieres que el juego se resuelva automáticamente?')) {
+                resetBoard();
+                
+                let delay = 0;
+                solution.forEach(([row, col], index) => {
+                    setTimeout(() => {
+                        handleClick(row, col);
+                    }, delay);
+                    delay += 400;
+                });
+            }
+        }
 
         function closeIntro() {
             const overlay = document.getElementById('introOverlay');
@@ -153,62 +383,6 @@
             if (!localStorage.getItem('prueba2_3_visited')) {
                 localStorage.setItem('prueba2_3_visited', 'true');
             }
-        }
-
-        function toggleHint() {
-            document.getElementById('hintBox').classList.toggle('visible');
-        }
-
-        function selectDate(date) {
-            selectedDate = date;
-            
-            document.querySelectorAll('.date-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-
-            event.target.classList.add('selected');
-            document.getElementById('submitBtn').disabled = false;
-        }
-
-        function checkDate() {
-            const message = document.getElementById('message');
-
-            if (selectedDate === correctDate) {
-                localStorage.setItem('prueba2_3_completed', 'true');
-                document.getElementById('mainContent').classList.add('hidden');
-                document.getElementById('examContent').classList.remove('hidden');
-            } else {
-                message.className = 'message error';
-                
-                if (selectedDate === '16-Ene') {
-                    message.textContent = 'No puedes poner el examen el mismo dia que terminas el temario. Los alumnos necesitan tiempo para estudiar.';
-                } else if (selectedDate === '18-Ene') {
-                    message.textContent = 'Esa fecha cumple las restricciones, pero revisa bien el calendario...';
-                } else if (selectedDate === '21-Ene') {
-                    message.textContent = 'Es fin de semana. Ni tu ni los alumnos quieren estar aqui un sabado.';
-                } else if (selectedDate === '24-Ene') {
-                    message.textContent = 'Hay presentaciones de TFG ese dia. El aula estara ocupada.';
-                } else if (selectedDate === '27-Ene') {
-                    message.textContent = 'Es muy tarde, necesitas tiempo para corregir antes del cierre de actas.';
-                }
-                
-                message.classList.remove('hidden');
-            }
-        }
-
-        function nextQuestion(num) {
-            if (num === 2) {
-                document.getElementById('examContent').classList.add('hidden');
-                document.getElementById('exam2').classList.remove('hidden');
-            } else if (num === 3) {
-                document.getElementById('exam2').classList.add('hidden');
-                document.getElementById('exam3').classList.remove('hidden');
-            }
-        }
-
-        function finishExam() {
-            document.getElementById('exam3').classList.add('hidden');
-            document.getElementById('finalContent').classList.remove('hidden');
         }
 
         function goBack() {
@@ -224,6 +398,7 @@
             if (localStorage.getItem('prueba2_3_visited')) {
                 closeIntro();
             }
+            initGame();
         };
     </script>
 </body>

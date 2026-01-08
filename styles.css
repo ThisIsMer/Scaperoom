@@ -1004,4 +1004,507 @@ button:disabled {
 
 .event-item {
     padding: 0.5rem;
-    margin-bottom: 0.4rem}
+    margin-bottom: 0.4rem;
+    background: rgba(248, 249, 250, 0.9);
+    border-left: 4px solid rgba(231, 76, 60, 0.7);
+    font-size: 0.8rem;
+}
+
+.event-date {
+    font-weight: bold;
+    color: rgba(231, 76, 60, 0.9);
+    margin-right: 0.3rem;
+}
+
+.available-dates {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin: 1rem 0;
+}
+
+.date-option {
+    padding: 0.8rem;
+    background: rgba(227, 242, 253, 0.9);
+    border: 3px solid rgba(33, 150, 243, 0.7);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.date-option:hover {
+    background: rgba(33, 150, 243, 0.8);
+    color: #e8e8e8;
+    transform: translateY(-2px);
+}
+
+.date-option.selected {
+    background: rgba(76, 175, 80, 0.8);
+    border-color: rgba(76, 175, 80, 0.8);
+    color: #e8e8e8;
+}
+
+.exam-dialogue {
+    background: rgba(248, 249, 250, 0.9);
+    padding: 1.5rem;
+    border-left: 5px solid rgba(106, 76, 147, 0.7);
+    margin: 1rem 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    border-radius: 5px;
+}
+
+.exam-image {
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem auto;
+    display: block;
+    border: 3px solid rgba(100, 100, 100, 0.5);
+    border-radius: 5px;
+}
+
+.exam-input {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    border: 2px solid rgba(106, 76, 147, 0.6);
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   PRUEBA 2.4 - ROBO DE AULA (Te han robado el aula)
+   ============================================ */
+
+.situation {
+    background: #fff3cd;
+    padding: 1.5rem;
+    border-left: 4px solid #ffc107;
+    margin: 2rem 0;
+    color: #856404;
+}
+
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.document:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-color: #3498db;
+}
+
+.document.selected {
+    border-color: #27ae60;
+    background: #e8f5e9;
+    box-shadow: 0 0 20px rgba(39, 174, 96, 0.4);
+}
+
+.document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.doc-title {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.doc-badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.badge-official {
+    background: #3498db;
+    color: #fff;
+}
+
+.badge-suspicious {
+    background: #e74c3c;
+    color: #fff;
+}
+
+.doc-content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.doc-detail {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-left: 3px solid #3498db;
+}
+
+.doc-detail.error {
+    background: #ffebee;
+    border-left: 3px solid #e74c3c;
+}
+
+.doc-detail.good {
+    background: #e8f5e9;
+    border-left: 3px solid #4caf50;
+}
+
+.clue {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+.clue.warning {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* ============================================
+   PRUEBA 3.1-2-3 - ORQUESTA (Buscar la Cafeteria)
+   ============================================ */
+
+.progress {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: rgba(121, 85, 72, 0.9);
+    margin: 1rem 0;
+}
+
+.choices-container {
+    background: rgba(245, 245, 245, 0.9);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.choice-text {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #4a4a4a;
+    font-size: 1rem;
+}
+
+.instruments {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.instrument-btn {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95));
+    border: 3px solid rgba(121, 85, 72, 0.7);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.instrument-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-color: rgba(93, 64, 55, 0.9);
+}
+
+.instrument-icon {
+    font-size: 3rem;
+    margin-bottom: 0.8rem;
+}
+
+.instrument-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2a2a2a;
+}
+
+/* ============================================
+   PRUEBA 3.3 - FORMACIÓN (Email Universitario)
+   ============================================ */
+
+.email-box {
+    background: #ffebee;
+    padding: 1.5rem;
+    border-left: 5px solid #e74c3c;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.dni-highlight {
+    background: yellow;
+    padding: 0.2rem 0.5rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.sarcasm {
+    font-style: italic;
+    color: #e74c3c;
+    margin: 1rem 0;
+}
+
+.video-container {
+    background: #000;
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.retro-video {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: #1a1a1a;
+    border: 5px solid #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    padding: 2rem;
+    position: relative;
+}
+
+.video-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    animation: blink 2s infinite;
+}
+
+.video-content {
+    text-align: left;
+    line-height: 1.8;
+    font-size: 0.9rem;
+}
+
+.video-detail {
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+}
+
+.presenter-name {
+    color: #ff0;
+    font-weight: bold;
+}
+
+.tracksuit {
+    color: #0ff;
+}
+
+.cat-name {
+    color: #f0f;
+    font-weight: bold;
+}
+
+.keyboard-brand {
+    color: #fa0;
+    font-weight: bold;
+}
+
+.timestamp {
+    color: #f00;
+    font-weight: bold;
+}
+
+.quiz-section {
+    background: #e3f2fd;
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+}
+
+.quiz-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.question {
+    background: #fff;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    border-left: 4px solid #2196f3;
+}
+
+.question-text {
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.question input, .question select {
+    width: 100%;
+    padding: 0.8rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    border: 2px solid #2196f3;
+    border-radius: 5px;
+}
+
+.pista-box {
+    background: #fff8e1;
+    padding: 2rem;
+    border: 3px dashed #ffc107;
+    border-radius: 10px;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.pista-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f57f17;
+    margin-bottom: 1rem;
+}
+
+.pista-content {
+    font-size: 2rem;
+    font-family: 'Courier New', monospace;
+    color: #e65100;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 5px;
+    letter-spacing: 3px;
+}
+
+.pista-subtext {
+    margin-top: 1rem;
+    color: #666;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   PRUEBA 4 - SOPA DE LETRAS (La Queja)
+   ============================================ */
+
+.complaint {
+    background: #ffebee;
+    padding: 2rem;
+    border: 3px solid #e74c3c;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.complaint-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #c0392b;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.theme-hint {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #8e44ad;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: #f3e5f5;
+    border-radius: 10px;
+}
+
+.grid-container {
+    background: #f5f5f5;
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+}
+
+.letter-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 5px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.letter-cell {
+    aspect-ratio: 1;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.letter-cell:hover {
+    background: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.letter-cell.selected {
+    background: #2196f3;
+    color: #fff;
+    border-color: #1976d2;
+}
+
+.letter-cell.found {
+    background: #4caf50;
+    color: #fff;
+    border-color: #388e3c;
+    cursor: default;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .documents-container,
+    .calendar-section {
+        grid-template-columns: 1fr;
+    }
+
+    .game-container {
+        width: 98%;
+        padding: 1rem;
+    }
+
+    .code-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    h1, .header h1 {
+        font-size: 1.2rem;
+    }
+
+    .documents-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .instruments {
+        grid-template-columns: 1fr;
+    }
+
+    .available-dates {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

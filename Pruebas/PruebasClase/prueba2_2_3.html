@@ -5,6 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 2.2-3 - Se te acabo el guion</title>
     <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            background: url('../../Assets/EscritorioPruebaConnections.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-wrapper {
+            background: transparent;
+            padding-top: 5rem;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .game-container {
+            max-width: 1300px;
+            background: rgba(182, 182, 182, 0.6);
+        }
+
+        .header {
+            background: rgba(103, 58, 183, 0.85);
+            color: #e8e8e8;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        h1 {
+            color: #2a2a2a;
+            font-size: 2rem;
+        }
+    </style>
 </head>
 <body>
     <div class="game-wrapper">
@@ -21,6 +56,7 @@
                 <button class="continue-btn" onclick="closeIntro()">Continuar</button>
             </div>
         </div>
+
         <div class="game-container">
             <div class="header">
                 <h1>SE TE ACABO EL GUION DE LA CLASE</h1>
@@ -90,7 +126,7 @@
         let currentWord = '';
         let foundWords = [];
         let foundKeyWords = [];
-        let hexLetters = [...LETTERS]; // Copia de letras para shuffle
+        let hexLetters = [...LETTERS];
 
         function toggleHint() {
             const hintBox = document.getElementById('hintBox');
@@ -108,13 +144,11 @@
         }
 
         function shuffleLetters() {
-            // Barajar el array de letras
             for (let i = hexLetters.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [hexLetters[i], hexLetters[j]] = [hexLetters[j], hexLetters[i]];
             }
 
-            // Actualizar los hexes con las nuevas letras
             hexLetters.forEach((letter, i) => {
                 const hex = document.getElementById(`hex-${i}`);
                 if (hex) {
