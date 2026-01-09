@@ -1,71 +1,116 @@
-<!DOCTYPE html>
+.restart-btn {
+            width: 100%;
+            max-width: 500px;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
+            color: #e8e8e8;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 2rem auto 0;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            display: block;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
+        }<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desenlace - La Sustitución</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #000;
-            color: #fff;
-            overflow-x: hidden;
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            height: 100vh;
+            overflow: hidden;
         }
 
         .scene {
-            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
             opacity: 0;
-            animation: fadeIn 2s forwards;
+            animation: fadeIn 1s forwards;
+            background: rgba(0, 0, 0, 0.95);
         }
 
-        .classroom-scene {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
 
         .dialogue-box {
             max-width: 800px;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 2rem;
-            border: 2px solid #8b0000;
+            padding: 2.5rem;
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid rgba(100, 100, 100, 0.6);
             border-radius: 10px;
-            margin: 2rem 0;
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.5);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            margin: 0 2rem;
         }
 
         .dialogue-text {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 2rem;
+            color: #d0d0d0;
         }
 
-        .emotional-speech {
-            font-style: italic;
+        .dialogue-text strong {
             color: #ffd700;
-            text-align: center;
-            font-size: 1.3rem;
-            margin: 2rem 0;
         }
 
-        .classroom-image {
-            width: 100%;
-            max-width: 700px;
-            background: #1a1a1a;
-            border: 5px solid #8b0000;
-            border-radius: 10px;
+        .continue-btn {
+            padding: 0.8rem 2rem;
+            background: rgba(100, 40, 40, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(150, 100, 100, 0.6);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+            float: right;
+            border-radius: 5px;
+        }
+
+        .continue-btn:hover {
+            background: rgba(150, 100, 100, 0.9);
+            transform: scale(1.05);
+        }
+
+        .classroom-visual {
+            background: rgba(20, 20, 20, 0.9);
             padding: 2rem;
+            border-radius: 10px;
             margin: 2rem 0;
-            position: relative;
+            text-align: center;
         }
 
         .professor {
-            text-align: center;
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 1rem;
         }
 
@@ -73,15 +118,17 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .student {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(50, 50, 50, 0.8);
             padding: 1rem;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(100, 100, 100, 0.4);
         }
 
         .student-icon {
@@ -89,23 +136,9 @@
             margin-bottom: 0.5rem;
         }
 
-        .continue-btn {
-            padding: 1rem 2rem;
-            background: #8b0000;
-            color: #fff;
-            border: 2px solid #fff;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-        }
-
-        .continue-btn:hover {
-            background: #fff;
-            color: #8b0000;
-            transform: scale(1.05);
+        .student-label {
+            font-size: 0.75rem;
+            color: #b0b0b0;
         }
 
         .alarm-scene {
@@ -119,31 +152,25 @@
         }
 
         .alarm-text {
-            font-size: 3rem;
+            font-size: 4rem;
             color: #ff0000;
             text-align: center;
             animation: blink 1s infinite;
             margin: 2rem 0;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
         }
 
-        .dream-reveal {
-            background: linear-gradient(135deg, #8e44ad, #3498db);
-            text-align: center;
-        }
-
-        .dream-text {
-            font-size: 2rem;
-            color: #fff;
-            margin: 2rem 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
         }
 
         .final-message {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(20, 20, 20, 0.95);
             padding: 3rem;
             border-radius: 15px;
-            max-width: 900px;
-            border: 3px solid #ffd700;
+            max-width: 700px;
+            border: 3px solid rgba(255, 215, 0, 0.6);
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
         }
 
@@ -152,40 +179,110 @@
             color: #ffd700;
             margin-bottom: 2rem;
             text-align: center;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         .final-text {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             line-height: 1.8;
             margin-bottom: 1.5rem;
+            color: #d0d0d0;
         }
 
-        .credits {
-            margin-top: 3rem;
-            text-align: center;
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        .restart-btn {
-            width: 100%;
-            max-width: 500px;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            border: 3px solid #fff;
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(20, 20, 20, 0.9);
+            padding: 1rem 1.5rem;
+            border: 2px solid rgba(255, 215, 0, 0.6);
             border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd700;
+            z-index: 2000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .name-input-section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .name-input-title {
             font-size: 1.3rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-family: 'Courier New', monospace;
+            background: rgba(20, 20, 20, 0.9);
+            color: #e8e8e8;
+            border: 2px solid rgba(100, 100, 100, 0.6);
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .save-time-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(56, 142, 60, 0.9));
+            color: #e8e8e8;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 2rem;
             transition: all 0.3s;
             font-family: 'Courier New', monospace;
         }
 
-        .restart-btn:hover {
+        .save-time-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+        }
+
+        .save-time-btn:disabled {
+            background: rgba(100, 100, 100, 0.5);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .leaderboard-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, rgba(103, 58, 183, 0.9), rgba(74, 111, 165, 0.9));
+            color: #e8e8e8;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            margin-top: 1rem;
+        }
+
+        .leaderboard-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(103, 58, 183, 0.6);
+        }
+
+        .hidden {
+            display: none;
         }
 
         .glitch {
@@ -203,144 +300,181 @@
     </style>
 </head>
 <body>
-    <!-- Escena 1: Discurso final -->
-    <div class="scene classroom-scene" id="scene1">
+    <div class="timer" id="timer">00:00:00</div>
+    <!-- Escena 1: Discurso inicial -->
+    <div class="scene" id="scene1">
         <div class="dialogue-box">
             <div class="dialogue-text">
-                Ahhh, finalmente... el periodo de sustitución terminó.
+                Ahhh, finalmente, el periodo de sustitucion termino. Han sido muchos momentos desde que llegaste a este despacho donde todo era caos, confusion y garabatos incomprensibles sobre musica.<br><br>
+                
+                Todas esas clases, esos trabajos que tuviste que corregir creyendo que eran de una tarea de hace tres años, esos examenes que pusiste con dificultad de "descifradora de jeroglificos egipcios"...
             </div>
-            <div class="dialogue-text">
-                Han sido muchos momentos desde que llegaste... Todas esas clases, esos trabajos que has tenido que corregir, esos exámenes que poner...
-            </div>
-            <div class="dialogue-text">
-                Y ahora, tus alumnos están preparados para pasar al siguiente curso. Algunos incluso para graduarse...
-            </div>
+            <button class="continue-btn" onclick="nextScene(2)">Continuar</button>
         </div>
-
-        <div class="emotional-speech">
-            "Recordad siempre: el conocimiento es poder, y vosotros... vosotros sois el futuro..."
-        </div>
-
-        <div class="classroom-image">
-            <div class="professor">👨‍🏫</div>
-            <p style="text-align: center; margin-bottom: 2rem;">TÚ, dando un discurso inspirador</p>
-            
-            <p style="text-align: center; margin-bottom: 1rem; color: #ffd700;">Mientras tanto, los alumnos:</p>
-            
-            <div class="students-grid">
-                <div class="student">
-                    <div class="student-icon">🎮</div>
-                    LOL
-                </div>
-                <div class="student">
-                    <div class="student-icon">📖</div>
-                    Leyendo manga
-                </div>
-                <div class="student">
-                    <div class="student-icon">👗</div>
-                    Dress to Impress
-                </div>
-                <div class="student">
-                    <div class="student-icon">💣</div>
-                    Buscaminas
-                </div>
-                <div class="student">
-                    <div class="student-icon">🐔</div>
-                    Crossy Road
-                </div>
-                <div class="student">
-                    <div class="student-icon">📱</div>
-                    Instagram
-                </div>
-                <div class="student">
-                    <div class="student-icon">🎵</div>
-                    Spotify
-                </div>
-                <div class="student">
-                    <div class="student-icon">😴</div>
-                    Durmiendo
-                </div>
-            </div>
-        </div>
-
-        <button class="continue-btn" onclick="nextScene(2)">Continuar...</button>
     </div>
 
-    <!-- Escena 2: Continuación del discurso -->
-    <div class="scene classroom-scene hidden" id="scene2">
+    <!-- Escena 2: Los alumnos -->
+    <div class="scene hidden" id="scene2">
         <div class="dialogue-box">
             <div class="dialogue-text">
-                "...y por eso, queridos alumnos, os digo: este ha sido un viaje extraordinario..."
+                Y ahora, mira a tus alumnos, todos estan preparados para pasar al siguiente curso. Algunos incluso para graduarse.<br><br>
+                
+                Si, esos mismos alumnos que hace poco te enviaban correos como si fueran mensajes de botellas lanzadas al oceano.<br><br>
+                
+                La musica de sus logros resuena en tu corazon como un tempo perfecto.
             </div>
-            <div class="dialogue-text">
-                Te sientes orgulloso. A pesar de todo el caos, de los enigmas absurdos, de las excusas ridículas... lo has conseguido.
-            </div>
-            <div class="dialogue-text">
-                Estás a punto de terminar tu discurso con una última frase inspiradora...
-            </div>
+            <button class="continue-btn" onclick="nextScene(3)">Continuar</button>
         </div>
-
-        <button class="continue-btn" onclick="nextScene(3)">Terminar el discurso...</button>
     </div>
 
-    <!-- Escena 3: La alarma -->
-    <div class="scene alarm-scene hidden" id="scene3">
-        <div class="alarm-text glitch">
-            ⏰ RING RING RING ⏰
-        </div>
-        
+    <!-- Escena 3: Visualización de la clase -->
+    <div class="scene hidden" id="scene3">
         <div class="dialogue-box">
-            <div class="dialogue-text" style="text-align: center; font-size: 1.5rem;">
-                ...
+            <div class="dialogue-text">
+                Te has convertido en algo mas que un sustituto, pequeño profesor perdido: eres un <strong>MAESTRO</strong><br><br>
+                
+                Una sinfonia de dedicacion en un concierto de improvisacion total.
             </div>
+
+            <div class="classroom-visual">
+                <div class="professor">👨‍🏫</div>
+                <p style="color: #b0b0b0; margin-bottom: 1rem;">TU, dando un discurso inspirador</p>
+                
+                <p style="color: #ffd700; margin: 1rem 0;">Mientras tanto, los alumnos:</p>
+                
+                <div class="students-grid">
+                    <div class="student">
+                        <div class="student-icon">🎮</div>
+                        <div class="student-label">LOL</div>
+                    </div>
+                    <div class="student">
+                        <div class="student-icon">📖</div>
+                        <div class="student-label">Manga</div>
+                    </div>
+                    <div class="student">
+                        <div class="student-icon">👗</div>
+                        <div class="student-label">Dress to Impress</div>
+                    </div>
+                    <div class="student">
+                        <div class="student-icon">💣</div>
+                        <div class="student-label">Buscaminas</div>
+                    </div>
+                    <div class="student">
+                        <div class="student-icon">🐔</div>
+                        <div class="student-label">Crossy Road</div>
+                    </div>
+                    <div class="student">
+                        <div class="student-icon">📱</div>
+                        <div class="student-label">Instagram</div>
+                    </div>
+                    <div class="student">
+                        <div class="student-icon">🎵</div>
+                        <div class="student-label">Spotify</div>
+                    </div>
+                    <div class="student">
+                        <div class="student-icon">😴</div>
+                        <div class="student-label">Durmiendo</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="continue-btn" onclick="nextScene(4)">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Escena 4: Reflexión -->
+    <div class="scene hidden" id="scene4">
+        <div class="dialogue-box">
+            <div class="dialogue-text">
+                Porque, pensemoslo bien, no lo hiciste increiblemente bien?<br><br>
+                
+                Llegaste sin guion, sin poder, sin saber ni donde estaba el baño, y lograste calificar trabajos con la precision de un metronomo, descifrar horarios como si fuera un criptograma de la KGB, y responder correos de alumnos enojados con la paciencia de un monje tibetano en meditacion profunda.<br><br>
+                
+                Es verdad que improvisaste el 80% de las clases, que la fecha del examen casi causa una revuelta estudiantil, y que en algun momento creiste que "tempo" era una marca de pañuelos...
+            </div>
+            <button class="continue-btn" onclick="nextScene(5)">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Escena 5: Conclusión emotiva -->
+    <div class="scene hidden" id="scene5">
+        <div class="dialogue-box">
+            <div class="dialogue-text">
+                PERO aqui estan los alumnos, luchando en sus practicas, cada uno a su ritmo, algunos al League of Legends, otros al Dress to Impress, algunos incluso—lo creas o no—estudiando de verdad.<br><br>
+                
+                Has dejado una marca en sus vidas, aunque sea la marca de "ese profesor que nos puso un examen imposible pero al menos lo intento".<br><br>
+                
+                En el vasto universo academico, eso es casi poesia.<br><br>
+                
+                Cuando estas a punto de terminar tu discurso...
+            </div>
+            <button class="continue-btn" onclick="nextScene(6)">Terminar discurso</button>
+        </div>
+    </div>
+
+    <!-- Escena 6: La alarma -->
+    <div class="scene alarm-scene hidden" id="scene6">
+        <div class="dialogue-box">
+            <div class="alarm-text glitch">
+                ⏰ RING RING RING ⏰
+            </div>
+            
             <div class="dialogue-text" style="text-align: center; font-size: 1.5rem;">
+                ...<br><br>
                 Despiertas.
             </div>
+            <button class="continue-btn" onclick="nextScene(7)">Que...</button>
         </div>
-
-        <button class="continue-btn" onclick="nextScene(4)">¿Qué...?</button>
     </div>
 
-    <!-- Escena 4: El despertar -->
-    <div class="scene dream-reveal hidden" id="scene4">
+    <!-- Escena 7: El despertar -->
+    <div class="scene hidden" id="scene7">
         <div class="final-message">
-            <div class="final-title">🌅 TODO FUE UN SUEÑO 🌅</div>
+            <div class="final-title">TODO FUE UN SUEÑO</div>
             
             <div class="final-text">
-                Parece ser que todo ha sido un sueño.
-            </div>
-            
-            <div class="final-text">
-                Los puzzles absurdos, el profesor con el meñique roto en una conga escandinava, la cafetería del Chininchinon, la ruleta administrativa de excusas...
+                Parece ser que todo ha sido un sueño y que empiezas la verdadera sustitucion ahora...
             </div>
             
             <div class="final-text">
-                Todo producto de tu subconsciente nervioso ante la verdadera sustitución que empieza... <strong>ahora</strong>.
+                Los puzzles absurdos, el profesor con el meñique roto en una conga escandinava, la cafeteria del Chininchinon, la ruleta administrativa de excusas...
             </div>
             
-            <div class="final-text" style="color: #ffd700; font-size: 1.5rem; margin-top: 2rem;">
-                Miras el reloj. Es hora de ir a trabajar.
+            <div class="final-text">
+                Todo producto de tu subconsciente nervioso ante la verdadera sustitucion que empieza... <strong>ahora</strong>.
             </div>
             
-            <div class="final-text" style="color: #999; margin-top: 2rem;">
-                La verdadera pregunta es: ¿será la realidad más o menos absurda que el sueño?
+            <div class="final-text" style="color: #ffd700; font-size: 1.4rem; margin-top: 2rem; text-align: center;">
+                Miras el reloj. En fin, hora de ir a trabajar.
+            </div>
+            
+            <div class="final-text" style="color: #999; margin-top: 2rem; text-align: center;">
+                La verdadera pregunta es: sera la realidad mas o menos absurda que el sueño?
             </div>
 
-            <div style="height: 2px; background: linear-gradient(to right, transparent, #ffd700, transparent); margin: 3rem 0;"></div>
+            <div style="height: 2px; background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.6), transparent); margin: 3rem 0;"></div>
 
             <div class="final-title" style="font-size: 2rem; margin-top: 2rem;">
-                🎓 ¡FELICIDADES! 🎓
+                FELICIDADES
             </div>
 
             <div class="final-text" style="text-align: center;">
-                Has completado <strong>"LA SUSTITUCIÓN"</strong>
+                Has completado <strong>LA SUSTITUCION</strong>
             </div>
 
-            <div class="credits">
-                Un scaperoom sobre pensamiento lógico, decisiones absurdas<br>
+            <div class="name-input-section">
+                <div class="name-input-title">TU TIEMPO: <span id="finalTime">00:00:00</span></div>
+                <input type="text" class="name-input" id="playerName" placeholder="Ingresa tu nombre para la clasificacion..." maxlength="30">
+                <button class="save-time-btn" id="saveBtn" onclick="saveTime()">GUARDAR TIEMPO</button>
+            </div>
+
+            <button class="leaderboard-btn" onclick="goToLeaderboard()">VER CLASIFICACION</button>
+
+            <div style="text-align: center; color: #999; font-size: 0.9rem; margin-top: 2rem; line-height: 1.6;">
+                Un scaperoom sobre pensamiento logico, decisiones absurdas<br>
                 y la maravillosa locura de la vida universitaria.<br><br>
                 
-                Gracias por jugar. Ahora ve y enfrenta tu verdadera sustitución... 😄
+                Gracias por jugar. Ahora ve y enfrenta tu verdadera sustitucion...
             </div>
 
             <button class="restart-btn" onclick="restart()">VOLVER A JUGAR</button>
@@ -348,30 +482,127 @@
     </div>
 
     <script>
+        let startTime;
+        let timerInterval;
+
+        function initTimer() {
+            const savedStartTime = localStorage.getItem('game_start_time');
+            if (savedStartTime) {
+                startTime = parseInt(savedStartTime);
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        }
+
+        function updateTimer() {
+            const currentTime = Date.now();
+            const elapsed = currentTime - startTime;
+            
+            const hours = Math.floor(elapsed / 3600000);
+            const minutes = Math.floor((elapsed % 3600000) / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+            
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            document.getElementById('timer').textContent = timeString;
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            const finalTime = Date.now() - startTime;
+            
+            const hours = Math.floor(finalTime / 3600000);
+            const minutes = Math.floor((finalTime % 3600000) / 60000);
+            const seconds = Math.floor((finalTime % 60000) / 1000);
+            
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            document.getElementById('finalTime').textContent = timeString;
+            
+            localStorage.setItem('final_time', finalTime);
+            localStorage.setItem('final_time_string', timeString);
+        }
+
+        function saveTime() {
+            const playerName = document.getElementById('playerName').value.trim();
+            
+            if (!playerName) {
+                alert('Por favor, ingresa tu nombre');
+                return;
+            }
+
+            const finalTime = localStorage.getItem('final_time');
+            const timeString = localStorage.getItem('final_time_string');
+            
+            // Obtener clasificación existente
+            let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            
+            // Agregar nueva entrada
+            leaderboard.push({
+                name: playerName,
+                time: parseInt(finalTime),
+                timeString: timeString,
+                date: new Date().toISOString()
+            });
+            
+            // Ordenar por tiempo (menor a mayor)
+            leaderboard.sort((a, b) => a.time - b.time);
+            
+            // Guardar solo top 10
+            leaderboard = leaderboard.slice(0, 10);
+            
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+            
+            document.getElementById('saveBtn').disabled = true;
+            document.getElementById('saveBtn').textContent = 'TIEMPO GUARDADO';
+            
+            alert(`Tiempo guardado. Posicion en clasificacion: #${leaderboard.findIndex(entry => entry.name === playerName && entry.time === parseInt(finalTime)) + 1}`);
+        }
+
+        function goToLeaderboard() {
+            window.location.href = 'clasificacion.html';
+        }
+
         function nextScene(sceneNum) {
+            // Ocultar escena actual
             document.querySelectorAll('.scene').forEach(scene => {
                 scene.classList.add('hidden');
             });
 
+            // Mostrar siguiente escena
             const nextScene = document.getElementById(`scene${sceneNum}`);
             nextScene.classList.remove('hidden');
             nextScene.style.opacity = '0';
             
             setTimeout(() => {
-                nextScene.style.animation = 'fadeIn 2s forwards';
+                nextScene.style.animation = 'fadeIn 1.5s forwards';
             }, 100);
 
+            // Si llegamos a la escena final, detener el cronómetro
+            if (sceneNum === 7) {
+                stopTimer();
+            }
+
+            // Scroll al inicio
             window.scrollTo(0, 0);
         }
 
         function restart() {
+            // Limpiar todo el progreso
+            const leaderboard = localStorage.getItem('leaderboard');
             localStorage.clear();
+            if (leaderboard) {
+                localStorage.setItem('leaderboard', leaderboard);
+            }
+            
+            // Volver al inicio
             window.location.href = 'index.html';
         }
 
-        setTimeout(() => {
-            document.getElementById('scene1').style.opacity = '1';
-        }, 500);
+        // Auto-iniciar primera escena y cronómetro
+        window.onload = function() {
+            initTimer();
+            setTimeout(() => {
+                document.getElementById('scene1').style.opacity = '1';
+            }, 500);
+        };
     </script>
 </body>
 </html>

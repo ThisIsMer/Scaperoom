@@ -7,21 +7,62 @@
     <link rel="stylesheet" href="../../styles.css">
     <style>
         body {
-            background: #0a0a0a;
-            height: 100vh;
+            font-family: 'Courier New', monospace;
+            background: url('../../Assets/PruebaCalendarioDeExamenes.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
             overflow: hidden;
         }
 
         .game-wrapper {
-            background: linear-gradient(135deg, #6a4c93 0%, #4a6fa5 100%);
+            background: transparent;
+            padding-top: 5rem;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.55);
         }
 
         .game-container {
-            max-width: 800px;
+            max-width: 1200px;
+            background: rgba(182, 182, 182, 0.6);
         }
 
         .header {
-            background: linear-gradient(135deg, rgba(106, 76, 147, 0.85), rgba(74, 111, 165, 0.85));
+            text-align: center;
+            margin-bottom: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            color: #2a2a2a;
+            font-size: 1.6rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .header p {
+            color: #d3d3d3;
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .content {
+            padding: 0.8rem 1.5rem;
+            color: #2a2a2a;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .instruction {
+            background: rgba(255, 243, 205, 0.9);
+            padding: 0.8rem;
+            border-left: 4px solid #d4a017;
+            margin: 0.6rem 0;
+            color: #6a4f0f;
+            font-size: 0.8rem;
+            line-height: 1.4;
         }
 
         .pips-board {
@@ -55,8 +96,8 @@
         }
 
         .pip-cell.filled {
-            background: #6a4c93;
-            border-color: #6a4c93;
+            background: #3f2929;
+            border-color: #654949;
         }
 
         .pip-cell.filled::after {
@@ -78,7 +119,7 @@
 
         .target-title {
             font-weight: bold;
-            color: #6a4c93;
+            color: #322020;
             margin-bottom: 1rem;
             font-size: 1.2rem;
         }
@@ -103,32 +144,30 @@
 
         .target-cell.target-filled::after {
             content: '●';
-            color: #6a4c93;
+            color: #591f1f;
             font-size: 1.2rem;
         }
 
         .game-info {
             text-align: center;
-            margin: 1rem 0;
             font-size: 1.1rem;
             color: #2c3e50;
         }
 
         .moves-counter {
             font-weight: bold;
-            color: #e74c3c;
+            color: #7e170c;
         }
 
         .controls {
             display: flex;
-            gap: 1rem;
             justify-content: center;
             margin: 1.5rem 0;
         }
 
         .reset-btn {
             padding: 0.8rem 1.5rem;
-            background: #e74c3c;
+            background: #934036;
             color: white;
             border: none;
             border-radius: 5px;
@@ -138,31 +177,31 @@
         }
 
         .reset-btn:hover {
-            background: #c0392b;
+            background: #6a2e28;
         }
+
     </style>
+
 </head>
 <body>
-    <div class="intro-overlay" id="introOverlay">
-        <div class="intro-dialogue">
-            <div class="intro-text">
-                Estas en clase, dejando a la gente trabajar cuando alguien te levanta la mano.<br><br>
-                
-                Los alumnos tienen demasiados trabajos y examenes. Necesitas otra fecha para el examen.<br><br>
-                
-                Para encontrar la fecha perfecta, debes resolver este puzzle: replica el patrón objetivo haciendo clic en las casillas. Cada clic cambia la casilla y las adyacentes (arriba, abajo, izquierda, derecha).
-            </div>
-            <button class="continue-btn" onclick="closeIntro()">Continuar</button>
-        </div>
-    </div>
-
     <div class="game-wrapper">
         <button class="back-btn" onclick="goBack()">← Volver a Clase</button>
+
+        <div class="overlay"></div>
+
+            <div class="intro-overlay" id="introOverlay">
+                <div class="intro-dialogue">
+                    <div class="intro-text">
+                        Estas en clase, dejando a la gente trabajar cuando alguien te levanta la mano.<br>
+                        Los alumnos tienen demasiados trabajos y examenes. Necesitas otra fecha para el examen.<br>
+                    </div>
+                    <button class="continue-btn" onclick="closeIntro()">Continuar</button>
+                </div>
+            </div>
 
         <div class="game-container">
             <div class="header">
                 <h1>CALENDARIO DE EXAMENES</h1>
-                <p>Encuentra el patrón perfecto</p>
             </div>
 
             <div class="content">
@@ -183,7 +222,7 @@
 
                 <div class="controls">
                     <button class="reset-btn" onclick="resetBoard()">Reiniciar</button>
-                    <button class="reset-btn" style="background: #3498db;" onclick="showSolution()">💡 Ver Solución</button>
+                    <button class="reset-btn" style="background: #2b4759;" onclick="showSolution()">Ver Solución</button>
                 </div>
 
                 <div id="message" class="message hidden"></div>
@@ -194,7 +233,7 @@
                     Perfecto, ahora que tienes la fecha seleccionada, deberías comprobar cómo de difícil es el examen que dejó el anterior profesor para asegurarte de que los alumnos lo pueden resolver...
                 </div>
                 <img src="../../Assets/Examen.jpg" alt="Examen imposible" class="exam-image">
-                <p style="text-align: center; margin: 1rem 0; font-style: italic; color: #2c3e50;">¡Vamos allá, seguro que no es muy complicado!</p>
+                <p style="text-align: center; margin: 0.5rem 0; font-style: italic; color: #2c3e50;">¡Vamos allá, seguro que no es muy complicado!</p>
                 <input type="text" class="exam-input" id="q1" placeholder="Tu respuesta para la pregunta 1...">
                 <button class="submit-btn" onclick="nextQuestion(2)">Responder Pregunta 1</button>
             </div>
@@ -357,6 +396,12 @@
             msg.textContent = text;
             msg.className = `message ${type}`;
             msg.classList.remove('hidden');
+            
+            setTimeout(() => {
+                if (type === 'error' || type === 'info') {
+                    msg.classList.add('hidden');
+                }
+            }, 3000);
         }
 
         function showSolution() {
@@ -379,10 +424,6 @@
             setTimeout(() => {
                 overlay.classList.add('hidden');
             }, 500);
-            
-            if (!localStorage.getItem('prueba2_3_visited')) {
-                localStorage.setItem('prueba2_3_visited', 'true');
-            }
         }
 
         function goBack() {

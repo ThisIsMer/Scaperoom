@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificacion - La Sustitucion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(30, 30, 30, 0.95);
+            border: 3px solid rgba(255, 215, 0, 0.6);
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 3rem;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .leaderboard-table thead {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .leaderboard-table th {
+            padding: 1rem;
+            text-align: left;
+            color: #ffd700;
+            font-size: 1.1rem;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.6);
+        }
+
+        .leaderboard-table tbody tr {
+            border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+            transition: all 0.3s;
+        }
+
+        .leaderboard-table tbody tr:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .leaderboard-table td {
+            padding: 1rem;
+            font-size: 1rem;
+        }
+
+        .rank {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #ffd700;
+            width: 80px;
+            text-align: center;
+        }
+
+        .rank.gold {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .rank.silver {
+            color: #c0c0c0;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.8);
+        }
+
+        .rank.bronze {
+            color: #cd7f32;
+            text-shadow: 0 0 10px rgba(205, 127, 50, 0.8);
+        }
+
+        .player-name {
+            font-weight: bold;
+            color: #e8e8e8;
+        }
+
+        .time {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #4caf50;
+            font-size: 1.2rem;
+        }
+
+        .date {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-home {
+            background: linear-gradient(135deg, rgba(103, 58, 183, 0.9), rgba(74, 111, 165, 0.9));
+            color: #e8e8e8;
+        }
+
+        .btn-home:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(103, 58, 183, 0.6);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
+            color: #e8e8e8;
+        }
+
+        .btn-reset:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
+        }
+
+        .medal {
+            font-size: 2rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">CLASIFICACION</h1>
+            <p class="subtitle">Top 10 Mejores Tiempos</p>
+        </div>
+
+        <div id="leaderboard-content"></div>
+
+        <div class="buttons">
+            <button class="btn btn-home" onclick="goHome()">Volver al Inicio</button>
+            <button class="btn btn-reset" onclick="resetLeaderboard()">Reiniciar Clasificacion</button>
+        </div>
+    </div>
+
+    <script>
+        function loadLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            const content = document.getElementById('leaderboard-content');
+
+            if (leaderboard.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-message">
+                        No hay tiempos registrados aun.<br>
+                        Completa el scaperoom para aparecer en la clasificacion.
+                    </div>
+                `;
+                return;
+            }
+
+            let tableHTML = `
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Posicion</th>
+                            <th>Jugador</th>
+                            <th>Tiempo</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            leaderboard.forEach((entry, index) => {
+                const position = index + 1;
+                let rankClass = '';
+                let medal = '';
+
+                if (position === 1) {
+                    rankClass = 'gold';
+                    medal = '<span class="medal">🥇</span>';
+                } else if (position === 2) {
+                    rankClass = 'silver';
+                    medal = '<span class="medal">🥈</span>';
+                } else if (position === 3) {
+                    rankClass = 'bronze';
+                    medal = '<span class="medal">🥉</span>';
+                }
+
+                const date = new Date(entry.date);
+                const dateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+                tableHTML += `
+                    <tr>
+                        <td class="rank ${rankClass}">${medal}#${position}</td>
+                        <td class="player-name">${escapeHtml(entry.name)}</td>
+                        <td class="time">${entry.timeString}</td>
+                        <td class="date">${dateString}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            content.innerHTML = tableHTML;
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        function resetLeaderboard() {
+            if (confirm('Estas seguro de que quieres borrar toda la clasificacion? Esta accion no se puede deshacer.')) {
+                localStorage.removeItem('leaderboard');
+                loadLeaderboard();
+            }
+        }
+
+        window.onload = loadLeaderboard;
+    </script>
+</body>
+</html>
