@@ -13,24 +13,20 @@
 
         body {
             font-family: 'Courier New', monospace;
-            background: #0a0a0a;
-            color: #e8e8e8;
-            height: 100vh;
-            overflow: hidden;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
         }
 
         .scene {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 2rem 1rem;
             opacity: 0;
-            animation: fadeIn 1s forwards;
-            background: rgba(0, 0, 0, 0.95);
+            animation: fadeIn 2s forwards;
         }
 
         @keyframes fadeIn {
@@ -81,46 +77,6 @@
             transform: scale(1.05);
         }
 
-        .classroom-visual {
-            background: rgba(20, 20, 20, 0.9);
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .professor {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .students-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .student {
-            background: rgba(50, 50, 50, 0.8);
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid rgba(100, 100, 100, 0.4);
-        }
-
-        .student-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .student-label {
-            font-size: 0.75rem;
-            color: #b0b0b0;
-        }
-
         .alarm-scene {
             background: #000;
             animation: alarm-flash 0.5s infinite;
@@ -146,20 +102,19 @@
         }
 
         .final-message {
-            background: rgba(20, 20, 20, 0.95);
-            padding: 3rem;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
             border-radius: 15px;
-            max-width: 700px;
-            border: 3px solid rgba(255, 215, 0, 0.6);
+            max-width: 900px;
+            border: 3px solid #6c2626;
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
         }
 
         .final-title {
-            font-size: 2.5rem;
-            color: #ffd700;
-            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #8d1f1f;
+            margin-bottom: 1.5rem;
             text-align: center;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         .final-text {
@@ -179,7 +134,7 @@
             border-radius: 10px;
             font-size: 1.5rem;
             font-weight: bold;
-            color: #ffd700;
+            color: #ffd900da;
             z-index: 2000;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
@@ -194,7 +149,7 @@
 
         .name-input-title {
             font-size: 1.3rem;
-            color: #ffd700;
+            color: #a81b1bc2;
             margin-bottom: 1rem;
             text-align: center;
         }
@@ -213,13 +168,13 @@
 
         .name-input:focus {
             outline: none;
-            border-color: #ffd700;
+            border-color: #872828ce;
         }
 
         .save-time-btn {
             width: 100%;
             padding: 1.2rem;
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(56, 142, 60, 0.9));
+            background: linear-gradient(135deg, rgba(76, 175, 79, 0.589), rgba(56, 142, 60, 0.611));
             color: #e8e8e8;
             border: 3px solid rgba(255, 255, 255, 0.6);
             border-radius: 10px;
@@ -244,7 +199,7 @@
         .leaderboard-btn {
             width: 100%;
             padding: 1.2rem;
-            background: linear-gradient(135deg, rgba(103, 58, 183, 0.9), rgba(74, 111, 165, 0.9));
+            background: ( rgba(74, 110, 165, 0.648));
             color: #e8e8e8;
             border: 3px solid rgba(255, 255, 255, 0.6);
             border-radius: 10px;
@@ -273,7 +228,7 @@
             width: 100%;
             max-width: 500px;
             padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
+            background: ( rgba(133, 37, 26, 0.9));
             color: #e8e8e8;
             border: 3px solid rgba(255, 255, 255, 0.6);
             border-radius: 10px;
@@ -430,10 +385,9 @@
             <button class="leaderboard-btn" onclick="goToLeaderboard()">VER CLASIFICACION</button>
 
             <div style="text-align: center; color: #999; font-size: 0.9rem; margin-top: 2rem; line-height: 1.6;">
-                Un scaperoom sobre pensamiento logico, decisiones absurdas<br>
-                y la maravillosa locura de la vida universitaria.<br><br>
-                
-                Gracias por jugar. Ahora ve y enfrenta tu verdadera sustitucion...
+                Espero que te lo hayas pasado bien jugando este scaperoom<br>
+                <br>
+                ¡Gracias por jugar!
             </div>
 
             <button class="restart-btn" onclick="restart()">VOLVER A JUGAR</button>

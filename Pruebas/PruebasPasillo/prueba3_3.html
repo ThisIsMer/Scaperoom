@@ -5,23 +5,243 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 3.3 - Formación Extraordinaria</title>
     <link rel="stylesheet" href="../../styles.css">
-    <style>
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+            font-family: 'Courier New', monospace;;
+            background: url('../../Assets/Pasillo.jpg');
+            background-size: cover;
+            background-position: center;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
+            padding: 1rem;
+            overflow-x: hidden;
         }
 
-        .game-container {
+        .back-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 0.6rem 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 2px solid #666;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            border-color: #fff;
+        }
+
+        .container {
             max-width: 900px;
+            width: 100%;
             background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            margin: 60px auto 20px;
+            min-height: 95vh;
         }
 
-        .header {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+        }
+
+        .content {
+            padding: 1.5rem;
+            color: #333;
+            max-height: calc(100vh - 250px);
+            overflow-y: auto;
+            min-height: 85vh;
+        }
+
+        .email-box {
+            background: #ffebee85;
+            padding: 1rem;
+            border-left: 5px solid #b77d76;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .dni-highlight {
+            background: yellow;
+            padding: 0.2rem 0.5rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .sarcasm {
+            font-style: 'Courier New', monospace;;
+            color: #3a3736;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.5; }
+        }
+
+        .quiz-section {
+            background: #bfc2c5;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .quiz-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #42607e;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .question {
+            background: #ffffffa3;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid #466680;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .question input, .question select {
+            width: 100%;
+            padding: 0.7rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            border: 2px solid #526575;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #37566f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #2c3f52;
+        }
+
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .pista-box {
+            background: #fff8e1;
+            padding: 1.5rem;
+            border: 3px dashed #ffc107;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .pista-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #f57f17;
+            margin-bottom: 1rem;
+        }
+
+        .pista-content {
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            color: #e65100;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 5px;
+            letter-spacing: 2px;
+        }
+
+        .pista-subtext {
+            margin-top: 1rem;
+            color: #666;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .video-title {
+                font-size: 1rem;
+            }
+            
+            .video-detail {
+                font-size: 0.75rem;
+            }
+            
+            .pista-content {
+                font-size: 1.2rem;
+            }
         }
 
         .video-container {
@@ -46,6 +266,13 @@
             width: 100%;
             height: 100%;
         }
+
+        .game-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            min-height: 95vh;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +280,7 @@
 
     <div class="game-container">
         <div class="header">
-            <h1>📧 CURSO DE FORMACIÓN EXTRAORDINARIO</h1>
+            <h1>CURSO DE FORMACIÓN EXTRAORDINARIO</h1>
             <p>Capacitación Urgente sobre Asignación de Aulas</p>
         </div>
 
@@ -84,7 +311,7 @@
             </div>
 
             <div class="quiz-section">
-                <div class="quiz-title">📝 EXAMEN DE COMPRENSIÓN DEL VÍDEO</div>
+                <div class="quiz-title">EXAMEN DE COMPRENSIÓN DEL VÍDEO</div>
                 <p style="text-align: center; margin-bottom: 2rem; color: #666;">
                     (Responde según lo que viste en el vídeo)
                 </p>
@@ -116,7 +343,7 @@
 
         <div class="content hidden" id="pistaScreen">
             <div class="pista-box">
-                <div class="pista-title">🎉 ¡CURSO COMPLETADO! 🎉</div>
+                <div class="pista-title"> ¡CURSO COMPLETADO! </div>
                 <p style="margin-bottom: 2rem; color: #666;">
                     Has completado satisfactoriamente el curso de formación más inútil de la historia universitaria.
                 </p>
@@ -124,16 +351,12 @@
                 <div style="background: #ffebee; padding: 1.5rem; border-radius: 10px; margin: 2rem 0;">
                     <p style="font-weight: bold; margin-bottom: 1rem;">Como recompensa, recibes una PISTA IMPORTANTE:</p>
                     <div class="pista-content">
-                        🔑 CÓDIGO: X7-DELTA-99
+                        CÓDIGO: X7-DELTA-99
                     </div>
                     <div class="pista-subtext">
                         (Esta pista parece extremadamente importante y específica... seguramente la necesitarás más adelante, ¿verdad?)
                     </div>
                 </div>
-
-                <p style="color: #999; font-size: 0.9rem; margin-top: 2rem;">
-                    <em>Spoiler: Esta pista no sirve para nada. Absolutamente nada. Pero te la damos de todas formas porque completaste un curso que tampoco servía para nada. 🤷</em>
-                </p>
             </div>
 
             <button class="complete-btn" onclick="completeAndGoBack()">✓ Completado - Volver al Pasillo</button>
@@ -151,7 +374,7 @@
             // Validar que todas las respuestas tengan al menos 3 caracteres
             if (a1.length >= 3 && a2.length >= 3 && a3.length >= 3 && a4.length >= 3) {
                 msg.className = 'message success';
-                msg.textContent = '✓ ¡Perfecto! Has demostrado que viste el vídeo (o que eres muy creativo inventando respuestas).';
+                msg.textContent = '¡Perfecto! Has demostrado que viste el vídeo (o que eres muy creativo inventando respuestas).';
                 msg.classList.remove('hidden');
 
                 setTimeout(() => {
@@ -162,7 +385,7 @@
                 localStorage.setItem('prueba3_3_completed', 'true');
             } else {
                 msg.className = 'message error';
-                msg.textContent = '❌ Por favor, responde todas las preguntas con respuestas válidas (mínimo 3 caracteres cada una).';
+                msg.textContent = 'Por favor, responde todas las preguntas con respuestas válidas (mínimo 3 caracteres cada una).';
                 msg.classList.remove('hidden');
             }
         }
