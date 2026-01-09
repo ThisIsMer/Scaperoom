@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba 3.1-2-3 - Buscar la Cafeteria</title>
     <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: url('../../Assets/Pasillo.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+    </style>
 </head>
 <body>
     <button class="back-btn" onclick="goBack()">Volver al Pasillo</button>
@@ -33,8 +44,7 @@
 
             <button class="hint-btn" onclick="toggleHint()">Ver Pista</button>
             <div class="hint-box" id="hintBox">
-                <strong>PISTA:</strong> Fijate bien en el nombre de la orquesta: SIN Obertura NI Intermedio...<br>
-                Piensa en las letras que faltan: Sin <strong>I</strong> ni <strong>O</strong>
+                <strong>PISTA:</strong> Fijate bien en el nombre de la orquesta: <strong>SIN O</strong>bertura <strong> NI I</strong>ntermedio...<br>
             </div>
 
             <div class="progress" id="progress">
@@ -58,13 +68,13 @@
 
     <script>
         const instrumentPairs = [
-            { valid: 'FLAUTA', invalid: 'VIOLIN', validIcon: '🎵', invalidIcon: '🎻' },
-            { valid: 'TUBA', invalid: 'OBOE', validIcon: '📯', invalidIcon: '🎺' },
-            { valid: 'ARPA', invalid: 'TROMBON', validIcon: '🪕', invalidIcon: '🎺' },
-            { valid: 'FAGAT', invalid: 'PIANO', validIcon: '🎷', invalidIcon: '🎹' },
-            { valid: 'CLAVE', invalid: 'VIOLONCHELO', validIcon: '🎹', invalidIcon: '🎻' },
-            { valid: 'TAMBUR', invalid: 'GUITARRA', validIcon: '🥁', invalidIcon: '🎸' },
-            { valid: 'LAUD', invalid: 'SAXOFON', validIcon: '🎸', invalidIcon: '🎷' }
+            { valid: 'FLAUTA', invalid: 'VIOLIN', validIcon: '', invalidIcon: '' },
+            { valid: 'TUBA', invalid: 'OBOE', validIcon: '', invalidIcon: '' },
+            { valid: 'ARPA', invalid: 'TROMBON', validIcon: '', invalidIcon: '' },
+            { valid: 'MARACAS', invalid: 'PIANO', validIcon: '', invalidIcon: '' },
+            { valid: 'CLAVE', invalid: 'VIOLONCHELO', validIcon: '', invalidIcon: '' },
+            { valid: 'PANDERETA', invalid: 'GUITARRA', validIcon: '', invalidIcon: '' },
+            { valid: 'LAUD', invalid: 'SAXOFON', validIcon: '', invalidIcon: '' }
         ];
 
         let score = 0;

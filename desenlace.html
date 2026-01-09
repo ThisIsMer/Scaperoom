@@ -1,24 +1,4 @@
-.restart-btn {
-            width: 100%;
-            max-width: 500px;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
-            color: #e8e8e8;
-            border: 3px solid rgba(255, 255, 255, 0.6);
-            border-radius: 10px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 2rem auto 0;
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-            display: block;
-        }
-
-        .restart-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -289,6 +269,28 @@
             animation: glitch 0.3s infinite;
         }
 
+        .restart-btn {
+            width: 100%;
+            max-width: 500px;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
+            color: #e8e8e8;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 2rem auto 0;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            display: block;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
+        }
+
         @keyframes glitch {
             0% { transform: translate(0); }
             20% { transform: translate(-2px, 2px); }
@@ -335,49 +337,6 @@
                 
                 Una sinfonia de dedicacion en un concierto de improvisacion total.
             </div>
-
-            <div class="classroom-visual">
-                <div class="professor">👨‍🏫</div>
-                <p style="color: #b0b0b0; margin-bottom: 1rem;">TU, dando un discurso inspirador</p>
-                
-                <p style="color: #ffd700; margin: 1rem 0;">Mientras tanto, los alumnos:</p>
-                
-                <div class="students-grid">
-                    <div class="student">
-                        <div class="student-icon">🎮</div>
-                        <div class="student-label">LOL</div>
-                    </div>
-                    <div class="student">
-                        <div class="student-icon">📖</div>
-                        <div class="student-label">Manga</div>
-                    </div>
-                    <div class="student">
-                        <div class="student-icon">👗</div>
-                        <div class="student-label">Dress to Impress</div>
-                    </div>
-                    <div class="student">
-                        <div class="student-icon">💣</div>
-                        <div class="student-label">Buscaminas</div>
-                    </div>
-                    <div class="student">
-                        <div class="student-icon">🐔</div>
-                        <div class="student-label">Crossy Road</div>
-                    </div>
-                    <div class="student">
-                        <div class="student-icon">📱</div>
-                        <div class="student-label">Instagram</div>
-                    </div>
-                    <div class="student">
-                        <div class="student-icon">🎵</div>
-                        <div class="student-label">Spotify</div>
-                    </div>
-                    <div class="student">
-                        <div class="student-icon">😴</div>
-                        <div class="student-label">Durmiendo</div>
-                    </div>
-                </div>
-            </div>
-
             <button class="continue-btn" onclick="nextScene(4)">Continuar</button>
         </div>
     </div>
@@ -416,7 +375,7 @@
     <div class="scene alarm-scene hidden" id="scene6">
         <div class="dialogue-box">
             <div class="alarm-text glitch">
-                ⏰ RING RING RING ⏰
+                RING RING RING 
             </div>
             
             <div class="dialogue-text" style="text-align: center; font-size: 1.5rem;">

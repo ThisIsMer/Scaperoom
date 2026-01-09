@@ -10,15 +10,6 @@
             background: url('../../Assets/EscritorioPruebaConnections.jpg');
             background-size: cover;
             background-position: center;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .overlay {
-            background: rgba(0, 0, 0, 0.55);
         }
 
         .game-container {
@@ -29,33 +20,13 @@
             padding-right: 1rem;
             margin-top: 2rem;
         }
-
-        @media (max-width: 768px) {
-            .documents-container {
-                grid-template-columns: 1fr;
-            }
-
-            .game-container {
-                width: 98%;
-                padding: 1rem;
-            }
-
-            .code-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            h1 {
-                font-size: 1.2rem;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="intro-overlay" id="introOverlay">
         <div class="intro-dialogue">
             <div class="intro-text">
-                Tocará aprenderse cuando tienes las clases (o por lo menos saber a qué hora terminar tu meditación andaluza para llegar a la hora, 20 minutitos arriba o abajo no le importan a nadie).<br><br>
+                Tocará aprenderse cuándo tienes las clases (o por lo menos saber a qué hora terminar tu meditación andaluza para llegar a la hora, 20 minutitos arriba o abajo no le importan a nadie).<br><br>
                 
                 Empiezas a mirar el documento y por algún motivo los horarios vienen clasificados con números por nombre de asignatura. Genial... Ahora, ¿dónde tenías la chuleta de las asignaturas? Seguro que era algo tal que así...
             </div>
@@ -72,7 +43,7 @@
             <h1>¿Cuál Es Mi Horario?</h1>
             
             <div class="instruction">
-                <strong>INSTRUCCIÓN:</strong> Los horarios están puestos con su código de asignatura. Descifra cual es cada una.
+                <strong>INSTRUCCIÓN:</strong> Los horarios están puestos con su código de asignatura. Descifra cuál es cada una.
             </div>
 
             <div class="hint-container">
@@ -80,9 +51,9 @@
                 <div class="hint-box" id="hintBox">
                     <div class="cipher-example">
                         <div class="cipher-row">
-                            <span>Palabra normal:</span>
+                            <span>Palabra normal: </span>
                             <span><strong>GATO</strong></span>
-                            <span>Palabra cifrada:</span>
+                            <span> → Palabra cifrada: </span>
                             <span><strong>DXQL</strong></span>
                         </div>
                     </div>
@@ -192,10 +163,6 @@
             setTimeout(() => {
                 overlay.style.display = 'none';
             }, 500);
-            
-            if (!localStorage.getItem('prueba3_visited')) {
-                localStorage.setItem('prueba3_visited', 'true');
-            }
         }
 
         function toggleHint() {
@@ -216,8 +183,6 @@
             const ans4 = normalizeText(document.getElementById('answer4').value);
             const ans5 = normalizeText(document.getElementById('answer5').value);
 
-            const message = document.getElementById('message');
-
             const isAns1Correct = correctAnswers.answer1.some(a => normalizeText(a) === ans1);
             const isAns2Correct = correctAnswers.answer2.some(a => normalizeText(a) === ans2);
             const isAns3Correct = correctAnswers.answer3.some(a => normalizeText(a) === ans3);
@@ -225,9 +190,7 @@
             const isAns5Correct = correctAnswers.answer5.some(a => normalizeText(a) === ans5);
 
             if (isAns1Correct && isAns2Correct && isAns3Correct && isAns4Correct && isAns5Correct) {
-                message.className = 'message success';
-                message.classList.remove('hidden');
-                message.textContent = '¡Perfecto! Ya sabes cuándo llegar a clase';
+                showMessage('¡Perfecto! Ya sabes cuándo llegar a clase', 'success', true);
                 
                 document.getElementById('completeBtn').classList.remove('hidden');
                 document.querySelectorAll('.code-input').forEach(input => input.disabled = true);
@@ -236,8 +199,6 @@
                 localStorage.setItem('prueba3_completed', 'true');
             } else {
                 attempts++;
-                message.className = 'message error';
-                message.classList.remove('hidden');
                 
                 let errors = [];
                 if (!isAns1Correct) errors.push('ZLKBXOFX');
@@ -246,13 +207,28 @@
                 if (!isAns4Correct) errors.push('XOKXE');
                 if (!isAns5Correct) errors.push('ZLRKFZFÑX');
                 
-                message.textContent = 'Algunas respuestas no son correctas. Revisa: ' + errors.join(', ');
-
+                let errorMsg = 'Algunas respuestas no son correctas. Revisa: ' + errors.join(', ');
+                
                 if (attempts === 2) {
-                    message.textContent += ' | Piensalo bien (necesitas ver la pista)';
+                    errorMsg += '. Piénsalo bien...';
                 } else if (attempts >= 3) {
-                    message.textContent += ' | El cifrado desplaza 3 posiciones';
+                    errorMsg += '. Cada letra se desplaza 3 posiciones en el alfabeto.';
                 }
+                
+                showMessage(errorMsg, 'error');
+            }
+        }
+
+        function showMessage(text, type, persistent = false) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+            
+            if (!persistent && type === 'error') {
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                }, 3000);
             }
         }
 
@@ -272,12 +248,6 @@
             localStorage.setItem('prueba3_completed', 'true');
             window.location.href = '../../Escenarios/despacho.html';
         }
-
-        window.onload = function() {
-            if (localStorage.getItem('prueba3_visited')) {
-                closeIntro();
-            }
-        };
     </script>
 </body>
 </html>

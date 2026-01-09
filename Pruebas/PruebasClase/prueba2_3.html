@@ -15,54 +15,60 @@
             overflow: hidden;
         }
 
-        .game-wrapper {
-            background: transparent;
-            padding-top: 5rem;
-        }
-
-        .overlay {
-            background: rgba(0, 0, 0, 0.55);
-        }
-
         .game-container {
-            max-width: 1200px;
+            max-width: 1000px;
             background: rgba(182, 182, 182, 0.6);
+            max-height: fit-content;
+            padding: 5px;
+        }
+        
+        .content {
+            margin: 0;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 0.5rem;
-            padding: 0.8rem 1.5rem;
+            padding: 0;
             flex-shrink: 0;
+            margin-bottom: 0;
         }
 
-        h1 {
-            color: #2a2a2a;
-            font-size: 1.6rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .header p {
-            color: #d3d3d3;
-            font-size: 0.8rem;
-            line-height: 1.3;
-        }
-
-        .content {
-            padding: 0.8rem 1.5rem;
-            color: #2a2a2a;
-            flex: 1;
-            overflow-y: auto;
+        .header h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 1.4rem;
         }
 
         .instruction {
             background: rgba(255, 243, 205, 0.9);
             padding: 0.8rem;
             border-left: 4px solid #d4a017;
-            margin: 0.6rem 0;
             color: #6a4f0f;
             font-size: 0.8rem;
-            line-height: 1.4;
+            margin-top: 0.5rem
+        }
+
+        .boards-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 3rem;
+            max-width: 900px;
+            padding: 0 1rem;
+        }
+
+        .board-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .board-title {
+            font-weight: bold;
+            color: #322020;
+            font-size: 1.1rem;
+            text-transform: uppercase;
         }
 
         .pips-board {
@@ -70,7 +76,6 @@
             grid-template-columns: repeat(5, 1fr);
             gap: 0.5rem;
             max-width: 400px;
-            margin: 2rem auto;
             padding: 1rem;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
@@ -100,22 +105,23 @@
             border-color: #654949;
         }
 
+
         .pip-cell.filled::after {
             content: '●';
             color: white;
             font-size: 2.5rem;
         }
 
+
         .target-display {
             text-align: center;
-            margin: 2rem 0;
             padding: 1.5rem;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: none;
+            width: 100%;
         }
+
 
         .target-title {
             font-weight: bold;
@@ -124,6 +130,7 @@
             font-size: 1.2rem;
         }
 
+
         .target-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -131,6 +138,7 @@
             max-width: 250px;
             margin: 0 auto;
         }
+
 
         .target-cell {
             aspect-ratio: 1;
@@ -142,28 +150,34 @@
             align-items: center;
         }
 
+
         .target-cell.target-filled::after {
             content: '●';
             color: #591f1f;
             font-size: 1.2rem;
         }
 
+
         .game-info {
             text-align: center;
             font-size: 1.1rem;
             color: #2c3e50;
+            margin-top: 10px;
         }
+
 
         .moves-counter {
             font-weight: bold;
             color: #7e170c;
         }
 
+
         .controls {
             display: flex;
             justify-content: center;
-            margin: 1.5rem 0;
+            margin: 0.5rem 0;
         }
+
 
         .reset-btn {
             padding: 0.8rem 1.5rem;
@@ -176,12 +190,12 @@
             transition: all 0.3s;
         }
 
+
         .reset-btn:hover {
             background: #6a2e28;
         }
 
-    </style>
-
+</style>
 </head>
 <body>
     <div class="game-wrapper">
@@ -189,19 +203,19 @@
 
         <div class="overlay"></div>
 
-            <div class="intro-overlay" id="introOverlay">
-                <div class="intro-dialogue">
-                    <div class="intro-text">
-                        Estas en clase, dejando a la gente trabajar cuando alguien te levanta la mano.<br>
-                        Los alumnos tienen demasiados trabajos y examenes. Necesitas otra fecha para el examen.<br>
-                    </div>
-                    <button class="continue-btn" onclick="closeIntro()">Continuar</button>
+        <div class="intro-overlay" id="introOverlay">
+            <div class="intro-dialogue">
+                <div class="intro-text">
+                    Estás en clase, dejando a la gente trabajar cuando alguien te levanta la mano.<br>
+                    Los alumnos tienen demasiados trabajos y exámenes. Necesitas otra fecha para el examen.<br>
                 </div>
+                <button class="continue-btn" onclick="closeIntro()">Continuar</button>
             </div>
+        </div>
 
         <div class="game-container">
             <div class="header">
-                <h1>CALENDARIO DE EXAMENES</h1>
+                <h1>CALENDARIO DE EXÁMENES</h1>
             </div>
 
             <div class="content">
@@ -209,16 +223,29 @@
                     <strong>OBJETIVO:</strong> Replica el patrón objetivo. Cada clic cambia la casilla seleccionada y sus vecinas (arriba, abajo, izquierda, derecha).
                 </div>
 
-                <div class="target-display">
-                    <div class="target-title">PATRÓN OBJETIVO:</div>
-                    <div class="target-grid" id="targetGrid"></div>
+                <!-- TABLEROS LADO A LADO -->
+                <div class="boards-container">
+                    <!-- Tablero Objetivo (Izquierda) -->
+                    <div class="board-section">
+                        <div class="board-title">Patrón Objetivo</div>
+                        <div class="target-display">
+                            <div class="target-title">PATRÓN OBJETIVO:</div>
+                            <div class="target-grid" id="targetGrid"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tablero de Juego (Derecha) -->
+                    <div class="board-section">
+                        <div class="board-title">Tablero de Juego</div>
+                        <div class="target-display">
+                            <div class="pips-board" id="pipsBoard"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="game-info">
                     Movimientos: <span class="moves-counter" id="movesCounter">0</span>
                 </div>
-
-                <div class="pips-board" id="pipsBoard"></div>
 
                 <div class="controls">
                     <button class="reset-btn" onclick="resetBoard()">Reiniciar</button>
@@ -230,10 +257,9 @@
 
             <div class="content hidden" id="examIntro">
                 <div class="exam-dialogue">
-                    Perfecto, ahora que tienes la fecha seleccionada, deberías comprobar cómo de difícil es el examen que dejó el anterior profesor para asegurarte de que los alumnos lo pueden resolver...
+                    Perfecto, ahora que tienes la fecha seleccionada, deberías comprobar cómo de difícil es el examen que dejó el anterior profesor para asegurarte de que los alumnos lo pueden resolver...<br>¡Vamos allá, seguro que no es muy complicado!
                 </div>
                 <img src="../../Assets/Examen.jpg" alt="Examen imposible" class="exam-image">
-                <p style="text-align: center; margin: 0.5rem 0; font-style: italic; color: #2c3e50;">¡Vamos allá, seguro que no es muy complicado!</p>
                 <input type="text" class="exam-input" id="q1" placeholder="Tu respuesta para la pregunta 1...">
                 <button class="submit-btn" onclick="nextQuestion(2)">Responder Pregunta 1</button>
             </div>
@@ -261,7 +287,6 @@
                     Bah, da igual. Seguro que los chicos lo pueden resolver, que son muy listos.
                 </div>
                 <button class="complete-btn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
-
                 <button class="complete-btn hidden" id="completeBtn" onclick="completeAndGoBack()">Completado - Volver a Clase</button>
             </div>
         </div>
@@ -436,9 +461,6 @@
         }
 
         window.onload = function() {
-            if (localStorage.getItem('prueba2_3_visited')) {
-                closeIntro();
-            }
             initGame();
         };
     </script>

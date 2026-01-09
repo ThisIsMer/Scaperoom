@@ -45,11 +45,12 @@ body {
     position: relative;
     z-index: 10;
     width: 100%;
-    max-height: 95vh;
+    max-height: fit-content;
     background: rgba(133, 133, 133, 0.8);
     border-radius: 10px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
+    justify-content: center;
 }
 
 .content {
@@ -63,15 +64,13 @@ body {
 
 .header {
     text-align: center;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    padding: 0.5rem;
 }
 
 .header h1,
 h1 {
     color: #2a2a2a;
     font-size: 2rem;
-    margin-bottom: 0.5rem;
 }
 
 .header p,
@@ -157,7 +156,6 @@ h1 {
     background: rgba(71, 68, 58, 0.9);
     padding: 1rem;
     border-left: 4px solid #695f46;
-    margin-bottom: 1rem;
     color: #c3a45d;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -169,7 +167,7 @@ h1 {
     background: rgba(71, 68, 58, 0.9);
     padding: 1rem;
     border-left: 4px solid #695f46;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     border-radius: 5px;
 }
 
@@ -415,9 +413,9 @@ button:disabled {
 }
 
 .word-card.correct {
-    background: rgba(76, 175, 80, 0.9);
+    background: rgba(61, 122, 63, 0.9);
     color: #f0f0f0;
-    border-color: rgba(76, 175, 80, 0.9);
+    border-color: rgba(50, 96, 52, 0.9);
     cursor: default;
 }
 
@@ -972,86 +970,10 @@ button:disabled {
 /* ============================================
    PRUEBA 2.3 - CALENDARIO (Calendario de Examenes)
    ============================================ */
-
-.calendar-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.calendar-box {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(106, 76, 147, 0.6);
-    border-radius: 8px;
-    padding: 1rem;
-}
-
-.calendar-title {
-    font-weight: bold;
-    color: rgba(106, 76, 147, 0.9);
-    margin-bottom: 0.8rem;
-    font-size: 1rem;
-    text-align: center;
-    border-bottom: 2px solid rgba(106, 76, 147, 0.6);
-    padding-bottom: 0.4rem;
-}
-
-.event-list {
-    list-style: none;
-    padding: 0;
-}
-
-.event-item {
-    padding: 0.5rem;
-    margin-bottom: 0.4rem;
-    background: rgba(248, 249, 250, 0.9);
-    border-left: 4px solid rgba(231, 76, 60, 0.7);
-    font-size: 0.8rem;
-}
-
-.event-date {
-    font-weight: bold;
-    color: rgba(231, 76, 60, 0.9);
-    margin-right: 0.3rem;
-}
-
-.available-dates {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.8rem;
-    margin: 1rem 0;
-}
-
-.date-option {
-    padding: 0.8rem;
-    background: rgba(227, 242, 253, 0.9);
-    border: 3px solid rgba(33, 150, 243, 0.7);
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: bold;
-    font-size: 0.85rem;
-}
-
-.date-option:hover {
-    background: rgba(33, 150, 243, 0.8);
-    color: #e8e8e8;
-    transform: translateY(-2px);
-}
-
-.date-option.selected {
-    background: rgba(76, 175, 80, 0.8);
-    border-color: rgba(76, 175, 80, 0.8);
-    color: #e8e8e8;
-}
-
 .exam-dialogue {
     background: rgba(248, 249, 250, 0.9);
     padding: 1.5rem;
     border-left: 5px solid rgba(106, 76, 147, 0.7);
-    margin: 1rem 0;
     line-height: 1.6;
     font-size: 0.95rem;
     border-radius: 5px;
@@ -1095,18 +1017,6 @@ button:disabled {
     margin: 2rem 0;
 }
 
-.document:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    border-color: #3498db;
-}
-
-.document.selected {
-    border-color: #27ae60;
-    background: #e8f5e9;
-    box-shadow: 0 0 20px rgba(39, 174, 96, 0.4);
-}
-
 .document-header {
     display: flex;
     justify-content: space-between;
@@ -1122,55 +1032,9 @@ button:disabled {
     font-size: 1.1rem;
 }
 
-.doc-badge {
-    padding: 0.3rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.badge-official {
-    background: #3498db;
-    color: #fff;
-}
-
-.badge-suspicious {
-    background: #e74c3c;
-    color: #fff;
-}
-
 .doc-content {
     font-size: 0.9rem;
     line-height: 1.6;
-}
-
-.doc-detail {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    background: #f8f9fa;
-    border-left: 3px solid #3498db;
-}
-
-.doc-detail.error {
-    background: #ffebee;
-    border-left: 3px solid #e74c3c;
-}
-
-.doc-detail.good {
-    background: #e8f5e9;
-    border-left: 3px solid #4caf50;
-}
-
-.clue {
-    font-size: 0.85rem;
-    color: #7f8c8d;
-    font-style: italic;
-    margin-top: 0.5rem;
-}
-
-.clue.warning {
-    color: #e74c3c;
-    font-weight: bold;
 }
 
 /* ============================================

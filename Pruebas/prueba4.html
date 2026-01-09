@@ -3,89 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba 4 - La Queja</title>
-    <link rel="stylesheet" href="../styles.css">
+    <title>Prueba 4 - Sopa de Letras</title>
+    <link rel="stylesheet" href="../../styles.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: linear-gradient(135deg, #c0392b 0%, #8e44ad 100%);
+            font-family: 'Courier New', monospace;
+            color: #292929;
+            overflow: hidden;
+            background:url('../Assets/Clase.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .game-wrapper {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            position: relative;
+            padding: 1rem;
+            background: rgba(20, 20, 20, 0.9);
         }
 
         .game-container {
-            max-width: 700px;
-            background: #fff;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 800px;
+            background: rgba(133, 133, 133, 0.484);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .header {
-            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            text-align: center;
+            margin-bottom: 1.5rem;
         }
+
+        .header h1 {
+            color: #2a2a2a;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #d3d3d3;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .instruction {
+            background: rgba(71, 68, 58, 0.9);
+            padding: 1rem;
+            border-left: 4px solid #695f46;
+            color: #c3a45d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .word-list {
+            background: rgba(71, 68, 58, 0.9);
+            padding: 1rem;
+            border-left: 4px solid #695f46;
+            color: #c3a45d;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .word-search-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(200, 200, 200, 0.8);
+            border-radius: 5px;
+        }
+
+        .letter-cell {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(220, 220, 220, 0.9);
+            border: 2px solid rgba(100, 100, 100, 0.5);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            border-radius: 3px;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .letter-cell:hover {
+            background: rgba(180, 180, 180, 0.9);
+            transform: scale(1.05);
+        }
+
+        .letter-cell.selected {
+            background: rgba(92, 62, 62, 0.9);
+            color: #f0f0f0;
+            border-color: rgba(61, 38, 38, 0.9);
+        }
+
+        .letter-cell.found {
+            background: rgba(61, 122, 63, 0.9);
+            color: #f0f0f0;
+            border-color: rgba(50, 96, 52, 0.9);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(100, 40, 40, 0.85);
+            color: #e8e8e8;
+            border: 2px solid rgba(150, 100, 100, 0.6);
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: rgba(150, 100, 100, 0.9);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .found-words {
+            background: rgba(61, 122, 63, 0.3);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            text-align: center;
+            color: #0c8016;
+            font-weight: bold;
+        }
+
+        .message {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .message.success {
+            display: block;
+            background: rgba(167, 167, 167, 0.95);
+            color: #0c8016;
+        }
+
+        .message.error {
+            display: block;
+            background: rgba(167, 167, 167, 0.95);
+            color: #810606;
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(67, 160, 71, 0.60);
+            color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .complete-btn:hover {
+            background: rgba(56, 142, 60, 0.60);
+        }
+
+        .hidden {
+    display: none;
+}
     </style>
 </head>
 <body>
-    <button class="back-btn" onclick="goBack()">← Volver al Pasillo</button>
-
-    <div class="game-container">
-        <div class="header">
-            <h1>LA QUEJA</h1>
-            <h2>Defiende tu honor</h2>
-        </div>
-
-        <div class="content">
-            <div class="complaint">
-                <div class="complaint-title">QUEJA ESTUDIANTIL OFICIAL</div>
-                <p style="text-align: center; margin-bottom: 1rem;">Los alumnos han presentado una queja formal sobre tu enseñanza.</p>
-                <p style="text-align: center;">Para defenderte, debes demostrar tu conocimiento de teoría musical encontrando 5 palabras clave en la sopa de letras.</p>
-            </div>
-
-            <div class="theme-hint">
-                TEMÁTICA: TEORÍA MUSICAL 
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="header">
+                <h1>DEFENSA ACADÉMICA</h1>
+                <p>QUEJA ESTUDIANTIL OFICIAL</p>
             </div>
 
             <div class="instruction">
-                <strong>📋 INSTRUCCIONES:</strong><br>
-                • Encuentra las 5 palabras relacionadas con teoría musical<br>
-                • Las palabras pueden estar en cualquier dirección (horizontal, vertical, diagonal)<br>
-                • Haz clic y arrastra para seleccionar letras<br>
-                • Palabras a encontrar: <strong>RITMO, TEMPO, ESCALA, MELODIA, ACORDE</strong>
+                <p>Los alumnos han presentado una queja formal sobre tu enseñanza. Para defenderte, debes demostrar tu conocimiento de teoría musical encontrando 5 palabras clave en la sopa de letras.</p>
             </div>
 
-            <div class="grid-container">
-                <div class="letter-grid" id="letterGrid"></div>
-                
-                <div class="controls">
-                    <button class="btn clear-btn" onclick="clearSelection()">Limpiar</button>
-                    <button class="btn submit-btn" onclick="submitWord()">Enviar Palabra</button>
-                </div>
-
-                <div id="message" class="message hidden"></div>
+            <div class="word-list">
+                PALABRAS A ENCONTRAR: RITMO, TEMPO, ESCALA, MELODÍA, ACORDE
             </div>
 
-            <div class="found-words">
-                <h3>Palabras encontradas: <span id="wordCount">0</span> / 5</h3>
-                <div class="word-list" id="wordList"></div>
+            <div class="word-search-grid" id="grid">
             </div>
+
+            <div class="controls">
+                <button class="btn" onclick="resetSelection()">Limpiar Selección</button>
+                <button class="btn" onclick="checkWord()">Verificar Palabra</button>
+                <button class="btn" onclick="resetGame()">Reiniciar Juego</button>
+            </div>
+            <div id="message" class="message hidden"></div>
+
+            <div id="foundWords" class="found-words">Palabras encontradas: <span id="foundCount">0</span>/5</div>
+            <div id="message" class="message"></div>
 
             <button class="complete-btn hidden" id="completeBtn" onclick="goToDesenlace()">CONTINUAR AL DESENLACE →</button>
         </div>
     </div>
 
     <script>
+        const WORDS = ['RITMO', 'TEMPO', 'ESCALA', 'MELODIA', 'ACORDE'];
+        const GRID_SIZE = 8;
+        let grid = [];
+        let foundWords = [];
+        let selectedCells = [];
+
         // Rejilla 8x8 con las palabras escondidas
-        const grid = [
+        const wordSearch = [
 
         //    0    1    2    3    4    5    6    7
             ['R', 'I', 'T', 'M', 'O', 'A', 'C', 'E'], //0
-            ['_', '_', '_', '_', '_', '_', 'O', 'S'], //1
-            ['_', '_', '_', 'R', '_', '_', 'R', '_'], //2
-            ['A', 'L', '_', 'M', 'E', '_', 'D', 'E'], //3
-            ['T', 'E', 'M', '_', 'L', '_', '_', 'L'], //4
-            ['E', 'S', 'P', 'A', 'O', '_', 'R', 'A'], //5
-            ['A', 'C', 'O', 'I', 'D', '_', 'T', 'M'], //6
-            ['L', 'A', '_', 'A', 'I', '_', '_', '_']  //7
+            ['A', 'M', 'E', 'C', 'N', 'S', 'O', 'S'], //1
+            ['M', 'V', 'T', 'R', 'J', 'D', 'R', 'T'], //2
+            ['A', 'L', 'R', 'M', 'E', 'Ñ', 'D', 'E'], //3
+            ['T', 'E', 'M', 'F', 'L', 'G', 'Z', 'L'], //4
+            ['E', 'S', 'P', 'A', 'O', 'M', 'R', 'A'], //5
+            ['A', 'C', 'O', 'I', 'D', 'U', 'T', 'M'], //6
+            ['L', 'A', 'D', 'A', 'I', 'B', 'S', 'I']  //7
         ];
 
         const targetWords = [
@@ -96,120 +271,103 @@
             { word: 'ACORDE', found: false, positions: [[0,5], [0,6], [1,6], [2,6], [3,6], [3,7]] } //esta
         ];
 
-        let selectedCells = [];
-        let foundWords = 0;
-        let isMouseDown = false;
+        function initGame() {
+            grid = wordSearch.map(row => [...row]);
+            foundWords = [];
+            selectedCells = [];
+            renderGrid();
+            updateFoundCount();
+        }
 
-        function initGrid() {
-            const gridEl = document.getElementById('letterGrid');
+        function renderGrid() {
+            const gridElement = document.getElementById('grid');
+            gridElement.innerHTML = '';
             
-            grid.forEach((row, i) => {
-                row.forEach((letter, j) => {
+            grid.forEach((row, rowIdx) => {
+                row.forEach((letter, colIdx) => {
                     const cell = document.createElement('div');
                     cell.className = 'letter-cell';
                     cell.textContent = letter;
-                    cell.dataset.row = i;
-                    cell.dataset.col = j;
                     
-                    cell.addEventListener('mousedown', () => startSelection(i, j));
-                    cell.addEventListener('mouseenter', () => addToSelection(i, j));
-                    cell.addEventListener('mouseup', () => endSelection());
+                    const foundIdx = foundWords.findIndex(word => 
+                        word.cells.some(c => c.row === rowIdx && c.col === colIdx)
+                    );
                     
-                    gridEl.appendChild(cell);
+                    if (foundIdx !== -1) {
+                        cell.classList.add('found');
+                    }
+                    
+                    if (selectedCells.some(c => c.row === rowIdx && c.col === colIdx)) {
+                        cell.classList.add('selected');
+                    }
+                    
+                    cell.addEventListener('click', () => selectCell(rowIdx, colIdx));
+                    gridElement.appendChild(cell);
                 });
             });
-
-            document.addEventListener('mouseup', () => {
-                isMouseDown = false;
-            });
         }
 
-        function startSelection(row, col) {
-            isMouseDown = true;
-            clearSelection();
-            addToSelection(row, col);
-        }
-
-        function addToSelection(row, col) {
-            if (!isMouseDown) return;
+        function selectCell(row, col) {
+            const cellKey = `${row}-${col}`;
+            const existing = selectedCells.findIndex(c => c.row === row && c.col === col);
             
-            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-            if (!cell || cell.classList.contains('found')) return;
-            
-            if (!selectedCells.some(c => c.row === row && c.col === col)) {
-                selectedCells.push({ row, col, letter: grid[row][col] });
-                cell.classList.add('selected');
+            if (existing !== -1) {
+                selectedCells.splice(existing, 1);
+            } else {
+                selectedCells.push({ row, col });
             }
+            
+            renderGrid();
         }
 
-        function endSelection() {
-            isMouseDown = false;
+        function getSelectedWord() {
+            return selectedCells.map(c => grid[c.row][c.col]).join('');
         }
 
-        function clearSelection() {
-            selectedCells = [];
-            document.querySelectorAll('.letter-cell.selected').forEach(cell => {
-                if (!cell.classList.contains('found')) {
-                    cell.classList.remove('selected');
-                }
-            });
-        }
-
-        function submitWord() {
-            const selectedWord = selectedCells.map(c => c.letter).join('');
-            const msg = document.getElementById('message');
-
-            // Buscar si la palabra seleccionada coincide con alguna objetivo
-            const matchedWord = targetWords.find(tw => 
-                !tw.found && (tw.word === selectedWord || tw.word === selectedWord.split('').reverse().join(''))
-            );
-
-            if (matchedWord) {
-                matchedWord.found = true;
-                foundWords++;
+        function checkWord() {
+            if (selectedCells.length === 0) {
+                showMessage('Selecciona al menos una letra', 'error');
+                return;
+            }
+            
+            const word = getSelectedWord();
+            
+            if (WORDS.includes(word) && !foundWords.some(w => w.word === word)) {
+                foundWords.push({ word, cells: [...selectedCells] });
+                selectedCells = [];
+                showMessage(`¡Correcto! Encontraste: ${word}`, 'success');
+                updateFoundCount();
+                renderGrid();
                 
-                // Marcar celdas como encontradas
-                selectedCells.forEach(sc => {
-                    const cell = document.querySelector(`[data-row="${sc.row}"][data-col="${sc.col}"]`);
-                    cell.classList.remove('selected');
-                    cell.classList.add('found');
-                });
-
-                // Agregar palabra a la lista
-                const wordList = document.getElementById('wordList');
-                const tag = document.createElement('div');
-                tag.className = 'word-tag';
-                tag.textContent = matchedWord.word;
-                wordList.appendChild(tag);
-
-                document.getElementById('wordCount').textContent = foundWords;
-                showMessage(`¡Correcto! Has encontrado: ${matchedWord.word}`, 'success');
-
-                if (foundWords === 5) {
+                if (foundWords.length === WORDS.length) {
                     setTimeout(() => {
                         showMessage('¡Enhorabuena! Has conseguido librarte de la queja. Hay que ver como son los universitarios hoy en día...', 'success');
                         document.getElementById('completeBtn').classList.remove('hidden');
                     }, 1000);
                 }
-
+            } else if (foundWords.some(w => w.word === word)) {
+                showMessage('Ya encontraste esa palabra', 'error');
                 selectedCells = [];
+                renderGrid();
             } else {
-                showMessage('Esa no es una palabra válida. Inténtalo de nuevo.', 'error');
-                clearSelection();
+                showMessage('Esa no es una palabra válida', 'error');
+                selectedCells = [];
+                renderGrid();
             }
         }
 
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            msg.textContent = text;
-            msg.className = `message ${type}`;
-            msg.classList.remove('hidden');
-            
-            if (type === 'error') {
-                setTimeout(() => {
-                    msg.classList.add('hidden');
-                }, 3000);
-            }
+        function resetSelection() {
+            selectedCells = [];
+            renderGrid();
+        }
+
+        function resetGame() {
+            initGame();
+            document.getElementById('message').style.display = 'none';
+        }
+
+        function updateFoundCount() {
+            document.getElementById('foundCount').textContent = foundWords.length;
         }
 
         function goBack() {
@@ -221,7 +379,15 @@
             window.location.href = '../desenlace.html';
         }
 
-        initGrid();
+        function showMessage(text, type) {
+            const msgEl = document.getElementById('message');
+            msgEl.textContent = text;
+            msgEl.className = `message ${type}`;
+            msgEl.style.display = 'block';
+            setTimeout(() => msgEl.style.display = 'none', 3000);
+        }
+
+        initGame();
     </script>
 </body>
 </html>
